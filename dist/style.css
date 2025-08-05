@@ -1,0 +1,28 @@
+*::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 1.2rem;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+
+.board {
+  width: 600px;
+  height: 400px;
+  background-color: lightblue;
+}
+
+.game-player {
+  background-color: yellow;
+}
