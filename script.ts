@@ -10,8 +10,6 @@ class Player {
         this.width = 30;
         this.height = 30;
         this.speed = 5;
-
-
     }
 
     render(container: HTMLElement) {
