@@ -1,25 +1,42 @@
-var Player = /** @class */ (function () {
-    function Player(startX, startY) {
-        this.location = { x: startX, y: startY };
-        this.width = 30;
-        this.height = 30;
-        this.speed = 5;
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var GameMap = /** @class */ (function () {
+    function GameMap() {
     }
-    Player.prototype.render = function (container) {
-        this.playerElement = document.createElement("div");
-        this.playerElement.className = "game-player";
-        container.appendChild(this.playerElement);
-    };
-    Player.prototype.move = function (moveX, moveY) {
-        this.location.x += moveX;
-        this.location.y += moveY;
-        this.updatePosition();
-    };
-    Player.prototype.updatePosition = function () {
-        this.playerElement.style.left = this.location.x + "px";
-        this.playerElement.style.top = this.location.y + "px";
-    };
-    return Player;
+    return GameMap;
 }());
-var player = new Player(0, 0);
-console.log(player);
+var Tank = /** @class */ (function () {
+    function Tank() {
+    }
+    return Tank;
+}());
+var PlayerTank = /** @class */ (function (_super) {
+    __extends(PlayerTank, _super);
+    function PlayerTank() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return PlayerTank;
+}(Tank));
+var EnemyTank = /** @class */ (function (_super) {
+    __extends(EnemyTank, _super);
+    function EnemyTank() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return EnemyTank;
+}(Tank));
+var Wall = /** @class */ (function () {
+    function Wall() {
+    }
+    return Wall;
+}());
