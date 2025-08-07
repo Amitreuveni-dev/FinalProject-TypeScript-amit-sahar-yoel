@@ -1,9 +1,11 @@
+//Model//
+
 type Direction = "up" | "down" | "left" | "right";
 
 const gridSize = 11;
 
 class Tank {
-  image:string
+  tankImage: string;
   width: number;
   height: number;
   speed: number;
@@ -12,9 +14,20 @@ class Tank {
   direction: Direction;
   team: number;
   location: { x: number; y: number };
+  playerElement?: HTMLElement;
 
-  constructor(image: string, width: number, height: number, speed: number, row: number, columns: number, direction: Direction, team: number, location: { x: number; y: number }) {
-    this.image = image;
+  constructor(
+    tankImage: string,
+    width: number,
+    height: number,
+    speed: number,
+    row: number,
+    columns: number,
+    direction: Direction,
+    team: number,
+    location: { x: number; y: number }
+  ) {
+    this.tankImage = tankImage;
     this.width = width;
     this.height = height;
     this.speed = speed;
@@ -25,17 +38,28 @@ class Tank {
     this.location = location;
   }
 
-  move(newDirection: Direction, isCellFree: (row: number, columns: number) => boolean): void {
+  move(
+    newDirection: Direction,
+    isCellFree: (row: number, columns: number) => boolean
+  ): void {
     this.direction = newDirection;
 
     let newRow = this.row;
     let newCol = this.columns;
 
     switch (newDirection) {
-      case "up": newRow--; break;
-      case "down": newRow++; break;
-      case "left": newCol--; break;
-      case "right": newCol++; break;
+      case "up":
+        newRow--;
+        break;
+      case "down":
+        newRow++;
+        break;
+      case "left":
+        newCol--;
+        break;
+      case "right":
+        newCol++;
+        break;
     }
 
     if (!isCellFree(newRow, newCol)) {
@@ -43,6 +67,30 @@ class Tank {
     } else {
       this.row = newRow;
       this.columns = newCol;
+    }
+  }
+
+  renderTank() {
+    try {
+      const container = document.querySelector(".tanksRoot") as HTMLElement;
+
+      if (this.playerElement && this.playerElement.parentNode) {
+        this.playerElement.style.transform = `translate(${this.location.x}px, ${this.location.y}px)`;
+        return;
+      }
+
+      this.playerElement = document.createElement("div");
+      this.playerElement.className = "tankRoot__tank";
+      this.playerElement.style.position = "absolute";
+      this.playerElement.innerHTML = this.tankImage;
+      this.playerElement.style.transform = `translate(${this.location.x}px, ${this.location.y}px)`;
+      this.playerElement.style.width = `${this.width}px`;
+      this.playerElement.style.height = `${this.height}px`;
+      
+
+      container.appendChild(this.playerElement);
+    } catch (error) {
+      console.error("Error rendering tank:", error);
     }
   }
 
@@ -72,10 +120,18 @@ class Bullet {
     let newCol = this.position.columns;
 
     switch (this.direction) {
-      case "up": newRow--; break;
-      case "down": newRow++; break;
-      case "left": newCol--; break;
-      case "right": newCol++; break;
+      case "up":
+        newRow--;
+        break;
+      case "down":
+        newRow++;
+        break;
+      case "left":
+        newCol--;
+        break;
+      case "right":
+        newCol++;
+        break;
     }
 
     if (isCellFree(newRow, newCol)) {
@@ -90,7 +146,7 @@ class Bullet {
 const main = document.querySelector(".main") as HTMLElement;
 
 function createGrid() {
-  main.innerHTML = "";
+  main.innerHTML += "";
 
   for (let row = 0; row < gridSize; row++) {
     for (let columns = 0; columns < gridSize; columns++) {
@@ -106,19 +162,47 @@ function createGrid() {
   }
 }
 
+const tankA = new Tank(
+  "<img src='./assets/playerTank.png' alt='playerTank'>",
+  50,
+  50,
+  2,
+  0,
+  0,
+  "up",
+  1,
+  { x: 40, y: 0 }
+);
+const tankB = new Tank(
+  "<img src='./assets/enemyTank.png' alt='enemyTank'>",
+  50,
+  50,
+  2,
+  10,
+  10,
+  "down",
+  2,
+  { x: 10, y: 5}
+);
+
+//---------view------------//
+
 createGrid();
+tankA.renderTank();
+tankB.renderTank();
 
 const isCellFree = (row: number, columns: number): boolean => {
   return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
 
-const tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
-const tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
+// Render tanks
+
+//-----------controller-----------//
 
 document.addEventListener("keydown", (e) => {
   switch (e.key) {
     case "ArrowUp":
-    tankA.move("up", isCellFree);
+      tankA.move("up", isCellFree);
       break;
     case "ArrowDown":
       tankA.move("down", isCellFree);
@@ -131,7 +215,12 @@ document.addEventListener("keydown", (e) => {
       break;
   }
 
-  console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
+  console.log(
+    "Tank position:",
+    tankA.getPosition(),
+    "direction:",
+    tankA.getDirection()
+  );
 });
 
 document.addEventListener("keydown", (e) => {
@@ -150,5 +239,10 @@ document.addEventListener("keydown", (e) => {
       break;
   }
 
-  console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());
+  console.log(
+    "Tank position:",
+    tankB.getPosition(),
+    "direction:",
+    tankB.getDirection()
+  );
 });

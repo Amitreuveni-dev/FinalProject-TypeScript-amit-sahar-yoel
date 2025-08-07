@@ -1,7 +1,8 @@
+//Model//
 var gridSize = 11;
 var Tank = /** @class */ (function () {
-    function Tank(image, width, height, speed, row, columns, direction, team, location) {
-        this.image = image;
+    function Tank(tankImage, width, height, speed, row, columns, direction, team, location) {
+        this.tankImage = tankImage;
         this.width = width;
         this.height = height;
         this.speed = speed;
@@ -35,6 +36,26 @@ var Tank = /** @class */ (function () {
         else {
             this.row = newRow;
             this.columns = newCol;
+        }
+    };
+    Tank.prototype.renderTank = function () {
+        try {
+            var container = document.querySelector(".tanksRoot");
+            if (this.playerElement && this.playerElement.parentNode) {
+                this.playerElement.style.transform = "translate(" + this.location.x + "px, " + this.location.y + "px)";
+                return;
+            }
+            this.playerElement = document.createElement("div");
+            this.playerElement.className = "tankRoot__tank";
+            this.playerElement.style.position = "absolute";
+            this.playerElement.innerHTML = this.tankImage;
+            this.playerElement.style.transform = "translate(" + this.location.x + "px, " + this.location.y + "px)";
+            this.playerElement.style.width = this.width + "px";
+            this.playerElement.style.height = this.height + "px";
+            container.appendChild(this.playerElement);
+        }
+        catch (error) {
+            console.error("Error rendering tank:", error);
         }
     };
     Tank.prototype.getPosition = function () {
@@ -82,7 +103,7 @@ var Bullet = /** @class */ (function () {
 }());
 var main = document.querySelector(".main");
 function createGrid() {
-    main.innerHTML = "";
+    main.innerHTML += "";
     for (var row = 0; row < gridSize; row++) {
         for (var columns = 0; columns < gridSize; columns++) {
             var cell = document.createElement("div");
@@ -94,12 +115,17 @@ function createGrid() {
         }
     }
 }
+var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 50, 50, 2, 0, 0, "up", 1, { x: 40, y: 0 });
+var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 50, 50, 2, 10, 10, "down", 2, { x: 10, y: 5 });
+//---------view------------//
 createGrid();
+tankA.renderTank();
+tankB.renderTank();
 var isCellFree = function (row, columns) {
     return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
-var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
-var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
+// Render tanks
+//-----------controller-----------//
 document.addEventListener("keydown", function (e) {
     switch (e.key) {
         case "ArrowUp":
