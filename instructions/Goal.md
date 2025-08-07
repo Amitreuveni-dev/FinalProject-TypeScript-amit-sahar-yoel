@@ -1,82 +1,125 @@
-# 🚀 Project Roadmap: Tank Game - MVC Architecture (Updated Design)
+🚀 Project Roadmap: Tank Game - MVC Architecture (Updated Design)
+This document provides a clear roadmap for your updated tank game, where there's a vertical wall (barrier) in the middle of the board that players cannot pass through, but bullets can hit and explode/disappear.
 
-This document provides a clear roadmap for your updated tank game, where there's a vertical wall (barrier) in the middle of the board that **players cannot pass through**, but **bullets can hit and explode/disappear**.
-
-Your team should follow these steps, task by task. Keep all logic in a single `.ts` file (no `export/import`).
-
----
+Your team should follow these steps, task by task. Keep all logic in a single .ts file (no export/import).
 
 📆 Phase 1: Game Rules & Design
 🌟 Goal:
-✔️ 2-player tank game, grid-based (10x10)
-
-✔️ Center vertical wall splitting map top to bottom
-
-✔️ Players can move tanks
-
-🔲 Players can shoot (not implemented yet)
-
-🔲 Bullets interact with walls and enemies (not implemented yet)
+A 2-player tank game, grid-based (10x10), with a center wall splitting the map top to bottom. Players can move and shoot. Bullets interact with walls and enemies.
 
 💡 Key Rules:
-✔️ Grid is 10x10 (we used 11x11 but same idea)
+Grid is 10x10 ✔️
 
-✔️ Wall blocks tanks
+Player 1 starts on left side, Player 2 on right ✔️
 
-✔️ Each player controls their tank (only player 1 implemented)
+Vertical wall blocks tanks (but bullets can hit it) ✔️
 
-🔲 Space/Enter to shoot (not implemented)
+Each player controls their tank (arrows / WASD) ✔️ (only one player input done)
 
-🔲 Bullets explode/remove tanks (not implemented)
+Space/Enter to shoot bullets ❌
+
+Bullets explode on wall, or remove enemy tank ❌
 
 📆 Phase 2: Folder & File Structure
-🔲 All code currently in one file (no file separation yet)
+bash
+Copy
+Edit
+/project-root
+  /src
+    index.html
+    style.scss
+    main.ts
+  /assets
+    tank1.png
+    tank2.png
+Folder & file structure created ❌ (All code currently in one file, no folders yet)
 
 📆 Phase 3: HTML + SCSS Grid Setup
-✔️ Created 10x10 grid (actually 11x11)
+HTML Structure:
+html
+Copy
+Edit
+<body>
+  <header>Tank Game</header>
+  <main></main>
+  <footer>Use arrows/WASD to move, space/enter to shoot</footer>
+</body>
+SCSS Goals:
+Create 10x10 grid with grid-template ✔️
 
-✔️ Each cell has .cell class
+Add .cell class to every square ✔️
 
-✔️ Center wall marked with .wall class
+Middle wall (.wall) styled differently ✔️
 
-✔️ Basic HTML structure with <header>, <main>, <footer>
+Wall Placement:
+Vertical wall at col 5 from row 1 to row 10 ✔️
 
 📆 Phase 4: GameMap Class
-✔️ GameMap class that generates the grid with data-row and data-col
+Responsibilities:
+Generate the grid ✔️
 
-✔️ Center wall cells marked
+Mark center vertical wall ✔️
 
-✔️ Function to check cell availability
+Add data-row and data-col attributes to each cell ✔️
 
 📆 Phase 5: Tank Classes
-✔️ Tank class with position, direction, and move() method
+Base Class: Tank
+position (row, col) ✔️
 
-✔️ Checks if next cell is free before moving
+direction (up/down/left/right) ✔️
 
-✔️ Moves tank on the board visually
+method: move() ✔️
 
-🔲 PlayerTank with keyboard input for 2 players (only 1 player input so far)
+method: shoot() ❌
 
-🔲 shoot() method not implemented
+PlayerTank extends Tank
+Listens to keyboard events (WASD / arrows) ✔️ (only one player input handled)
+
+Can shoot bullets ❌
 
 📆 Phase 6: Bullet Class
-🔲 Not implemented yet
+Properties:
+Position ❌
+
+Direction ❌
+
+Active (true/false) ❌
+
+Methods:
+move() every 100ms ❌
+
+checkCollision() with wall or tank ❌
+
+If bullet hits wall -> disappears ❌
+
+If bullet hits tank -> removes tank ❌
 
 📆 Phase 7: Game Class
-🔲 Not implemented yet
+Manages:
+Game state ❌
+
+Creating players ❌
+
+Bullet updates with setInterval ❌
+
+Victory conditions ❌
 
 📆 Phase 8: UX & Styling
-✔️ Basic colors for tanks, walls, and cells
+Tanks with background images or color ✔️ (basic colors, no images yet)
 
-🔲 Improved styling, images not added yet
+Bullets as small divs ❌
 
-🔲 Positioning tanks and bullets with CSS grid area (not done yet)
+Wall styled with dark color ✔️
+
+Use grid-area to place tanks & bullets ❌
 
 📆 Final Goals:
-🔲 Two tanks can move and shoot (only one tank movement so far)
+2 tanks can move and shoot ❌ (only 1 tank moving, no shooting yet)
 
-🔲 Bullets hit walls and tanks (not done)
+Bullets hit walls or enemies ❌
 
-✔️ Center wall blocks tanks
+Wall in middle blocks players ✔️ (partially done — boundary check)
 
-🔲 Game ends when one player wins, UI cleanup
+Game ends when one player wins ❌
+
+No bugs, clean UI, all code in 1 file
