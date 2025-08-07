@@ -42,33 +42,56 @@ body {
 }
 
 .header {
-  background-color: gray;
+  background-color: olivedrab;
   color: white;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   padding: 0.1rem;
-  font-size: 2rem;
-  height: 70px;
   flex-shrink: 0;
+  padding: 0.5rem;
+
+  &__logo {
+    width: 100px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 50%;
+  }
+
+  &__titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 1rem;
+  }
+
+  &__main-title {
+    font-size: 1.4rem;
+  }
+
+  &__sub-title {
+    font-size: 1rem;
+    margin-top: 0.2rem;
+  }
 }
 
-main {
-  flex: 1;
-  overflow: hidden;
+.main {
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-template-rows: repeat(11, 1fr);
-  gap: 5px;
-  background-color: lightgrey;
-  border: solid 2px darkred;
-  margin: 1rem;
+  margin: 0.1rem;
+  border: solid 20px gray;
+  height: calc(100vh - 130px);
 
-  
-  .cell-1 {
-    grid-area: 6 / 6 / 7 / 7;
-    background-color: red;
+  .cell {
+    background-color: lightgoldenrodyellow;
+  }
+
+  .wall {
+    background-color: gray;
+    border: 1px solid #ccc;
   }
 }
 
@@ -94,14 +117,21 @@ button {
   }
 }
 
-footer {
+.footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 1rem;
-  background-color: gray;
+  padding: 0.5rem;
+  background-color: olivedrab;
   color: white;
   height: 60px;
   flex-shrink: 0;
+
+  &__sub-title {
+    font-size: 1rem;
+    margin-top: 0.2rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
 }
