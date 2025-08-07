@@ -1,29 +1,31 @@
-🚀 Project Roadmap: Tank Game - MVC Architecture (Updated Design)
-This document provides a clear roadmap for your updated tank game, where there's a vertical wall (barrier) in the middle of the board that players cannot pass through, but bullets can hit and explode/disappear.
+# 🚀 Project Roadmap: Tank Game - MVC Architecture (Updated Design)
 
-Your team should follow these steps, task by task. Keep all logic in a single .ts file (no export/import).
+This document provides a clear roadmap for your updated tank game, where there's a vertical wall (barrier) in the middle of the board that **players cannot pass through**, but **bullets can hit and explode/disappear**.
 
-📆 Phase 1: Game Rules & Design
-🌟 Goal:
-A 2-player tank game, grid-based (10x10), with a center wall splitting the map top to bottom. Players can move and shoot. Bullets interact with walls and enemies.
+Your team should follow these steps, task by task. Keep all logic in a single `.ts` file (no `export/import`).
 
-💡 Key Rules:
-Grid is 10x10 ✔️
+---
 
-Player 1 starts on left side, Player 2 on right ✔️
+## 📆 Phase 1: Game Rules & Design
 
-Vertical wall blocks tanks (but bullets can hit it) ✔️
+### 🌟 Goal:
 
-Each player controls their tank (arrows / WASD) ✔️ (only one player input done)
+A 2-player tank game, grid-based (10x10), with a **center wall** splitting the map top to bottom. Players can move and shoot. Bullets interact with walls and enemies.
 
-Space/Enter to shoot bullets ❌
+### 💡 Key Rules:
 
-Bullets explode on wall, or remove enemy tank ❌
+* Grid is 10x10 
+* Player 1 starts on left side, Player 2 on right
+* Vertical wall blocks tanks (but bullets can hit it)
+* Each player controls their tank (arrows / WASD)
+* Space/Enter to shoot bullets
+* Bullets explode on wall, or remove enemy tank
 
-📆 Phase 2: Folder & File Structure
-bash
-Copy
-Edit
+---
+
+## 📆 Phase 2: Folder & File Structure
+
+```
 /project-root
   /src
     index.html
@@ -32,94 +34,125 @@ Edit
   /assets
     tank1.png
     tank2.png
-Folder & file structure created ❌ (All code currently in one file, no folders yet)
+```
 
-📆 Phase 3: HTML + SCSS Grid Setup
-HTML Structure:
-html
-Copy
-Edit
+---
+
+## 📆 Phase 3: HTML + SCSS Grid Setup ✅
+
+### HTML Structure:
+
+```html
 <body>
   <header>Tank Game</header>
   <main></main>
   <footer>Use arrows/WASD to move, space/enter to shoot</footer>
 </body>
-SCSS Goals:
-Create 10x10 grid with grid-template ✔️
+```
 
-Add .cell class to every square ✔️
+### SCSS Goals:
 
-Middle wall (.wall) styled differently ✔️
+* Create 10x10 grid with `grid-template`
+* Add `.cell` class to every square
+* Middle wall (`.wall`) will be styled with different color
 
-Wall Placement:
-Vertical wall at col 5 from row 1 to row 10 ✔️
+### Wall Placement:
 
-📆 Phase 4: GameMap Class
-Responsibilities:
-Generate the grid ✔️
+* Vertical wall at `col 5` from `row 1` to `row 10`
+* Can use `.wall` class on each relevant `.cell`
 
-Mark center vertical wall ✔️
+---
 
-Add data-row and data-col attributes to each cell ✔️
+## 📆 Phase 4: GameMap Class ✅
 
-📆 Phase 5: Tank Classes
-Base Class: Tank
-position (row, col) ✔️
+### Responsibilities:
 
-direction (up/down/left/right) ✔️
+* Generate the grid
+* Mark center vertical wall
+* Add `data-row` and `data-col` to each cell
 
-method: move() ✔️
+### Example:
 
-method: shoot() ❌
+```ts
+class GameMap {
+  constructor(public container: HTMLElement) {
+    this.renderGrid();
+  }
 
-PlayerTank extends Tank
-Listens to keyboard events (WASD / arrows) ✔️ (only one player input handled)
+  renderGrid(): void {
+    for (let row = 1; row <= 10; row++) {
+      for (let col = 1; col <= 10; col++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.dataset.row = String(row);
+        cell.dataset.col = String(col);
+        if (col === 5) cell.classList.add("wall");
+        this.container.appendChild(cell);
+      }
+    }
+  }
+}
+```
 
-Can shoot bullets ❌
+---
 
-📆 Phase 6: Bullet Class
-Properties:
-Position ❌
+## 📆 Phase 5: Tank Classes
 
-Direction ❌
+### Base Class: `Tank`
 
-Active (true/false) ❌
+* position (row, col) ✅
+* direction (up/down/left/right) ✅
+* method: `move()` ✅
+* method: `shoot()`
 
-Methods:
-move() every 100ms ❌
+### PlayerTank extends Tank
 
-checkCollision() with wall or tank ❌
+* Listens to keyboard events (WASD / arrows) ✅
+* Can shoot bullets
 
-If bullet hits wall -> disappears ❌
+---
 
-If bullet hits tank -> removes tank ❌
+## 📆 Phase 6: Bullet Class
 
-📆 Phase 7: Game Class
-Manages:
-Game state ❌
+### Properties:
 
-Creating players ❌
+* Position
+* Direction
+* Active (true/false)
 
-Bullet updates with setInterval ❌
+### Methods:
 
-Victory conditions ❌
+* `move()` every 100ms
+* `checkCollision()` with wall or tank
+* If bullet hits wall -> disappears
+* If bullet hits tank -> removes tank
 
-📆 Phase 8: UX & Styling
-Tanks with background images or color ✔️ (basic colors, no images yet)
+---
 
-Bullets as small divs ❌
+## 📆 Phase 7: Game Class
 
-Wall styled with dark color ✔️
+### Manages:
 
-Use grid-area to place tanks & bullets ❌
+* Game state
+* Creating players
+* Bullet updates with `setInterval`
+* Victory conditions
 
-📆 Final Goals:
-2 tanks can move and shoot ❌ (only 1 tank moving, no shooting yet)
+---
 
-Bullets hit walls or enemies ❌
+## 📆 Phase 8: UX & Styling
 
-Wall in middle blocks players ✔️ (partially done — boundary check)
+* Tanks with background images or color
+* Bullets as small divs
+* Wall styled with dark color
+* Use `grid-area` to place tanks & bullets
 
-Game ends when one player wins ❌
+---
 
-No bugs, clean UI, all code in 1 file
+## 📆 Final Goals:
+
+* 2 tanks can move and shoot
+* Bullets hit walls or enemies
+* Wall in middle blocks players
+* Game ends when one player wins
+* No bugs, clean UI, all code in 1 file
