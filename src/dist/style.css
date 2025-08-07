@@ -103,6 +103,10 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
+button a {
+  color: white;
+  text-decoration: none;
+}
 button:hover {
   background-color: #676767;
   transform: scale(1.1);

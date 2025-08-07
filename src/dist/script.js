@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 //Model//
 var gridSize = 11;
+=======
+// ==============================
+// ========   MODEL   ==========
+// ==============================
+>>>>>>> origin/main
 var Tank = /** @class */ (function () {
     function Tank(tankImage, width, height, speed, row, columns, direction, team, location) {
         this.tankImage = tankImage;
@@ -30,12 +36,12 @@ var Tank = /** @class */ (function () {
                 newCol++;
                 break;
         }
-        if (!isCellFree(newRow, newCol)) {
-            console.log("Cannot move to the cell, it is occupied or out of bounds.");
-        }
-        else {
+        if (isCellFree(newRow, newCol)) {
             this.row = newRow;
             this.columns = newCol;
+        }
+        else {
+            console.log("Cannot move to the cell, it is occupied or out of bounds.");
         }
     };
     Tank.prototype.renderTank = function () {
@@ -101,7 +107,11 @@ var Bullet = /** @class */ (function () {
     };
     return Bullet;
 }());
+// ==============================
+// =========  VIEW   ============
+// ==============================
 var main = document.querySelector(".main");
+var gridSize = 11;
 function createGrid() {
     main.innerHTML += "";
     for (var row = 0; row < gridSize; row++) {
@@ -119,6 +129,7 @@ var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 50,
 var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 50, 50, 2, 10, 10, "down", 2, { x: 10, y: 5 });
 //---------view------------//
 createGrid();
+<<<<<<< HEAD
 tankA.renderTank();
 tankB.renderTank();
 var isCellFree = function (row, columns) {
@@ -126,6 +137,33 @@ var isCellFree = function (row, columns) {
 };
 // Render tanks
 //-----------controller-----------//
+=======
+// ==============================
+// ======== CONTROLLER =========
+// ==============================
+var bullets = [];
+var isCellFree = function (row, columns) {
+    return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
+};
+var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
+var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
+function shootBullet(tank) {
+    var _a = tank.getPosition(), row = _a.row, columns = _a.columns;
+    var direction = tank.getDirection();
+    var bullet = new Bullet(row, columns, direction);
+    bullets.push(bullet);
+    var interval = setInterval(function () {
+        if (bullet.active) {
+            bullet.move(isCellFree);
+            console.log("Bullet moved to position: " + bullet.position.rows + ", " + bullet.position.columns);
+        }
+        else {
+            clearInterval(interval);
+            console.log("Bullet has stopped moving.");
+        }
+    }, 100);
+}
+>>>>>>> origin/main
 document.addEventListener("keydown", function (e) {
     switch (e.key) {
         case "ArrowUp":
@@ -140,11 +178,9 @@ document.addEventListener("keydown", function (e) {
         case "ArrowRight":
             tankA.move("right", isCellFree);
             break;
-    }
-    console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
-});
-document.addEventListener("keydown", function (e) {
-    switch (e.key) {
+        case "Enter":
+            shootBullet(tankA);
+            break;
         case "w":
             tankB.move("up", isCellFree);
             break;
@@ -157,6 +193,10 @@ document.addEventListener("keydown", function (e) {
         case "d":
             tankB.move("right", isCellFree);
             break;
+        case " ":
+            shootBullet(tankB);
+            break;
     }
-    console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());
 });
+console.log("Tank A position:", tankA.getPosition(), "direction:", tankA.getDirection());
+console.log("Tank B position:", tankB.getPosition(), "direction:", tankB.getDirection());
