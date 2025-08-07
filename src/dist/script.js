@@ -1,14 +1,14 @@
 var gridSize = 11;
 var Tank = /** @class */ (function () {
-    function Tank(row, col, direction) {
-        this.row = row;
-        this.col = col;
+    function Tank(rows, columns, direction) {
+        this.row = rows;
+        this.columns = columns;
         this.direction = direction;
     }
     Tank.prototype.move = function (newDirection, isCellFree) {
         this.direction = newDirection;
         var newRow = this.row;
-        var newCol = this.col;
+        var newCol = this.columns;
         switch (newDirection) {
             case "up":
                 newRow--;
@@ -28,11 +28,11 @@ var Tank = /** @class */ (function () {
         }
         else {
             this.row = newRow;
-            this.col = newCol;
+            this.columns = newCol;
         }
     };
     Tank.prototype.getPosition = function () {
-        return { row: this.row, col: this.col };
+        return { row: this.row, columns: this.columns };
     };
     Tank.prototype.getDirection = function () {
         return this.direction;
@@ -43,10 +43,10 @@ var main = document.querySelector(".main");
 function createGrid() {
     main.innerHTML = "";
     for (var row = 0; row < gridSize; row++) {
-        for (var col = 0; col < gridSize; col++) {
+        for (var columns = 0; columns < gridSize; columns++) {
             var cell = document.createElement("div");
             cell.classList.add("cell");
-            if (col === Math.floor(gridSize / 2)) {
+            if (columns === Math.floor(gridSize / 2)) {
                 cell.classList.add("wall");
             }
             main.appendChild(cell);
@@ -54,8 +54,8 @@ function createGrid() {
     }
 }
 createGrid();
-var isCellFree = function (row, col) {
-    return row >= 0 && row < gridSize && col >= 0 && col < gridSize;
+var isCellFree = function (row, columns) {
+    return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
 var tank = new Tank(5, 5, "up");
 document.addEventListener("keydown", function (e) {
