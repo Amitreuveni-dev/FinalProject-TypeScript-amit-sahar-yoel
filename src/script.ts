@@ -3,14 +3,26 @@ type Direction = "up" | "down" | "left" | "right";
 const gridSize = 11;
 
 class Tank {
-  private row: number;
-  private columns: number;
-  private direction: Direction;
+  image:string
+  width: number;
+  height: number;
+  speed: number;
+  row: number;
+  columns: number;
+  direction: Direction;
+  team: number;
+  
+  
 
-  constructor(rows: number, columns: number, direction: Direction) {
-    this.row = rows;
+  constructor(image: string, width: number, height: number, speed: number, row: number, columns: number, direction: Direction, team: number) {
+    this.image = image;
+    this.width = width;
+    this.height = height;
+    this.speed = speed;
+    this.row = row;
     this.columns = columns;
     this.direction = direction;
+    this.team = team;
   }
 
   move(newDirection: Direction, isCellFree: (row: number, columns: number) => boolean): void {
@@ -68,7 +80,8 @@ const isCellFree = (row: number, columns: number): boolean => {
   return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
 
-const tank = new Tank(5, 5, "up");
+const tankA = new Tank("tankA.png", 5, 5, 2, 0, 0, "up", 1);\
+const tankB = new Tank("tankB.png", 5, 5, 2, 10, 10, "down", 2);
 
 document.addEventListener("keydown", (e) => {
   switch (e.key) {
