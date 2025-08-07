@@ -116,9 +116,9 @@ class GameMap {
 
 ### Properties:
 
-* Position
-* Direction
-* Active (true/false)
+* Position ✅
+* Direction ✅
+* Active (true/false) ✅
 
 ### Methods:
 
