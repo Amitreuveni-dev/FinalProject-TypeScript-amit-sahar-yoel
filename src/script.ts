@@ -1,9 +1,8 @@
 type Direction = "up" | "down" | "left" | "right";
 
-const gridSize = 11;
 
 class Tank {
-  image:string
+  image: string
   width: number;
   height: number;
   speed: number;
@@ -88,6 +87,7 @@ class Bullet {
 }
 
 const main = document.querySelector(".main") as HTMLElement;
+const gridSize = 11;
 
 function createGrid() {
   main.innerHTML = "";
@@ -115,10 +115,31 @@ const isCellFree = (row: number, columns: number): boolean => {
 const tankA = new Tank("tankA.png", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
 const tankB = new Tank("tankB.png", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
 
+const bullets: Bullet[] = [];
+
+function shootBullet(tank: Tank): void {
+  const { row, columns } = tank.getPosition();
+  const direction = tank.getDirection();
+  const bullet = new Bullet(row, columns, direction);
+  bullets.push(bullet);
+
+  const interval = setInterval(() => {
+    if (bullet.active) {
+      bullet.move(isCellFree);
+      console.log(`Bullet moved to position: ${bullet.position.rows}, ${bullet.position.columns}`);
+    } else if (!bullet.active) {
+      clearInterval(interval);
+      console.log("Bullet has stopped moving.");
+    }
+  }, 100);
+}
+
+
+
 document.addEventListener("keydown", (e) => {
   switch (e.key) {
     case "ArrowUp":
-    tankA.move("up", isCellFree);
+      tankA.move("up", isCellFree);
       break;
     case "ArrowDown":
       tankA.move("down", isCellFree);
@@ -129,13 +150,13 @@ document.addEventListener("keydown", (e) => {
     case "ArrowRight":
       tankA.move("right", isCellFree);
       break;
-  }
+    case "Enter":
+      shootBullet(tankA);
+      break;
 
-  console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
-});
 
-document.addEventListener("keydown", (e) => {
-  switch (e.key) {
+
+
     case "w":
       tankB.move("up", isCellFree);
       break;
@@ -148,7 +169,14 @@ document.addEventListener("keydown", (e) => {
     case "d":
       tankB.move("right", isCellFree);
       break;
+    case " ":
+      shootBullet(tankB);
+      break;
   }
 
-  console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());
 });
+
+
+// Initial positions and directions of tanks
+console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
+console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());

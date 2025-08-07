@@ -1,4 +1,3 @@
-var gridSize = 11;
 var Tank = /** @class */ (function () {
     function Tank(image, width, height, speed, row, columns, direction, team, location) {
         this.image = image;
@@ -81,6 +80,7 @@ var Bullet = /** @class */ (function () {
     return Bullet;
 }());
 var main = document.querySelector(".main");
+var gridSize = 11;
 function createGrid() {
     main.innerHTML = "";
     for (var row = 0; row < gridSize; row++) {
@@ -100,6 +100,23 @@ var isCellFree = function (row, columns) {
 };
 var tankA = new Tank("tankA.png", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
 var tankB = new Tank("tankB.png", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
+var bullets = [];
+function shootBullet(tank) {
+    var _a = tank.getPosition(), row = _a.row, columns = _a.columns;
+    var direction = tank.getDirection();
+    var bullet = new Bullet(row, columns, direction);
+    bullets.push(bullet);
+    var interval = setInterval(function () {
+        if (bullet.active) {
+            bullet.move(isCellFree);
+            console.log("Bullet moved to position: " + bullet.position.rows + ", " + bullet.position.columns);
+        }
+        else if (!bullet.active) {
+            clearInterval(interval);
+            console.log("Bullet has stopped moving.");
+        }
+    }, 100);
+}
 document.addEventListener("keydown", function (e) {
     switch (e.key) {
         case "ArrowUp":
@@ -114,11 +131,9 @@ document.addEventListener("keydown", function (e) {
         case "ArrowRight":
             tankA.move("right", isCellFree);
             break;
-    }
-    console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
-});
-document.addEventListener("keydown", function (e) {
-    switch (e.key) {
+        case "Enter":
+            shootBullet(tankA);
+            break;
         case "w":
             tankB.move("up", isCellFree);
             break;
@@ -131,6 +146,11 @@ document.addEventListener("keydown", function (e) {
         case "d":
             tankB.move("right", isCellFree);
             break;
+        case " ":
+            shootBullet(tankB);
+            break;
     }
-    console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());
 });
+// Initial positions and directions of tanks
+console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
+console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());
