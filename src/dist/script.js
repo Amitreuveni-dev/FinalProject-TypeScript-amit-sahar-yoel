@@ -1,9 +1,14 @@
 var gridSize = 11;
 var Tank = /** @class */ (function () {
-    function Tank(rows, columns, direction) {
-        this.row = rows;
+    function Tank(image, width, height, speed, row, columns, direction, team) {
+        this.image = image;
+        this.width = width;
+        this.height = height;
+        this.speed = speed;
+        this.row = row;
         this.columns = columns;
         this.direction = direction;
+        this.team = team;
     }
     Tank.prototype.move = function (newDirection, isCellFree) {
         this.direction = newDirection;
@@ -92,7 +97,8 @@ createGrid();
 var isCellFree = function (row, columns) {
     return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
-var tank = new Tank(5, 5, "up");
+var tankA = new Tank("tankA.png", 5, 5, 2, 0, 0, "up", 1);
+var tankB = new Tank("tankB.png", 5, 5, 2, 10, 10, "down", 2);
 document.addEventListener("keydown", function (e) {
     switch (e.key) {
         case "ArrowUp":
