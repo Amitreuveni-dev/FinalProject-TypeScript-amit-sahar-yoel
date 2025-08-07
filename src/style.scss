@@ -42,33 +42,33 @@ body {
 }
 
 .header {
-  background-color: gray;
+  background-color: olivedrab;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0.1rem;
-  font-size: 2rem;
+  font-size: 1.6rem;
   height: 70px;
   flex-shrink: 0;
 }
 
-main {
-  flex: 1;
-  overflow: hidden;
+.main {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  gap: 5px;
-  background-color: lightgrey;
-  border: solid 2px darkred;
-  margin: 1rem;
-
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+  margin: 0.1rem;
+  border: solid 20px gray;
+  height: calc(100vh - 130px);
   
-  .cell-1 {
-    grid-area: 5 / 5 / 6 / 6;
-    background-color: red;
+  .cell {
+    background-color: lightgoldenrodyellow;
+  }
+  
+  .wall {
+    background-color: gray;
+    border: 1px solid #ccc;
   }
 }
 
@@ -100,7 +100,7 @@ footer {
   align-items: center;
   width: 100%;
   padding: 1rem;
-  background-color: gray;
+  background-color: olivedrab ;
   color: white;
   height: 60px;
   flex-shrink: 0;
