@@ -122,7 +122,7 @@ class GameMap {
 
 ### Methods:
 
-* `move()` every 100ms
+* `move()` every 100ms ✅
 * `checkCollision()` with wall or tank
 * If bullet hits wall -> disappears
 * If bullet hits tank -> removes tank

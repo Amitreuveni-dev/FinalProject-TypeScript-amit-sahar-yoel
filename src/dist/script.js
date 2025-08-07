@@ -1,3 +1,6 @@
+// ==============================
+// ========   MODEL   ==========
+// ==============================
 var Tank = /** @class */ (function () {
     function Tank(image, width, height, speed, row, columns, direction, team, location) {
         this.image = image;
@@ -28,12 +31,12 @@ var Tank = /** @class */ (function () {
                 newCol++;
                 break;
         }
-        if (!isCellFree(newRow, newCol)) {
-            console.log("Cannot move to the cell, it is occupied or out of bounds.");
-        }
-        else {
+        if (isCellFree(newRow, newCol)) {
             this.row = newRow;
             this.columns = newCol;
+        }
+        else {
+            console.log("Cannot move to the cell, it is occupied or out of bounds.");
         }
     };
     Tank.prototype.getPosition = function () {
@@ -79,6 +82,9 @@ var Bullet = /** @class */ (function () {
     };
     return Bullet;
 }());
+// ==============================
+// =========  VIEW   ============
+// ==============================
 var main = document.querySelector(".main");
 var gridSize = 11;
 function createGrid() {
@@ -95,12 +101,15 @@ function createGrid() {
     }
 }
 createGrid();
+// ==============================
+// ======== CONTROLLER =========
+// ==============================
+var bullets = [];
 var isCellFree = function (row, columns) {
     return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
 var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
 var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
-var bullets = [];
 function shootBullet(tank) {
     var _a = tank.getPosition(), row = _a.row, columns = _a.columns;
     var direction = tank.getDirection();
@@ -111,7 +120,7 @@ function shootBullet(tank) {
             bullet.move(isCellFree);
             console.log("Bullet moved to position: " + bullet.position.rows + ", " + bullet.position.columns);
         }
-        else if (!bullet.active) {
+        else {
             clearInterval(interval);
             console.log("Bullet has stopped moving.");
         }
@@ -151,6 +160,5 @@ document.addEventListener("keydown", function (e) {
             break;
     }
 });
-// Initial positions and directions of tanks
-console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
-console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());
+console.log("Tank A position:", tankA.getPosition(), "direction:", tankA.getDirection());
+console.log("Tank B position:", tankB.getPosition(), "direction:", tankB.getDirection());

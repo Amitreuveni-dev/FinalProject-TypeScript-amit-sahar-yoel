@@ -1,8 +1,11 @@
+// ==============================
+// ========   MODEL   ==========
+// ==============================
+
 type Direction = "up" | "down" | "left" | "right";
 
-
 class Tank {
-  image: string
+  image: string;
   width: number;
   height: number;
   speed: number;
@@ -26,7 +29,6 @@ class Tank {
 
   move(newDirection: Direction, isCellFree: (row: number, columns: number) => boolean): void {
     this.direction = newDirection;
-
     let newRow = this.row;
     let newCol = this.columns;
 
@@ -37,11 +39,11 @@ class Tank {
       case "right": newCol++; break;
     }
 
-    if (!isCellFree(newRow, newCol)) {
-      console.log("Cannot move to the cell, it is occupied or out of bounds.");
-    } else {
+    if (isCellFree(newRow, newCol)) {
       this.row = newRow;
       this.columns = newCol;
+    } else {
+      console.log("Cannot move to the cell, it is occupied or out of bounds.");
     }
   }
 
@@ -64,6 +66,7 @@ class Bullet {
     this.direction = direction;
     this.active = true;
   }
+
   move(isCellFree: (rows: number, columns: number) => boolean): void {
     if (!this.active) return;
 
@@ -86,10 +89,14 @@ class Bullet {
   }
 }
 
+// ==============================
+// =========  VIEW   ============
+// ==============================
+
 const main = document.querySelector(".main") as HTMLElement;
 const gridSize = 11;
 
-function createGrid() {
+function createGrid(): void {
   main.innerHTML = "";
 
   for (let row = 0; row < gridSize; row++) {
@@ -108,14 +115,18 @@ function createGrid() {
 
 createGrid();
 
+// ==============================
+// ======== CONTROLLER =========
+// ==============================
+
+const bullets: Bullet[] = [];
+
 const isCellFree = (row: number, columns: number): boolean => {
   return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
 
 const tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
 const tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
-
-const bullets: Bullet[] = [];
 
 function shootBullet(tank: Tank): void {
   const { row, columns } = tank.getPosition();
@@ -127,14 +138,12 @@ function shootBullet(tank: Tank): void {
     if (bullet.active) {
       bullet.move(isCellFree);
       console.log(`Bullet moved to position: ${bullet.position.rows}, ${bullet.position.columns}`);
-    } else if (!bullet.active) {
+    } else {
       clearInterval(interval);
       console.log("Bullet has stopped moving.");
     }
   }, 100);
 }
-
-
 
 document.addEventListener("keydown", (e) => {
   switch (e.key) {
@@ -154,9 +163,6 @@ document.addEventListener("keydown", (e) => {
       shootBullet(tankA);
       break;
 
-
-
-
     case "w":
       tankB.move("up", isCellFree);
       break;
@@ -173,10 +179,7 @@ document.addEventListener("keydown", (e) => {
       shootBullet(tankB);
       break;
   }
-
 });
 
-
-// Initial positions and directions of tanks
-console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
-console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());
+console.log("Tank A position:", tankA.getPosition(), "direction:", tankA.getDirection());
+console.log("Tank B position:", tankB.getPosition(), "direction:", tankB.getDirection());
