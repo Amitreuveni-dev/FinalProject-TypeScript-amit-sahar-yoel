@@ -98,8 +98,8 @@ createGrid();
 var isCellFree = function (row, columns) {
     return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
-var tankA = new Tank("tankA.png", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
-var tankB = new Tank("tankB.png", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
+var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
+var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
 var bullets = [];
 function shootBullet(tank) {
     var _a = tank.getPosition(), row = _a.row, columns = _a.columns;
