@@ -44,13 +44,32 @@ body {
   background-color: olivedrab;
   color: white;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.1rem;
+  flex-shrink: 0;
+  padding: 0.5rem;
+}
+.header__logo {
+  width: 100px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+}
+.header__titles {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0.1rem;
-  font-size: 1.6rem;
-  height: 70px;
-  flex-shrink: 0;
+  margin: 0 1rem;
+}
+.header__main-title {
+  font-size: 1.4rem;
+}
+.header__sub-title {
+  font-size: 1rem;
+  margin-top: 0.2rem;
 }
 
 .main {
@@ -89,14 +108,20 @@ button:active {
   background-color: #555;
 }
 
-footer {
+.footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: olivedrab;
   color: white;
   height: 60px;
   flex-shrink: 0;
+}
+.footer__sub-title {
+  font-size: 1rem;
+  margin-top: 0.2rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
 }
