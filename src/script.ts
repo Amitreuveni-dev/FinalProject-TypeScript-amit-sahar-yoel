@@ -80,24 +80,43 @@ const isCellFree = (row: number, columns: number): boolean => {
   return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
 
-const tankA = new Tank("tankA.png", 5, 5, 2, 0, 0, "up", 1);\
+const tankA = new Tank("tankA.png", 5, 5, 2, 0, 0, "up", 1);
 const tankB = new Tank("tankB.png", 5, 5, 2, 10, 10, "down", 2);
 
 document.addEventListener("keydown", (e) => {
   switch (e.key) {
     case "ArrowUp":
-      tank.move("up", isCellFree);
+    tankA.move("up", isCellFree);
       break;
     case "ArrowDown":
-      tank.move("down", isCellFree);
+      tankA.move("down", isCellFree);
       break;
     case "ArrowLeft":
-      tank.move("left", isCellFree);
+      tankA.move("left", isCellFree);
       break;
     case "ArrowRight":
-      tank.move("right", isCellFree);
+      tankA.move("right", isCellFree);
       break;
   }
 
-  console.log("Tank position:", tank.getPosition(), "direction:", tank.getDirection());
+  console.log("Tank position:", tankA.getPosition(), "direction:", tankA.getDirection());
+});
+
+document.addEventListener("keydown", (e) => {
+  switch (e.key) {
+    case "w":
+      tankB.move("up", isCellFree);
+      break;
+    case "s":
+      tankB.move("down", isCellFree);
+      break;
+    case "a":
+      tankB.move("left", isCellFree);
+      break;
+    case "d":
+      tankB.move("right", isCellFree);
+      break;
+  }
+
+  console.log("Tank position:", tankB.getPosition(), "direction:", tankB.getDirection());
 });
