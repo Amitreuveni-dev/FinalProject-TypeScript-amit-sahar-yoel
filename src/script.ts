@@ -55,6 +55,38 @@ class Tank {
   }
 }
 
+class Bullet {
+  position: { rows: number; columns: number };
+  direction: Direction;
+  active: boolean;
+
+  constructor(rows: number, columns: number, direction: Direction) {
+    this.position = { rows, columns };
+    this.direction = direction;
+    this.active = true;
+  }
+  move(isCellFree: (rows: number, columns: number) => boolean): void {
+    if (!this.active) return;
+
+    let newRow = this.position.rows;
+    let newCol = this.position.columns;
+
+    switch (this.direction) {
+      case "up": newRow--; break;
+      case "down": newRow++; break;
+      case "left": newCol--; break;
+      case "right": newCol++; break;
+    }
+
+    if (isCellFree(newRow, newCol)) {
+      this.position.rows = newRow;
+      this.position.columns = newCol;
+    } else {
+      this.active = false;
+    }
+  }
+}
+
 const main = document.querySelector(".main") as HTMLElement;
 
 function createGrid() {

@@ -44,6 +44,41 @@ var Tank = /** @class */ (function () {
     };
     return Tank;
 }());
+var Bullet = /** @class */ (function () {
+    function Bullet(rows, columns, direction) {
+        this.position = { rows: rows, columns: columns };
+        this.direction = direction;
+        this.active = true;
+    }
+    Bullet.prototype.move = function (isCellFree) {
+        if (!this.active)
+            return;
+        var newRow = this.position.rows;
+        var newCol = this.position.columns;
+        switch (this.direction) {
+            case "up":
+                newRow--;
+                break;
+            case "down":
+                newRow++;
+                break;
+            case "left":
+                newCol--;
+                break;
+            case "right":
+                newCol++;
+                break;
+        }
+        if (isCellFree(newRow, newCol)) {
+            this.position.rows = newRow;
+            this.position.columns = newCol;
+        }
+        else {
+            this.active = false;
+        }
+    };
+    return Bullet;
+}());
 var main = document.querySelector(".main");
 function createGrid() {
     main.innerHTML = "";
