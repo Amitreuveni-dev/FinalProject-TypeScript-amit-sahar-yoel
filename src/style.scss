@@ -33,6 +33,10 @@ body {
   font-family: system-ui;
   line-height: 1.5;
   color: hsl(0deg 0% 5%);
+<<<<<<< Updated upstream
+=======
+  background-color: rgb(254, 236, 202);
+>>>>>>> Stashed changes
 
   display: flex;
   flex-direction: column;
@@ -76,9 +80,14 @@ body {
 }
 
 .main {
+<<<<<<< Updated upstream
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-template-rows: repeat(11, 1fr);
+=======
+
+  margin: 0.1rem;
+>>>>>>> Stashed changes
   border: solid 20px gray;
   height: calc(100vh - 130px);
 

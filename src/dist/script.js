@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-//Model//
-var gridSize = 11;
-=======
 // ==============================
 // ========   MODEL   ==========
 // ==============================
->>>>>>> origin/main
 var Tank = /** @class */ (function () {
     function Tank(tankImage, width, height, speed, row, columns, direction, team, location) {
         this.tankImage = tankImage;
@@ -112,32 +107,11 @@ var Bullet = /** @class */ (function () {
 // ==============================
 var main = document.querySelector(".main");
 var gridSize = 11;
-function createGrid() {
-    main.innerHTML += "";
-    for (var row = 0; row < gridSize; row++) {
-        for (var columns = 0; columns < gridSize; columns++) {
-            var cell = document.createElement("div");
-            cell.classList.add("cell");
-            if (columns === Math.floor(gridSize / 2)) {
-                cell.classList.add("wall");
-            }
-            main.appendChild(cell);
-        }
-    }
-}
 var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 50, 50, 2, 0, 0, "up", 1, { x: 40, y: 0 });
 var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 50, 50, 2, 10, 10, "down", 2, { x: 10, y: 5 });
 //---------view------------//
-createGrid();
-<<<<<<< HEAD
 tankA.renderTank();
 tankB.renderTank();
-var isCellFree = function (row, columns) {
-    return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
-};
-// Render tanks
-//-----------controller-----------//
-=======
 // ==============================
 // ======== CONTROLLER =========
 // ==============================
@@ -145,8 +119,7 @@ var bullets = [];
 var isCellFree = function (row, columns) {
     return row >= 0 && row < gridSize && columns >= 0 && columns < gridSize;
 };
-var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 5, 5, 2, 0, 0, "up", 1, { x: 0, y: 0 });
-var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 5, 5, 2, 10, 10, "down", 2, { x: 10, y: 10 });
+// Render tanks
 function shootBullet(tank) {
     var _a = tank.getPosition(), row = _a.row, columns = _a.columns;
     var direction = tank.getDirection();
@@ -163,7 +136,7 @@ function shootBullet(tank) {
         }
     }, 100);
 }
->>>>>>> origin/main
+//-----------controller-----------//
 document.addEventListener("keydown", function (e) {
     switch (e.key) {
         case "ArrowUp":

@@ -86,7 +86,6 @@ class Tank {
       this.playerElement.style.width = `${this.width}px`;
       this.playerElement.style.height = `${this.height}px`;
       
-
       container.appendChild(this.playerElement);
     } catch (error) {
       console.error("Error rendering tank:", error);
@@ -150,22 +149,7 @@ class Bullet {
 const main = document.querySelector(".main") as HTMLElement;
 const gridSize = 11;
 
-function createGrid() {
-  main.innerHTML += "";
 
-  for (let row = 0; row < gridSize; row++) {
-    for (let columns = 0; columns < gridSize; columns++) {
-      const cell = document.createElement("div");
-      cell.classList.add("cell");
-
-      if (columns === Math.floor(gridSize / 2)) {
-        cell.classList.add("wall");
-      }
-
-      main.appendChild(cell);
-    }
-  }
-}
 
 const tankA = new Tank(
   "<img src='./assets/playerTank.png' alt='playerTank'>",
@@ -192,7 +176,6 @@ const tankB = new Tank(
 
 //---------view------------//
 
-createGrid();
 tankA.renderTank();
 tankB.renderTank();
 
