@@ -114,14 +114,23 @@ var Tank = /** @class */ (function () {
 // ==============================
 // =========  VIEW   ============
 // ==============================
+<<<<<<< HEAD
 var tankA = new Tank("<img src='../assets/playerTank.png' alt='playerTank'>", 50, 50, 0.15, "left", 2, //team
 { x: 1000, y: 0 }, {
+=======
+var tankA = new Tank("<img src='../assets/playerTank.png' alt='playerTank'>", 50, 50, 0.30, "none", 2, //team
+{ x: 1100, y: 0 }, {
+>>>>>>> origin/main
     up: "ArrowUp",
     down: "ArrowDown",
     left: "ArrowLeft",
     right: "ArrowRight"
 });
+<<<<<<< HEAD
 var tankB = new Tank("<img src='../assets/enemyTank.png' alt='enemyTank'>", 50, 50, 0.15, "right", 2, //team
+=======
+var tankB = new Tank("<img src='../assets/enemyTank.png' alt='enemyTank'>", 50, 50, 0.30, "none", 2, //team
+>>>>>>> origin/main
 { x: 10, y: 5 }, {
     up: "w",
     down: "s",
