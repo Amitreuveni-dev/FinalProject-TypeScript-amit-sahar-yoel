@@ -123,7 +123,7 @@ move() {
 // ==============================
 
 const tankA = new Tank(
-  "<img src='./assets/playerTank.png' alt='playerTank'>",
+  "<img src='../assets/playerTank.png' alt='playerTank'>",
   50,
   50,
   0.1,
@@ -139,7 +139,7 @@ const tankA = new Tank(
   }
 );
 const tankB = new Tank(
-  "<img src='./assets/enemyTank.png' alt='enemyTank'>",
+  "<img src='../assets/enemyTank.png' alt='enemyTank'>",
   50,
   50,
   0.1,
