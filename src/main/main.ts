@@ -158,11 +158,11 @@ const tankA = new Tank(
   "<img src='../assets/playerTank.png' alt='playerTank'>",
   50,
   50,
-  0.15,
+  0.30,
 
   "none",
   2, //team
-  { x: 1000, y: 0 },
+  { x: 1100, y: 0 },
   {
     up: "ArrowUp",
     down: "ArrowDown",
@@ -174,7 +174,7 @@ const tankB = new Tank(
   "<img src='../assets/enemyTank.png' alt='enemyTank'>",
   50,
   50,
-  0.15,
+  0.30,
   "none",
   2, //team
   { x: 10, y: 5 },
