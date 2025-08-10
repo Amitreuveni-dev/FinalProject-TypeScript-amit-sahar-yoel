@@ -158,3 +158,36 @@ button {
     }
   }
 }
+.tank-flip-left {
+  animation: flipToLeft 0.1s ease-out forwards;
+}
+
+.tank-flip-right {
+  animation: flipToRight 0.1s ease-out forwards;
+}
+
+.tank-rotate-up {
+  animation: rotateToUp 0.1s ease-out forwards;
+}
+
+.tank-rotate-down {
+  animation: rotateToDown 0.1s ease-out forwards;
+}
+
+@keyframes flipToLeft {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(-1); }
+}
+
+@keyframes flipToRight {
+  from { transform: scaleX(-1); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes rotateToUp {
+  to { transform: rotate(270deg); }
+}
+
+@keyframes rotateToDown {
+  to { transform: rotate(90deg); }
+}
