@@ -13,6 +13,12 @@ body, html {
   min-height: 100vh;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .header {
   padding: 20px;
   background-color: #4e54c8;
@@ -46,15 +52,16 @@ body, html {
   font-weight: 600;
   color: #2b2e4a;
 }
-.settings-form__input, .settings-form__select {
+.settings-form__input {
   padding: 10px 12px;
   font-size: 1rem;
   border-radius: 8px;
   border: 1px solid #ccc;
   cursor: pointer;
   transition: border-color 0.3s ease;
+  resize: none;
 }
-.settings-form__input:focus, .settings-form__select:focus {
+.settings-form__input:focus {
   outline: none;
   border-color: #4e54c8;
   box-shadow: 0 0 8px rgba(78, 84, 200, 0.3);
@@ -78,7 +85,6 @@ body, html {
   background-color: #4e54c8;
   color: white;
   padding: 15px 20px;
-  text-align: center;
   display: flex;
   justify-content: space-between;
   align-items: center;

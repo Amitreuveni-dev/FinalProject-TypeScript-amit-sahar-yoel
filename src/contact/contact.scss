@@ -13,6 +13,12 @@ body, html {
   min-height: 100vh;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .header {
   padding: 20px;
   background-color: #4e54c8;
@@ -48,14 +54,15 @@ body, html {
     color: #2b2e4a;
   }
 
-  &__input,
-  &__select {
+  &__input {
     padding: 10px 12px;
     font-size: 1rem;
     border-radius: 8px;
     border: 1px solid #ccc;
     cursor: pointer;
     transition: border-color 0.3s ease;
+    resize: none;
+
 
     &:focus {
       outline: none;
@@ -85,7 +92,6 @@ body, html {
   background-color: #4e54c8;
   color: white;
   padding: 15px 20px;
-  text-align: center;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -112,6 +118,7 @@ body, html {
     &:hover {
       background-color: #6c72de;
       transform: scale(1.05);
+      ;
     }
 
     &:active {

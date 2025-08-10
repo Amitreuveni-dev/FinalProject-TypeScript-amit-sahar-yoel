@@ -2,45 +2,43 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Us</title>
-    <link rel="stylesheet" href="dist/style.css" />
-    <script src="dist/contact.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="dist/contact.css" />
+  <script src="dist/contact.js" defer></script>
 </head>
 
 <body>
-    <div class="wrapper">
-        <header class="header">
-            <h1 class="header__title">Contact Us</h1>
-        </header>
+  <div class="wrapper">
+    <header class="header">
+      <h1 class="header__title">Contact Us</h1>
+    </header>
 
-        <main class="main">
-            <section class="contact">
-                <form class="contact__form">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required />
+    <main class="main-content">
+      <form class="settings-form contact__form">
+        <label for="name" class="settings-form__label">Name:</label>
+        <input type="text" id="name" name="name" required class="settings-form__input" />
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required />
+        <label for="email" class="settings-form__label">Email:</label>
+        <input type="email" id="email" name="email" required class="settings-form__input" />
 
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" required></textarea>
+        <label for="message" class="settings-form__label">Message:</label>
+        <textarea id="message" name="message" required class="settings-form__input" rows="5"></textarea>
 
-                    <button type="submit">Send</button>
-                    <button type="button" class="contact__button contact__button--secondary"
-                        onclick="window.location.href='../main/main.html'">
-                        Back to Home
-                    </button>
-                </form>
-            </section>
-        </main>
+        <button type="submit" class="settings-form__button">Send</button>
+      </form>
+    </main>
 
-        <footer class="footer">
-            <p>&copy; All rights reserved 2025</p>
-        </footer>
-    </div>
-
+    <footer class="footer">
+      <p class="footer__copyright">&copy; All rights reserved 2025</p>
+      <div class="footer__buttons">
+        <button class="footer__btn" onclick="window.location.href='../main/main.html'">
+          <a href="../main/main.html" class="footer__link">Home</a>
+        </button>
+      </div>
+    </footer>
+  </div>
 </body>
 
 </html>
