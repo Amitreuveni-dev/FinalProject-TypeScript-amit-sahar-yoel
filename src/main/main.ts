@@ -4,6 +4,9 @@
 
 type Direction = "up" | "down" | "left" | "right" | "none";
 
+
+
+
 class Tank {
   tankImage: string;
   width: number;
@@ -66,28 +69,50 @@ class Tank {
     let moved = false;
     let isMoving = this.keysPressed.size > 0;
   
-    
     if (this.keysPressed.has(this.controls.up)) {
       this.location.y -= this.speed;
       moved = true;
-      this.direction = "up";
+      if(this.location.y < 0) {
+        this.location.y = 0; 
+        return
+      } else {
+        this.direction = "up";
+      }
 
     }
     if (this.keysPressed.has(this.controls.down)) {
       this.location.y += this.speed;
       moved = true;
+      
+    if(this.location.y > 698) {
+      this.direction = this.lastDirection;
+      this.renderTank();
+      this.location.y = 698; 
+      return
+    } else {
       this.direction = "down";
-    
+    }
     }
     if (this.keysPressed.has(this.controls.left)) {
       this.location.x -= this.speed;
       moved = true;
-      this.direction = "left";
+      if(this.location.x < 0) {
+        this.location.x = 0; 
+        return
+      } else {
+        this.direction = "left";
+      }
     }
     if (this.keysPressed.has(this.controls.right)) {
       this.location.x += this.speed;
       moved = true;
       this.direction = "right";
+      if(this.location.x > 1121) {
+        this.location.x = 1121;
+        return
+      } else {
+        this.direction = "right";
+      }
     }
 
     // Handle acceleration/deceleration
@@ -146,6 +171,7 @@ updatePosition() {
     // Update position //
     this.playerElement.style.left = `${this.location.x}px`;
     this.playerElement.style.top = `${this.location.y}px`;
+    console.log(`Tank ${this.team} is at (${this.location.x}, ${this.location.y})`);
   }
 }
 }
@@ -156,13 +182,12 @@ updatePosition() {
 
 const tankA = new Tank(
   "<img src='../assets/playerTank.png' alt='playerTank'>",
-  50,
-  50,
-  0.30,
-
-  "left",
+  50,// width
+  50,// height
+  0.2,// speed
+  "left",// direction
   2, //team
-  { x: 1100, y: 0 },
+  { x: 1100, y: 0 },// initial position
   {
     up: "ArrowUp",
     down: "ArrowDown",
@@ -172,12 +197,12 @@ const tankA = new Tank(
 );
 const tankB = new Tank(
   "<img src='../assets/enemyTank.png' alt='enemyTank'>",
-  50,
-  50,
-  0.15,
-  "right",
-  2, //team
-  { x: 10, y: 5 },
+  50,// width
+  50,// height
+  0.2,// speed
+  "right",// direction
+  2,// team
+  { x: 10, y: 5 },// initial position
   {
     up: "w",
     down: "s",
@@ -192,13 +217,14 @@ tankB.renderTank();
 // ==============================
 // ======== CONTROLLER =========
 // ==============================
+
 function gameLoop() {
   tankA.move();
   tankB.move();
-  requestAnimationFrame(gameLoop); // Continue the loop
+  requestAnimationFrame(gameLoop); 
 }
 
-// Start the game loop
+
 gameLoop();
 
 

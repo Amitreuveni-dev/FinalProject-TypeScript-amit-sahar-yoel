@@ -78,9 +78,6 @@ body {
   height: 800px;
   background-color: #dadada;
 }
-.main .cell {
-  background-color: lightgoldenrodyellow;
-}
 .main .wall {
   background-color: gray;
   border: 1px solid #ccc;
