@@ -76,6 +76,7 @@ body {
   border: solid 20px gray;
   width: 1200px;
   height: 800px;
+  margin: 0.1rem;
   background-color: #dadada;
 }
 .main .cell {
