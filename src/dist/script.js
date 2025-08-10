@@ -5,6 +5,7 @@ var Tank = /** @class */ (function () {
     function Tank(tankImage, width, height, speed, direction, team, location, controls) {
         var _this = this;
         this.keysPressed = new Set();
+        this.lastDirection = "none";
         this.tankImage = tankImage;
         this.width = width;
         this.height = height;
@@ -38,18 +39,22 @@ var Tank = /** @class */ (function () {
         if (this.keysPressed.has(this.controls.up)) {
             this.location.y -= this.speed;
             moved = true;
+            this.direction = "up";
         }
         if (this.keysPressed.has(this.controls.down)) {
             this.location.y += this.speed;
             moved = true;
+            this.direction = "down";
         }
         if (this.keysPressed.has(this.controls.left)) {
             this.location.x -= this.speed;
             moved = true;
+            this.direction = "left";
         }
         if (this.keysPressed.has(this.controls.right)) {
             this.location.x += this.speed;
             moved = true;
+            this.direction = "right";
         }
         // Handle acceleration/deceleration
         if (isMoving) {
@@ -81,7 +86,27 @@ var Tank = /** @class */ (function () {
     };
     Tank.prototype.updatePosition = function () {
         if (this.playerElement) {
-            this.playerElement.style.transform = "translate(" + this.location.x + "px, " + this.location.y + "px)";
+            if (this.direction !== this.lastDirection && this.direction !== "none") {
+                this.playerElement.classList.remove('tank-flip-left', 'tank-flip-right', 'tank-rotate-up', 'tank-rotate-down');
+                switch (this.direction) {
+                    case "left":
+                        this.playerElement.classList.add('tank-flip-left');
+                        break;
+                    case "right":
+                        this.playerElement.classList.add('tank-flip-right');
+                        break;
+                    case "up":
+                        this.playerElement.classList.add('tank-rotate-up');
+                        break;
+                    case "down":
+                        this.playerElement.classList.add('tank-rotate-down');
+                        break;
+                }
+                this.lastDirection = this.direction;
+            }
+            // Update position //
+            this.playerElement.style.left = this.location.x + "px";
+            this.playerElement.style.top = this.location.y + "px";
         }
     };
     return Tank;
@@ -89,14 +114,14 @@ var Tank = /** @class */ (function () {
 // ==============================
 // =========  VIEW   ============
 // ==============================
-var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 50, 50, 0.1, "none", 2, //team
+var tankA = new Tank("<img src='./assets/playerTank.png' alt='playerTank'>", 50, 50, 0.15, "none", 2, //team
 { x: 1000, y: 0 }, {
     up: "ArrowUp",
     down: "ArrowDown",
     left: "ArrowLeft",
     right: "ArrowRight"
 });
-var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 50, 50, 0.1, "none", 2, //team
+var tankB = new Tank("<img src='./assets/enemyTank.png' alt='enemyTank'>", 50, 50, 0.15, "none", 2, //team
 { x: 10, y: 5 }, {
     up: "w",
     down: "s",
