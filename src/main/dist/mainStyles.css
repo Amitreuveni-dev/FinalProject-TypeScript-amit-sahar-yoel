@@ -79,9 +79,6 @@ body {
   margin: 0.1rem;
   background-color: #dadada;
 }
-.main .cell {
-  background-color: lightgoldenrodyellow;
-}
 .main .wall {
   background-color: gray;
   border: 1px solid #ccc;
