@@ -4,9 +4,6 @@
 
 type Direction = "up" | "down" | "left" | "right" | "none";
 
-
-
-
 class Tank {
   tankImage: string;
   width: number;
@@ -47,7 +44,6 @@ class Tank {
     this.acceleration = speed * 0.1;
     this.deceleration = speed * 0.15;
     this.speed = 0;
-    
 
     window.addEventListener("keydown", (event) => {
       if (
@@ -68,51 +64,46 @@ class Tank {
   move() {
     let moved = false;
     let isMoving = this.keysPressed.size > 0;
-  
+
     if (this.keysPressed.has(this.controls.up)) {
+      if (this.location.y < 0) {
+        this.location.y = 0;
+        return;
+      }
       this.location.y -= this.speed;
       moved = true;
-      if(this.location.y < 0) {
-        this.location.y = 0; 
-        return
-      } else {
-        this.direction = "up";
-      }
-
+      this.direction = "up";
+      
     }
     if (this.keysPressed.has(this.controls.down)) {
+       if (this.location.y > 698) {
+        this.location.y = 698;
+        return;
+      }
       this.location.y += this.speed;
       moved = true;
-      
-    if(this.location.y > 698) {
-      this.direction = this.lastDirection;
-      this.renderTank();
-      this.location.y = 698; 
-      return
-    } else {
       this.direction = "down";
-    }
+     
     }
     if (this.keysPressed.has(this.controls.left)) {
+      if (this.location.x < 0) {
+        this.location.x = 0;
+        return;
+      }
       this.location.x -= this.speed;
       moved = true;
-      if(this.location.x < 0) {
-        this.location.x = 0; 
-        return
-      } else {
-        this.direction = "left";
-      }
+      this.direction = "left";
+      
     }
     if (this.keysPressed.has(this.controls.right)) {
+      if (this.location.x > 1121) {
+        this.location.x = 1121;
+        return;
+      } 
       this.location.x += this.speed;
       moved = true;
       this.direction = "right";
-      if(this.location.x > 1121) {
-        this.location.x = 1121;
-        return
-      } else {
-        this.direction = "right";
-      }
+      
     }
 
     // Handle acceleration/deceleration
@@ -143,37 +134,42 @@ class Tank {
     }
     this.updatePosition();
   }
-updatePosition() {
-  if (this.playerElement) {
- 
-    if (this.direction !== this.lastDirection && this.direction !== "none") {
+  updatePosition() {
+    if (this.playerElement) {
+      if (this.direction !== this.lastDirection && this.direction !== "none") {
+        this.playerElement.classList.remove(
+          "tank-flip-left",
+          "tank-flip-right",
+          "tank-rotate-up",
+          "tank-rotate-down"
+        );
 
-      this.playerElement.classList.remove('tank-flip-left', 'tank-flip-right', 'tank-rotate-up', 'tank-rotate-down');
-      
-      switch (this.direction) {
-        case "left":
-          this.playerElement.classList.add('tank-flip-left');
-          break;
-        case "right":
-          this.playerElement.classList.add('tank-flip-right');
-          break;
-        case "up":
-          this.playerElement.classList.add('tank-rotate-up');
-          break;
-        case "down":
-          this.playerElement.classList.add('tank-rotate-down');
-          break;
+        switch (this.direction) {
+          case "left":
+            this.playerElement.classList.add("tank-flip-left");
+            break;
+          case "right":
+            this.playerElement.classList.add("tank-flip-right");
+            break;
+          case "up":
+            this.playerElement.classList.add("tank-rotate-up");
+            break;
+          case "down":
+            this.playerElement.classList.add("tank-rotate-down");
+            break;
+        }
+
+        this.lastDirection = this.direction;
       }
-      
-      this.lastDirection = this.direction;
+
+      // Update position //
+      this.playerElement.style.left = `${this.location.x}px`;
+      this.playerElement.style.top = `${this.location.y}px`;
+      console.log(
+        `Tank ${this.team} is at (${this.location.x}, ${this.location.y})`
+      );
     }
-    
-    // Update position //
-    this.playerElement.style.left = `${this.location.x}px`;
-    this.playerElement.style.top = `${this.location.y}px`;
-    console.log(`Tank ${this.team} is at (${this.location.x}, ${this.location.y})`);
   }
-}
 }
 
 // ==============================
@@ -182,12 +178,12 @@ updatePosition() {
 
 const tankA = new Tank(
   "<img src='../assets/playerTank.png' alt='playerTank'>",
-  50,// width
-  50,// height
-  0.2,// speed
-  "left",// direction
+  50, // width
+  50, // height
+  0.2, // speed
+  "left", // direction
   2, //team
-  { x: 1100, y: 0 },// initial position
+  { x: 1100, y: 0 }, // initial position
   {
     up: "ArrowUp",
     down: "ArrowDown",
@@ -197,12 +193,12 @@ const tankA = new Tank(
 );
 const tankB = new Tank(
   "<img src='../assets/enemyTank.png' alt='enemyTank'>",
-  50,// width
-  50,// height
-  0.2,// speed
-  "right",// direction
-  2,// team
-  { x: 10, y: 5 },// initial position
+  50, // width
+  50, // height
+  0.2, // speed
+  "right", // direction
+  2, // team
+  { x: 10, y: 5 }, // initial position
   {
     up: "w",
     down: "s",
@@ -221,10 +217,7 @@ tankB.renderTank();
 function gameLoop() {
   tankA.move();
   tankB.move();
-  requestAnimationFrame(gameLoop); 
+  requestAnimationFrame(gameLoop);
 }
 
-
 gameLoop();
-
-

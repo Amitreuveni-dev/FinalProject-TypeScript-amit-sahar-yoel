@@ -37,51 +37,40 @@ var Tank = /** @class */ (function () {
         var moved = false;
         var isMoving = this.keysPressed.size > 0;
         if (this.keysPressed.has(this.controls.up)) {
-            this.location.y -= this.speed;
-            moved = true;
             if (this.location.y < 0) {
                 this.location.y = 0;
                 return;
             }
-            else {
-                this.direction = "up";
-            }
+            this.location.y -= this.speed;
+            moved = true;
+            this.direction = "up";
         }
         if (this.keysPressed.has(this.controls.down)) {
-            this.location.y += this.speed;
-            moved = true;
             if (this.location.y > 698) {
-                this.direction = this.lastDirection;
-                this.renderTank();
                 this.location.y = 698;
                 return;
             }
-            else {
-                this.direction = "down";
-            }
+            this.location.y += this.speed;
+            moved = true;
+            this.direction = "down";
         }
         if (this.keysPressed.has(this.controls.left)) {
-            this.location.x -= this.speed;
-            moved = true;
             if (this.location.x < 0) {
                 this.location.x = 0;
                 return;
             }
-            else {
-                this.direction = "left";
-            }
+            this.location.x -= this.speed;
+            moved = true;
+            this.direction = "left";
         }
         if (this.keysPressed.has(this.controls.right)) {
-            this.location.x += this.speed;
-            moved = true;
-            this.direction = "right";
             if (this.location.x > 1121) {
                 this.location.x = 1121;
                 return;
             }
-            else {
-                this.direction = "right";
-            }
+            this.location.x += this.speed;
+            moved = true;
+            this.direction = "right";
         }
         // Handle acceleration/deceleration
         if (isMoving) {
@@ -114,19 +103,19 @@ var Tank = /** @class */ (function () {
     Tank.prototype.updatePosition = function () {
         if (this.playerElement) {
             if (this.direction !== this.lastDirection && this.direction !== "none") {
-                this.playerElement.classList.remove('tank-flip-left', 'tank-flip-right', 'tank-rotate-up', 'tank-rotate-down');
+                this.playerElement.classList.remove("tank-flip-left", "tank-flip-right", "tank-rotate-up", "tank-rotate-down");
                 switch (this.direction) {
                     case "left":
-                        this.playerElement.classList.add('tank-flip-left');
+                        this.playerElement.classList.add("tank-flip-left");
                         break;
                     case "right":
-                        this.playerElement.classList.add('tank-flip-right');
+                        this.playerElement.classList.add("tank-flip-right");
                         break;
                     case "up":
-                        this.playerElement.classList.add('tank-rotate-up');
+                        this.playerElement.classList.add("tank-rotate-up");
                         break;
                     case "down":
-                        this.playerElement.classList.add('tank-rotate-down');
+                        this.playerElement.classList.add("tank-rotate-down");
                         break;
                 }
                 this.lastDirection = this.direction;

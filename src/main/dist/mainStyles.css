@@ -1,3 +1,4 @@
+@charset "UTF-8";
 *,
 *::before,
 *::after {
@@ -77,6 +78,13 @@ body {
   width: 1200px;
   height: 800px;
   background-color: #dadada;
+  background-image: url(https://media.istockphoto.com/id/185082690/photo/toy-soldiers-war-concepts.jpg?s=612x612&w=0&k=20&c=ml4_4lt13HmS3cLo43O-u_awJvOvieiCZ_vYKUaFyZk=);
+  background-size: cover;
+  /* ← Add this */
+  background-repeat: no-repeat;
+  /* ← Add this */
+  background-position: center;
+  /* ← Add this */
 }
 .main .wall {
   background-color: gray;
