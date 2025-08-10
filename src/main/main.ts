@@ -160,7 +160,7 @@ const tankA = new Tank(
   50,
   0.15,
 
-  "none",
+  "left",
   2, //team
   { x: 1000, y: 0 },
   {
@@ -175,7 +175,7 @@ const tankB = new Tank(
   50,
   50,
   0.15,
-  "none",
+  "right",
   2, //team
   { x: 10, y: 5 },
   {
