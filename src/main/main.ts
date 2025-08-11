@@ -45,6 +45,7 @@ class Tank {
     this.deceleration = speed * 0.15;
     this.speed = 0;
 
+    
     window.addEventListener("keydown", (event) => {
       if (
         [
@@ -90,8 +91,12 @@ class Tank {
     }
     if (this.keysPressed.has(this.controls.left)) {
       if (this.location.x < 0) {
-        this.location.x = 1121; // 1121 = 0 originally
+        this.location.x = 0; // 1121 = 0 originally
         return;
+      }
+      if (this.team === 1 && this.location.x < 568) {
+        this.location.x = 568;
+        return
       }
       this.location.x -= this.speed;
       moved = true;
@@ -100,7 +105,7 @@ class Tank {
     }
     if (this.keysPressed.has(this.controls.right)) {
       if (this.location.x > 1121) {
-        this.location.x = 0; // 0 = 1121 originally
+        this.location.x = 1121; // 0 = 1121 originally
         return;
       } 
       this.location.x += this.speed;
@@ -185,7 +190,7 @@ const tankA = new Tank(
   50, // height
   0.2, // speed
   "left", // direction
-  2, //team
+  1, //team
   { x: 1100, y: 0 }, // initial position
   {
     up: "ArrowUp",

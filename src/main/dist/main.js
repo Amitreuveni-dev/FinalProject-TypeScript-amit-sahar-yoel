@@ -56,7 +56,11 @@ var Tank = /** @class */ (function () {
         }
         if (this.keysPressed.has(this.controls.left)) {
             if (this.location.x < 0) {
-                this.location.x = 1121; // 1121 = 0 originally
+                this.location.x = 0; // 1121 = 0 originally
+                return;
+            }
+            if (this.team === 1 && this.location.x < 568) {
+                this.location.x = 568;
                 return;
             }
             this.location.x -= this.speed;
@@ -65,7 +69,7 @@ var Tank = /** @class */ (function () {
         }
         if (this.keysPressed.has(this.controls.right)) {
             if (this.location.x > 1121) {
-                this.location.x = 0; // 0 = 1121 originally
+                this.location.x = 1121; // 0 = 1121 originally
                 return;
             }
             this.location.x += this.speed;
@@ -135,7 +139,7 @@ var tankA = new Tank("<img src='../assets/playerTank.png' alt='playerTank'>", 50
 50, // height
 0.2, // speed
 "left", // direction
-2, //team
+1, //team
 { x: 1100, y: 0 }, // initial position
 {
     up: "ArrowUp",
