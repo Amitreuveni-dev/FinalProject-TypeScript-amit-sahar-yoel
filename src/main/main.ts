@@ -16,6 +16,7 @@ class Tank {
   acceleration: number;
   deceleration: number;
   lastDirection: Direction = "none";
+  team: number;
 
   constructor(
     tankImageUrl: string,
@@ -24,7 +25,8 @@ class Tank {
     speed: number,
     direction: Direction,
     location: { x: number; y: number },
-    controls: { up: string; down: string; left: string; right: string }
+    controls: { up: string; down: string; left: string; right: string },
+    team: number
   ) {
     this.tankImageUrl = tankImageUrl;
     this.width = width;
@@ -37,6 +39,7 @@ class Tank {
     this.direction = direction;
     this.location = location;
     this.controls = controls;
+    this.team = team;
 
     window.addEventListener("keydown", (event) => {
       if (
@@ -64,28 +67,30 @@ class Tank {
       moved = true;
       this.direction = "up";
 
-      if (this.location.y < 0) this.location.y = gameHeight;
+      if (this.location.y < 0) this.location.y = 0;
     }
     if (this.keysPressed.has(this.controls.down)) {
       this.location.y += this.speed;
       moved = true;
       this.direction = "down";
 
-      if (this.location.y > gameHeight) this.location.y = 0;
+      if (this.location.y > gameHeight) this.location.y = gameHeight;
     }
     if (this.keysPressed.has(this.controls.left)) {
       this.location.x -= this.speed;
       moved = true;
       this.direction = "left";
 
-      if (this.location.x < 0) this.location.x = gameWidth;
+      if (this.location.x < 0) this.location.x = 0;
+      if (this.location.x < gameWidth / 2 && this.team == 1) this.location.x = gameWidth / 2;
     }
     if (this.keysPressed.has(this.controls.right)) {
       this.location.x += this.speed;
       moved = true;
       this.direction = "right";
 
-      if (this.location.x > gameWidth) this.location.x = 0;
+      if (this.location.x > gameWidth) this.location.x = gameWidth;
+       if (this.location.x > gameWidth/2 && this.team == 2) this.location.x = gameWidth/2;
     }
 
     // Acceleration / Deceleration
@@ -98,6 +103,7 @@ class Tank {
     if (moved || this.speed > 0) {
       this.render();
     }
+    console.log(`Tank ${this.team} is at (${this.location.x}, ${this.location.y})`);
   }
 
   render() {
@@ -160,8 +166,8 @@ class Tank {
 // =========  CONTROLLER =========
 // ==============================
 
-const GAME_WIDTH = 1121;
-const GAME_HEIGHT = 657;
+const GAME_WIDTH = 1114;
+const GAME_HEIGHT = 660;
 
 const tankA = new Tank(
   "../assets/playerTank.png",
@@ -170,7 +176,8 @@ const tankA = new Tank(
   0.2,
   "left",
   { x: 1100, y: 0 },
-  { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }
+  { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" },
+  1
 );
 
 const tankB = new Tank(
@@ -180,7 +187,8 @@ const tankB = new Tank(
   0.2,
   "right",
   { x: 10, y: 5 },
-  { up: "w", down: "s", left: "a", right: "d" }
+  { up: "w", down: "s", left: "a", right: "d" },
+  2
 );
 
 tankA.render();

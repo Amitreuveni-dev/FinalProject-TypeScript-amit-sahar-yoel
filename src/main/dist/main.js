@@ -1,5 +1,5 @@
 var Tank = /** @class */ (function () {
-    function Tank(tankImageUrl, width, height, speed, direction, location, controls) {
+    function Tank(tankImageUrl, width, height, speed, direction, location, controls, team) {
         var _this = this;
         this.keysPressed = new Set();
         this.lastDirection = "none";
@@ -14,6 +14,7 @@ var Tank = /** @class */ (function () {
         this.direction = direction;
         this.location = location;
         this.controls = controls;
+        this.team = team;
         window.addEventListener("keydown", function (event) {
             if ([
                 _this.controls.up,
@@ -36,28 +37,32 @@ var Tank = /** @class */ (function () {
             moved = true;
             this.direction = "up";
             if (this.location.y < 0)
-                this.location.y = gameHeight;
+                this.location.y = 0;
         }
         if (this.keysPressed.has(this.controls.down)) {
             this.location.y += this.speed;
             moved = true;
             this.direction = "down";
             if (this.location.y > gameHeight)
-                this.location.y = 0;
+                this.location.y = gameHeight;
         }
         if (this.keysPressed.has(this.controls.left)) {
             this.location.x -= this.speed;
             moved = true;
             this.direction = "left";
             if (this.location.x < 0)
-                this.location.x = gameWidth;
+                this.location.x = 0;
+            if (this.location.x < gameWidth / 2 && this.team == 1)
+                this.location.x = gameWidth / 2;
         }
         if (this.keysPressed.has(this.controls.right)) {
             this.location.x += this.speed;
             moved = true;
             this.direction = "right";
             if (this.location.x > gameWidth)
-                this.location.x = 0;
+                this.location.x = gameWidth;
+            if (this.location.x > gameWidth / 2 && this.team == 2)
+                this.location.x = gameWidth / 2;
         }
         // Acceleration / Deceleration
         if (isMoving) {
@@ -69,6 +74,7 @@ var Tank = /** @class */ (function () {
         if (moved || this.speed > 0) {
             this.render();
         }
+        console.log("Tank " + this.team + " is at (" + this.location.x + ", " + this.location.y + ")");
     };
     Tank.prototype.render = function () {
         var container = document.querySelector(".tanksRoot");
@@ -120,10 +126,10 @@ var Tank = /** @class */ (function () {
 // ==============================
 // =========  CONTROLLER =========
 // ==============================
-var GAME_WIDTH = 1121;
-var GAME_HEIGHT = 657;
-var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" });
-var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" });
+var GAME_WIDTH = 1114;
+var GAME_HEIGHT = 660;
+var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 1);
+var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 2);
 tankA.render();
 tankB.render();
 function gameLoop() {
