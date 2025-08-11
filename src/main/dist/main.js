@@ -46,6 +46,10 @@ var Tank = /** @class */ (function () {
                 this.location.y = 0;
         }
         if (this.keysPressed.has(this.controls.left)) {
+            if (this.location.x < 0) {
+                this.location.x = 1121; // 1121 = 0 originally
+                return;
+            }
             this.location.x -= this.speed;
             moved = true;
             this.direction = "left";
@@ -53,6 +57,10 @@ var Tank = /** @class */ (function () {
                 this.location.x = gameWidth;
         }
         if (this.keysPressed.has(this.controls.right)) {
+            if (this.location.x > 1121) {
+                this.location.x = 0; // 0 = 1121 originally
+                return;
+            }
             this.location.x += this.speed;
             moved = true;
             this.direction = "right";
