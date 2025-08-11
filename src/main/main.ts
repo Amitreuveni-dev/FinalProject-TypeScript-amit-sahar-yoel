@@ -67,7 +67,7 @@ class Tank {
 
     if (this.keysPressed.has(this.controls.up)) {
       if (this.location.y < 0) {
-        this.location.y = 698; // 698 = 0 originally
+        this.location.y = 657; // 657 = 0 originally
         return;
       }
       this.location.y -= this.speed;
@@ -76,8 +76,8 @@ class Tank {
       
     }
     if (this.keysPressed.has(this.controls.down)) {
-       if (this.location.y > 698) {
-        this.location.y = 0; // 0 = 698 originally
+       if (this.location.y > 1130) {
+        this.location.y = 0; // 0 = 657 originally
         return;
       }
       this.location.y += this.speed;
