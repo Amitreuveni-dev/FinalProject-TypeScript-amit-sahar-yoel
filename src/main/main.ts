@@ -67,7 +67,7 @@ class Tank {
 
     if (this.keysPressed.has(this.controls.up)) {
       if (this.location.y < 0) {
-        this.location.y = 0;
+        this.location.y = 698; // 698 = 0 originally
         return;
       }
       this.location.y -= this.speed;
@@ -77,7 +77,7 @@ class Tank {
     }
     if (this.keysPressed.has(this.controls.down)) {
        if (this.location.y > 698) {
-        this.location.y = 698;
+        this.location.y = 0; // 0 = 698 originally
         return;
       }
       this.location.y += this.speed;
@@ -87,7 +87,7 @@ class Tank {
     }
     if (this.keysPressed.has(this.controls.left)) {
       if (this.location.x < 0) {
-        this.location.x = 0;
+        this.location.x = 1121; // 1121 = 0 originally
         return;
       }
       this.location.x -= this.speed;
@@ -97,7 +97,7 @@ class Tank {
     }
     if (this.keysPressed.has(this.controls.right)) {
       if (this.location.x > 1121) {
-        this.location.x = 1121;
+        this.location.x = 0; // 0 = 1121 originally
         return;
       } 
       this.location.x += this.speed;
