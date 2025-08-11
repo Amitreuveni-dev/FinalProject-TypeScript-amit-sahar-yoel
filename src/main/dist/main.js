@@ -71,7 +71,6 @@ var Tank = /** @class */ (function () {
         if (moved || this.speed > 0) {
             this.render();
         }
-        console.log("Tank " + this.team + " is at (" + this.location.x + ", " + this.location.y + ")");
     };
     Tank.prototype.render = function () {
         var container = document.querySelector(".tanksRoot");

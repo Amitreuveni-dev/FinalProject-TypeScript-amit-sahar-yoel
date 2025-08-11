@@ -95,7 +95,7 @@ class Tank {
     if (moved || this.speed > 0) {
       this.render();
     }
-    console.log(`Tank ${this.team} is at (${this.location.x}, ${this.location.y})`);
+  
   }
 
   render() {
