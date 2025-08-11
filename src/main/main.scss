@@ -43,7 +43,7 @@ body {
   flex-shrink: 0;
 
   &__logo {
-    width: 100px;
+    width: 60px;
     height: auto;
     border-radius: 50%;
     flex-shrink: 0;
@@ -59,17 +59,17 @@ body {
   }
 
   &__main-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     white-space: nowrap;
   }
 
   &__sub-title {
-    font-size: 1rem;
+    font-size: 0.6rem;
     font-weight: 500;
   }
   &__settings-button{
-    font-size: 0.8rem;
+    font-size: 0.6rem;
   }
 }
 
@@ -135,18 +135,18 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.2rem;
   flex-shrink: 0;
-  height: 60px;
+  height: 40px;
   
 
   &__copyright {
-    font-size: 0.9rem;
+    font-size: 0.6rem;
     font-weight: 500;
   }
 
   &__sub-title {
-    font-size: 1rem;
+    font-size: 0.6rem;
     font-weight: 500;
   }
 
@@ -162,7 +162,7 @@ button {
       color: white;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.5rem;
       display: block;
       width: 100%;
       height: 100%;
