@@ -106,7 +106,6 @@ button:active {
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
-  box-sizing: border-box;
 }
 
 .tanksRoot {
@@ -123,6 +122,7 @@ button:active {
   padding: 1rem 2rem;
   flex-shrink: 0;
   height: 60px;
+  margin-top: auto;
 }
 .footer__copyright {
   font-size: 0.9rem;

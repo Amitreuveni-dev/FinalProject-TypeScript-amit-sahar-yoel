@@ -113,10 +113,8 @@ button {
   background-image: url('../../assets/background.png');
   background-size: cover;         
   background-repeat: no-repeat;    
-  background-position: center;     
-  
+  background-position: center;       
   position: relative;
-  box-sizing: border-box;
 }
 
 .tanksRoot {
@@ -133,6 +131,7 @@ button {
   padding: 1rem 2rem;
   flex-shrink: 0;
   height: 60px;
+  margin-top: auto;
 
   &__copyright {
     font-size: 0.9rem;
