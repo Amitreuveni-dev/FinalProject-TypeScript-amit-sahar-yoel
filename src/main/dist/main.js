@@ -46,10 +46,6 @@ var Tank = /** @class */ (function () {
                 this.location.y = 0;
         }
         if (this.keysPressed.has(this.controls.left)) {
-            if (this.location.x < 0) {
-                this.location.x = 1121; // 1121 = 0 originally
-                return;
-            }
             this.location.x -= this.speed;
             moved = true;
             this.direction = "left";
@@ -57,10 +53,6 @@ var Tank = /** @class */ (function () {
                 this.location.x = gameWidth;
         }
         if (this.keysPressed.has(this.controls.right)) {
-            if (this.location.x > 1121) {
-                this.location.x = 0; // 0 = 1121 originally
-                return;
-            }
             this.location.x += this.speed;
             moved = true;
             this.direction = "right";
@@ -118,34 +110,25 @@ var Tank = /** @class */ (function () {
                 this.playerElement.classList.add("facing-right");
                 break;
         }
+        this.lastDirection = this.direction;
+        // Update position
         this.playerElement.style.left = this.location.x + "px";
         this.playerElement.style.top = this.location.y + "px";
     };
     return Tank;
 }());
-// CONTROLLER
-var GameController = /** @class */ (function () {
-    function GameController(gameWidth, gameHeight) {
-        this.gameWidth = gameWidth;
-        this.gameHeight = gameHeight;
-        this.tanks = [
-            new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }),
-            new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }),
-        ];
-    }
-    GameController.prototype.gameLoop = function () {
-        var _this = this;
-        this.tanks.forEach(function (tank) { return tank.move(_this.gameWidth, _this.gameHeight); });
-        requestAnimationFrame(function () { return _this.gameLoop(); });
-    };
-    GameController.prototype.start = function () {
-        this.tanks.forEach(function (tank) { return tank.render(); });
-        this.gameLoop();
-    };
-    return GameController;
-}());
-// START
-var gameWidth = 1121; // game area width (match your design)
-var gameHeight = 657; // game area height (match your design)
-var game = new GameController(gameWidth, gameHeight);
-game.start();
+// ==============================
+// =========  CONTROLLER =========
+// ==============================
+var GAME_WIDTH = 1121;
+var GAME_HEIGHT = 657;
+var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" });
+var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" });
+tankA.render();
+tankB.render();
+function gameLoop() {
+    tankA.move(GAME_WIDTH, GAME_HEIGHT);
+    tankB.move(GAME_WIDTH, GAME_HEIGHT);
+    requestAnimationFrame(gameLoop);
+}
+gameLoop();
