@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f7fa;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  padding: 20px;
+  background-color: #4e54c8;
+  color: white;
+  text-align: center;
+}
+.header__title {
+  font-size: 2rem;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.settings-form {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.settings-form__label {
+  font-weight: 600;
+  color: #2b2e4a;
+}
+.settings-form__input, .settings-form__select {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+.settings-form__input:focus, .settings-form__select:focus {
+  outline: none;
+  border-color: #4e54c8;
+  box-shadow: 0 0 8px rgba(78, 84, 200, 0.3);
+}
+.settings-form__button {
+  background-color: #4e54c8;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.settings-form__button:hover {
+  background-color: #6c72de;
+}
+
+.footer {
+  background-color: #4e54c8;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+.footer__copyright {
+  font-size: 0.9rem;
+}
+.footer__buttons {
+  display: flex;
+  gap: 10px;
+}
+.footer__btn {
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.footer__btn:hover {
+  background-color: #6c72de;
+  transform: scale(1.05);
+}
+.footer__btn:active {
+  background-color: #3a40a1;
+}
+.footer__btn a.footer__link {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: block;
+}

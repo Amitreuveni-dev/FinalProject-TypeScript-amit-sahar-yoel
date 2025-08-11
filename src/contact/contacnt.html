@@ -2,34 +2,43 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Us</title>
-    <link rel="stylesheet" href="dist/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="dist/contact.css" />
+  <script src="dist/contact.js" defer></script>
 </head>
 
 <body>
-    <div class="contact">
-        <div class="contact__container">
-            <h1 class="contact__title">Contact Us</h1>
+  <div class="wrapper">
+    <header class="header">
+      <h1 class="header__title">Contact Us</h1>
+    </header>
 
-            <form name="Contact" class="contact__form">
-                <label for="name" class="contact__label">Name:</label>
-                <input type="text" id="name" name="name" class="contact__input" required>
+    <main class="main-content">
+      <form class="settings-form contact__form">
+        <label for="name" class="settings-form__label">Name:</label>
+        <input type="text" id="name" name="name" required class="settings-form__input" />
 
-                <label for="email" class="contact__label">Email:</label>
-                <input type="email" id="email" name="email" class="contact__input" required>
+        <label for="email" class="settings-form__label">Email:</label>
+        <input type="email" id="email" name="email" required class="settings-form__input" />
 
-                <label for="message" class="contact__label">Message:</label>
-                <textarea id="message" name="message" class="contact__textarea" rows="4" required></textarea>
+        <label for="message" class="settings-form__label">Message:</label>
+        <textarea id="message" name="message" required class="settings-form__input" rows="5"></textarea>
 
-                <button type="submit" class="contact__button contact__button--primary">Send</button>
-                <button type="button" class="contact__button contact__button--secondary">
-                    <a href="../index.html">Back to Home</a>
-                </button>
-            </form>
-        </div>
-    </div>
+        <button type="submit" class="settings-form__button">Send</button>
+      </form>
+    </main>
+
+    <footer class="footer">
+      <p class="footer__copyright">&copy; All rights reserved 2025</p>
+      <div class="footer__buttons">
+        <button class="footer__btn" onclick="window.location.href='../main/main.html'">
+          <a href="../main/main.html" class="footer__link">Home</a>
+        </button>
+      </div>
+    </footer>
+  </div>
 </body>
-<script src="dist/contact.js"></script>
+
 </html>
