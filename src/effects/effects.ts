@@ -55,22 +55,11 @@ const startOnce = () => {
   started = true;
   sound.playBackground();
   document.removeEventListener("pointerdown", startOnce);
-  document.removeEventListener("keydown", keyStartHandler);
-};
-const keyStartHandler = (e: KeyboardEvent) => {
-  const keys = [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "Enter",
-    " ",
-  ]; // Space הוא " "
-  if (keys.includes(e.key)) startOnce();
 };
 
+
 document.addEventListener("pointerdown", startOnce, { once: false });
-document.addEventListener("keydown", keyStartHandler);
+document.addEventListener("keydown", startOnce);
 
 // כפתור השתקה
 document.addEventListener("DOMContentLoaded", () => {
