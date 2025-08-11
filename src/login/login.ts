@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginInput = new Login(username.value, password.value);
     if (loginInput.checkCredentials()) {
       // alert("loged in")
-      window.location.href = "index.html";
+      window.location.href = "../main/main.html";
       form.reset();
       return;
     }

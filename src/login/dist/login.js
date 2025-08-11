@@ -6,7 +6,8 @@ var Login = /** @class */ (function () {
         this.password = password;
     }
     Login.prototype.checkCredentials = function () {
-        return this.username === this.correctUsername && this.password === this.correctPassword;
+        return (this.username === this.correctUsername &&
+            this.password === this.correctPassword);
     };
     return Login;
 }());
@@ -19,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var loginInput = new Login(username.value, password.value);
         if (loginInput.checkCredentials()) {
             // alert("loged in")
-            window.location.href = "index.html";
+            window.location.href = "../main/main.html";
             form.reset();
             return;
         }
