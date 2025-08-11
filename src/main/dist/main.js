@@ -38,7 +38,7 @@ var Tank = /** @class */ (function () {
         var isMoving = this.keysPressed.size > 0;
         if (this.keysPressed.has(this.controls.up)) {
             if (this.location.y < 0) {
-                this.location.y = 698; // 698 = 0 originally
+                this.location.y = 701; // 701 = 0 originally
                 return;
             }
             this.location.y -= this.speed;
@@ -46,8 +46,8 @@ var Tank = /** @class */ (function () {
             this.direction = "up";
         }
         if (this.keysPressed.has(this.controls.down)) {
-            if (this.location.y > 698) {
-                this.location.y = 0; // 0 = 698 originally
+            if (this.location.y > 701) {
+                this.location.y = 0; // 0 = 701 originally
                 return;
             }
             this.location.y += this.speed;

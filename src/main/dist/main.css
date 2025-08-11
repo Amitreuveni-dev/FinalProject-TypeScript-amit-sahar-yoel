@@ -8,13 +8,12 @@
 
 html,
 body {
-  height: 100%;
+  height: 850px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: #f5f7fa;
   color: #2b2e4a;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 img {
@@ -29,7 +28,6 @@ body {
   color: #0d0d0d;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   margin: 0;
 }
 
@@ -39,11 +37,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 0.2rem;
   flex-shrink: 0;
 }
 .header__logo {
-  width: 100px;
+  width: 60px;
   height: auto;
   border-radius: 50%;
   flex-shrink: 0;
@@ -57,13 +55,16 @@ body {
   padding: 0 1rem;
 }
 .header__main-title {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 700;
   white-space: nowrap;
 }
 .header__sub-title {
-  font-size: 1rem;
+  font-size: 0.6rem;
   font-weight: 500;
+}
+.header__settings-button {
+  font-size: 0.6rem;
 }
 
 button {
@@ -95,18 +96,17 @@ button:active {
 }
 
 .main {
+  flex: 1;
   border: 20px solid gray;
   max-width: 1200px;
   width: 100%;
-  height: 800px;
   margin: 0.5rem auto;
   background-color: #dadada;
-  background-image: url(https://media.istockphoto.com/id/185082690/photo/toy-soldiers-war-concepts.jpg?s=612x612&w=0&k=20&c=ml4_4lt13HmS3cLo43O-u_awJvOvieiCZ_vYKUaFyZk=);
+  background-image: url("../../assets/background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
-  box-sizing: border-box;
 }
 
 .tanksRoot {
@@ -115,17 +115,21 @@ button:active {
 }
 
 .footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: #4e54c8;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.2rem;
   flex-shrink: 0;
-  height: 60px;
+  height: 40px;
 }
 .footer__copyright {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 .footer__sub-title {
@@ -144,7 +148,7 @@ button:active {
   color: white;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   display: block;
   width: 100%;
   height: 100%;
