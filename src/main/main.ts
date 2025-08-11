@@ -1,16 +1,12 @@
-// ==============================
-// ========   MODEL   ==========
-// ==============================
-
+// MODEL
 type Direction = "up" | "down" | "left" | "right" | "none";
 
 class Tank {
-  tankImage: string;
+  tankImageUrl: string;
   width: number;
   height: number;
   speed: number;
   direction: Direction;
-  team: number;
   location: { x: number; y: number };
   playerElement?: HTMLElement;
   controls: { up: string; down: string; left: string; right: string };
@@ -22,28 +18,25 @@ class Tank {
   lastDirection: Direction = "none";
 
   constructor(
-    tankImage: string,
+    tankImageUrl: string,
     width: number,
     height: number,
     speed: number,
     direction: Direction,
-    team: number,
     location: { x: number; y: number },
     controls: { up: string; down: string; left: string; right: string }
   ) {
-    this.tankImage = tankImage;
+    this.tankImageUrl = tankImageUrl;
     this.width = width;
     this.height = height;
-    this.speed = speed;
-    this.direction = direction;
-    this.team = team;
-    this.location = location;
-    this.controls = controls;
+    this.speed = 0;
     this.baseSpeed = speed;
     this.maxSpeed = speed * 5;
     this.acceleration = speed * 0.1;
     this.deceleration = speed * 0.15;
-    this.speed = 0;
+    this.direction = direction;
+    this.location = location;
+    this.controls = controls;
 
     
     window.addEventListener("keydown", (event) => {
@@ -62,59 +55,49 @@ class Tank {
       this.keysPressed.delete(event.key);
     });
   }
-  
 
-
-  move() {
+  move(gameWidth: number, gameHeight: number) {
     let moved = false;
-    let isMoving = this.keysPressed.size > 0;
+    const isMoving = this.keysPressed.size > 0;
 
     if (this.keysPressed.has(this.controls.up)) {
-      if (this.location.y < 0) {
-        this.location.y = 701; // 701 = 0 originally
-        return;
-      }
       this.location.y -= this.speed;
       moved = true;
       this.direction = "up";
-      
+
+      if (this.location.y < 0) this.location.y = gameHeight;
     }
     if (this.keysPressed.has(this.controls.down)) {
-       if (this.location.y > 701) {
-        this.location.y = 0; // 0 = 701 originally
-        return;
-      }
       this.location.y += this.speed;
       moved = true;
       this.direction = "down";
-     
+
+      if (this.location.y > gameHeight) this.location.y = 0;
     }
     if (this.keysPressed.has(this.controls.left)) {
       if (this.location.x < 0) {
-        this.location.x = 0; // 1121 = 0 originally
+        this.location.x = 1121; // 1121 = 0 originally
         return;
-      }
-      if (this.team === 1 && this.location.x < 568) {
-        this.location.x = 568;
-        return
       }
       this.location.x -= this.speed;
       moved = true;
       this.direction = "left";
-      
+
+      if (this.location.x < 0) this.location.x = gameWidth;
     }
     if (this.keysPressed.has(this.controls.right)) {
       if (this.location.x > 1121) {
-        this.location.x = 1121; // 0 = 1121 originally
+        this.location.x = 0; // 0 = 1121 originally
         return;
       } 
       this.location.x += this.speed;
       moved = true;
       this.direction = "right";
-      
+
+      if (this.location.x > gameWidth) this.location.x = 0;
     }
 
-    // Handle acceleration/deceleration
+    // Acceleration / Deceleration
     if (isMoving) {
       this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
     } else {
@@ -122,10 +105,11 @@ class Tank {
     }
 
     if (moved || this.speed > 0) {
-      this.renderTank();
+      this.render();
     }
   }
-  renderTank() {
+
+  render() {
     const container = document.querySelector(".tanksRoot") as HTMLElement;
     if (!container) {
       console.error("tank container not found");
@@ -133,39 +117,45 @@ class Tank {
     }
     if (!this.playerElement) {
       this.playerElement = document.createElement("div");
-      this.playerElement.className = "tankRoot__tank";
+      this.playerElement.className = "tank";
       this.playerElement.style.position = "absolute";
-      this.playerElement.style.height = `${this.height}px`;
       this.playerElement.style.width = `${this.width}px`;
-      this.playerElement.innerHTML = this.tankImage;
+      this.playerElement.style.height = `${this.height}px`;
+      this.playerElement.style.backgroundImage = `url(${this.tankImageUrl})`;
+      this.playerElement.style.backgroundSize = "contain";
+      this.playerElement.style.backgroundRepeat = "no-repeat";
+      this.playerElement.style.backgroundPosition = "center";
       container.appendChild(this.playerElement);
     }
     this.updatePosition();
   }
-  updatePosition() {
-    if (this.playerElement) {
-      if (this.direction !== this.lastDirection && this.direction !== "none") {
-        this.playerElement.classList.remove(
-          "tank-flip-left",
-          "tank-flip-right",
-          "tank-rotate-up",
-          "tank-rotate-down"
-        );
 
-        switch (this.direction) {
-          case "left":
-            this.playerElement.classList.add("tank-flip-left");
-            break;
-          case "right":
-            this.playerElement.classList.add("tank-flip-right");
-            break;
-          case "up":
-            this.playerElement.classList.add("tank-rotate-up");
-            break;
-          case "down":
-            this.playerElement.classList.add("tank-rotate-down");
-            break;
-        }
+  updatePosition() {
+    if (!this.playerElement) return;
+
+    // Remove previous direction classes
+    this.playerElement.classList.remove(
+      "facing-up",
+      "facing-down",
+      "facing-left",
+      "facing-right"
+    );
+
+    // Add current direction class
+    switch (this.direction) {
+      case "up":
+        this.playerElement.classList.add("facing-up");
+        break;
+      case "down":
+        this.playerElement.classList.add("facing-down");
+        break;
+      case "left":
+        this.playerElement.classList.add("facing-left");
+        break;
+      case "right":
+        this.playerElement.classList.add("facing-right");
+        break;
+    }
 
         this.lastDirection = this.direction;
       }
@@ -190,7 +180,7 @@ const tankA = new Tank(
   50, // height
   0.2, // speed
   "left", // direction
-  1, //team
+  2, //team
   { x: 1100, y: 0 }, // initial position
   {
     up: "ArrowUp",

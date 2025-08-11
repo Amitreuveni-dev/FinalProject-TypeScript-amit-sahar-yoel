@@ -179,36 +179,28 @@ button {
     }
   }
 }
-.tank-flip-left {
-  animation: flipToLeft 0.1s ease-out forwards;
+
+
+
+.tank {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  transition: transform 0.1s ease;
 }
 
-.tank-flip-right {
-  animation: flipToRight 0.1s ease-out forwards;
+.facing-up {
+  transform: rotate(270deg);
 }
 
-.tank-rotate-up {
-  animation: rotateToUp 0.1s ease-out forwards;
+.facing-down {
+  transform: rotate(90deg);
 }
 
-.tank-rotate-down {
-  animation: rotateToDown 0.1s ease-out forwards;
+.facing-left {
+  transform: scaleX(-1);
 }
 
-@keyframes flipToLeft {
-  from { transform: scaleX(1); }
-  to { transform: scaleX(-1); }
-}
-
-@keyframes flipToRight {
-  from { transform: scaleX(-1); }
-  to { transform: scaleX(1); }
-}
-
-@keyframes rotateToUp {
-  to { transform: rotate(270deg); }
-}
-
-@keyframes rotateToDown {
-  to { transform: rotate(90deg); }
+.facing-right {
+  transform: scaleX(1);
 }

@@ -1,24 +1,19 @@
-// ==============================
-// ========   MODEL   ==========
-// ==============================
 var Tank = /** @class */ (function () {
-    function Tank(tankImage, width, height, speed, direction, team, location, controls) {
+    function Tank(tankImageUrl, width, height, speed, direction, location, controls) {
         var _this = this;
         this.keysPressed = new Set();
         this.lastDirection = "none";
-        this.tankImage = tankImage;
+        this.tankImageUrl = tankImageUrl;
         this.width = width;
         this.height = height;
-        this.speed = speed;
-        this.direction = direction;
-        this.team = team;
-        this.location = location;
-        this.controls = controls;
+        this.speed = 0;
         this.baseSpeed = speed;
         this.maxSpeed = speed * 5;
         this.acceleration = speed * 0.1;
         this.deceleration = speed * 0.15;
-        this.speed = 0;
+        this.direction = direction;
+        this.location = location;
+        this.controls = controls;
         window.addEventListener("keydown", function (event) {
             if ([
                 _this.controls.up,
@@ -33,50 +28,46 @@ var Tank = /** @class */ (function () {
             _this.keysPressed["delete"](event.key);
         });
     }
-    Tank.prototype.move = function () {
+    Tank.prototype.move = function (gameWidth, gameHeight) {
         var moved = false;
         var isMoving = this.keysPressed.size > 0;
         if (this.keysPressed.has(this.controls.up)) {
-            if (this.location.y < 0) {
-                this.location.y = 701; // 701 = 0 originally
-                return;
-            }
             this.location.y -= this.speed;
             moved = true;
             this.direction = "up";
+            if (this.location.y < 0)
+                this.location.y = gameHeight;
         }
         if (this.keysPressed.has(this.controls.down)) {
-            if (this.location.y > 701) {
-                this.location.y = 0; // 0 = 701 originally
-                return;
-            }
             this.location.y += this.speed;
             moved = true;
             this.direction = "down";
+            if (this.location.y > gameHeight)
+                this.location.y = 0;
         }
         if (this.keysPressed.has(this.controls.left)) {
             if (this.location.x < 0) {
-                this.location.x = 0; // 1121 = 0 originally
-                return;
-            }
-            if (this.team === 1 && this.location.x < 568) {
-                this.location.x = 568;
+                this.location.x = 1121; // 1121 = 0 originally
                 return;
             }
             this.location.x -= this.speed;
             moved = true;
             this.direction = "left";
+            if (this.location.x < 0)
+                this.location.x = gameWidth;
         }
         if (this.keysPressed.has(this.controls.right)) {
             if (this.location.x > 1121) {
-                this.location.x = 1121; // 0 = 1121 originally
+                this.location.x = 0; // 0 = 1121 originally
                 return;
             }
             this.location.x += this.speed;
             moved = true;
             this.direction = "right";
+            if (this.location.x > gameWidth)
+                this.location.x = 0;
         }
-        // Handle acceleration/deceleration
+        // Acceleration / Deceleration
         if (isMoving) {
             this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
         }
@@ -84,10 +75,10 @@ var Tank = /** @class */ (function () {
             this.speed = Math.max(this.speed - this.deceleration, 0);
         }
         if (moved || this.speed > 0) {
-            this.renderTank();
+            this.render();
         }
     };
-    Tank.prototype.renderTank = function () {
+    Tank.prototype.render = function () {
         var container = document.querySelector(".tanksRoot");
         if (!container) {
             console.error("tank container not found");
@@ -95,78 +86,66 @@ var Tank = /** @class */ (function () {
         }
         if (!this.playerElement) {
             this.playerElement = document.createElement("div");
-            this.playerElement.className = "tankRoot__tank";
+            this.playerElement.className = "tank";
             this.playerElement.style.position = "absolute";
-            this.playerElement.style.height = this.height + "px";
             this.playerElement.style.width = this.width + "px";
-            this.playerElement.innerHTML = this.tankImage;
+            this.playerElement.style.height = this.height + "px";
+            this.playerElement.style.backgroundImage = "url(" + this.tankImageUrl + ")";
+            this.playerElement.style.backgroundSize = "contain";
+            this.playerElement.style.backgroundRepeat = "no-repeat";
+            this.playerElement.style.backgroundPosition = "center";
             container.appendChild(this.playerElement);
         }
         this.updatePosition();
     };
     Tank.prototype.updatePosition = function () {
-        if (this.playerElement) {
-            if (this.direction !== this.lastDirection && this.direction !== "none") {
-                this.playerElement.classList.remove("tank-flip-left", "tank-flip-right", "tank-rotate-up", "tank-rotate-down");
-                switch (this.direction) {
-                    case "left":
-                        this.playerElement.classList.add("tank-flip-left");
-                        break;
-                    case "right":
-                        this.playerElement.classList.add("tank-flip-right");
-                        break;
-                    case "up":
-                        this.playerElement.classList.add("tank-rotate-up");
-                        break;
-                    case "down":
-                        this.playerElement.classList.add("tank-rotate-down");
-                        break;
-                }
-                this.lastDirection = this.direction;
-            }
-            // Update position //
-            this.playerElement.style.left = this.location.x + "px";
-            this.playerElement.style.top = this.location.y + "px";
-            console.log("Tank " + this.team + " is at (" + this.location.x + ", " + this.location.y + ")");
+        if (!this.playerElement)
+            return;
+        // Remove previous direction classes
+        this.playerElement.classList.remove("facing-up", "facing-down", "facing-left", "facing-right");
+        // Add current direction class
+        switch (this.direction) {
+            case "up":
+                this.playerElement.classList.add("facing-up");
+                break;
+            case "down":
+                this.playerElement.classList.add("facing-down");
+                break;
+            case "left":
+                this.playerElement.classList.add("facing-left");
+                break;
+            case "right":
+                this.playerElement.classList.add("facing-right");
+                break;
         }
+        this.playerElement.style.left = this.location.x + "px";
+        this.playerElement.style.top = this.location.y + "px";
     };
     return Tank;
 }());
-// ==============================
-// =========  VIEW   ============
-// ==============================
-var tankA = new Tank("<img src='../assets/playerTank.png' alt='playerTank'>", 50, // width
-50, // height
-0.2, // speed
-"left", // direction
-1, //team
-{ x: 1100, y: 0 }, // initial position
-{
-    up: "ArrowUp",
-    down: "ArrowDown",
-    left: "ArrowLeft",
-    right: "ArrowRight"
-});
-var tankB = new Tank("<img src='../assets/enemyTank.png' alt='enemyTank'>", 50, // width
-50, // height
-0.2, // speed
-"right", // direction
-2, // team
-{ x: 10, y: 5 }, // initial position
-{
-    up: "w",
-    down: "s",
-    left: "a",
-    right: "d"
-});
-tankA.renderTank();
-tankB.renderTank();
-// ==============================
-// ======== CONTROLLER =========
-// ==============================
-function gameLoop() {
-    tankA.move();
-    tankB.move();
-    requestAnimationFrame(gameLoop);
-}
-gameLoop();
+// CONTROLLER
+var GameController = /** @class */ (function () {
+    function GameController(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.tanks = [
+            new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }),
+            new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }),
+        ];
+    }
+    GameController.prototype.gameLoop = function () {
+        var _this = this;
+        this.tanks.forEach(function (tank) { return tank.move(_this.gameWidth, _this.gameHeight); });
+        requestAnimationFrame(function () { return _this.gameLoop(); });
+    };
+    GameController.prototype.start = function () {
+        this.tanks.forEach(function (tank) { return tank.render(); });
+        this.gameLoop();
+    };
+    return GameController;
+}());
+// START
+var gameWidth = 1121; // game area width (match your design)
+var gameHeight = 657; // game area height (match your design)
+var game = new GameController(gameWidth, gameHeight);
+game.start();
