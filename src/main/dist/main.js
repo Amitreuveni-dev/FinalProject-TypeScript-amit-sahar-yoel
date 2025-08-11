@@ -1,31 +1,29 @@
 var Tank = /** @class */ (function () {
-    function Tank(tankImageUrl, width, height, speed, direction, location, controls) {
+    function Tank(tankImageUrl, width, height, baseSpeed, initialDirection, initialLocation, controls) {
         var _this = this;
-        this.keysPressed = new Set();
+        this.speed = 0;
         this.lastDirection = "none";
+        this.keysPressed = new Set();
         this.tankImageUrl = tankImageUrl;
         this.width = width;
         this.height = height;
-        this.speed = 0;
-        this.baseSpeed = speed;
-        this.maxSpeed = speed * 5;
-        this.acceleration = speed * 0.1;
-        this.deceleration = speed * 0.15;
-        this.direction = direction;
-        this.location = location;
+        this.baseSpeed = baseSpeed;
+        this.maxSpeed = baseSpeed * 5;
+        this.acceleration = baseSpeed * 0.1;
+        this.deceleration = baseSpeed * 0.15;
+        this.direction = initialDirection;
+        this.location = initialLocation;
         this.controls = controls;
-        window.addEventListener("keydown", function (event) {
-            if ([
-                _this.controls.up,
-                _this.controls.down,
-                _this.controls.left,
-                _this.controls.right,
-            ].includes(event.key)) {
-                _this.keysPressed.add(event.key);
+        window.addEventListener("keydown", function (e) {
+            if (e.key === _this.controls.up ||
+                e.key === _this.controls.down ||
+                e.key === _this.controls.left ||
+                e.key === _this.controls.right) {
+                _this.keysPressed.add(e.key);
             }
         });
-        window.addEventListener("keyup", function (event) {
-            _this.keysPressed["delete"](event.key);
+        window.addEventListener("keyup", function (e) {
+            _this.keysPressed["delete"](e.key);
         });
     }
     Tank.prototype.move = function (gameWidth, gameHeight) {
@@ -59,7 +57,6 @@ var Tank = /** @class */ (function () {
             if (this.location.x > gameWidth)
                 this.location.x = 0;
         }
-        // Acceleration / Deceleration
         if (isMoving) {
             this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
         }
@@ -73,7 +70,7 @@ var Tank = /** @class */ (function () {
     Tank.prototype.render = function () {
         var container = document.querySelector(".tanksRoot");
         if (!container) {
-            console.error("tank container not found");
+            console.error("container .tanksRoot לא נמצא ב־DOM");
             return;
         }
         if (!this.playerElement) {
@@ -93,33 +90,14 @@ var Tank = /** @class */ (function () {
     Tank.prototype.updatePosition = function () {
         if (!this.playerElement)
             return;
-        // Remove previous direction classes
         this.playerElement.classList.remove("facing-up", "facing-down", "facing-left", "facing-right");
-        // Add current direction class
-        switch (this.direction) {
-            case "up":
-                this.playerElement.classList.add("facing-up");
-                break;
-            case "down":
-                this.playerElement.classList.add("facing-down");
-                break;
-            case "left":
-                this.playerElement.classList.add("facing-left");
-                break;
-            case "right":
-                this.playerElement.classList.add("facing-right");
-                break;
-        }
+        this.playerElement.classList.add("facing-" + this.direction);
         this.lastDirection = this.direction;
-        // Update position
         this.playerElement.style.left = this.location.x + "px";
         this.playerElement.style.top = this.location.y + "px";
     };
     return Tank;
 }());
-// ==============================
-// =========  CONTROLLER =========
-// ==============================
 var GAME_WIDTH = 1121;
 var GAME_HEIGHT = 657;
 var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" });
