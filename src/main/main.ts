@@ -1,60 +1,57 @@
-// MODEL
 type Direction = "up" | "down" | "left" | "right" | "none";
 
 class Tank {
   tankImageUrl: string;
   width: number;
   height: number;
-  speed: number;
-  direction: Direction;
-  location: { x: number; y: number };
-  playerElement?: HTMLElement;
-  controls: { up: string; down: string; left: string; right: string };
-  keysPressed: Set<string> = new Set();
+  speed: number = 0;
   baseSpeed: number;
   maxSpeed: number;
   acceleration: number;
   deceleration: number;
+  direction: Direction;
   lastDirection: Direction = "none";
+  location: { x: number; y: number };
+  controls: { up: string; down: string; left: string; right: string };
+  keysPressed: Set<string> = new Set();
+  playerElement?: HTMLElement;
   team: number;
 
   constructor(
     tankImageUrl: string,
     width: number,
     height: number,
-    speed: number,
-    direction: Direction,
-    location: { x: number; y: number },
+    baseSpeed: number,
+    initialDirection: Direction,
+    initialLocation: { x: number; y: number },
     controls: { up: string; down: string; left: string; right: string },
     team: number
   ) {
     this.tankImageUrl = tankImageUrl;
     this.width = width;
     this.height = height;
-    this.speed = 0;
-    this.baseSpeed = speed;
-    this.maxSpeed = speed * 5;
-    this.acceleration = speed * 0.1;
-    this.deceleration = speed * 0.15;
-    this.direction = direction;
-    this.location = location;
+    this.baseSpeed = baseSpeed;
+    this.maxSpeed = baseSpeed * 5;
+    this.acceleration = baseSpeed * 0.1;
+    this.deceleration = baseSpeed * 0.15;
+    this.direction = initialDirection;
+    this.location = initialLocation;
     this.controls = controls;
     this.team = team;
 
-    window.addEventListener("keydown", (event) => {
+    window.addEventListener("keydown", (e) => {
       if (
-        [
-          this.controls.up,
-          this.controls.down,
-          this.controls.left,
-          this.controls.right,
-        ].includes(event.key)
+        e.key === this.controls.up ||
+        e.key === this.controls.down ||
+        e.key === this.controls.left ||
+        e.key === this.controls.right
       ) {
-        this.keysPressed.add(event.key);
+        this.keysPressed.add(e.key);
       }
     });
-    window.addEventListener("keyup", (event) => {
-      this.keysPressed.delete(event.key);
+
+    window.addEventListener("keyup", (e) => {
+      this.keysPressed.delete(e.key);
     });
   }
 
@@ -66,21 +63,18 @@ class Tank {
       this.location.y -= this.speed;
       moved = true;
       this.direction = "up";
-
       if (this.location.y < 0) this.location.y = 0;
     }
     if (this.keysPressed.has(this.controls.down)) {
       this.location.y += this.speed;
       moved = true;
       this.direction = "down";
-
       if (this.location.y > gameHeight) this.location.y = gameHeight;
     }
     if (this.keysPressed.has(this.controls.left)) {
       this.location.x -= this.speed;
       moved = true;
       this.direction = "left";
-
       if (this.location.x < 0) this.location.x = 0;
       if (this.location.x < gameWidth / 2 && this.team == 1) this.location.x = gameWidth / 2;
     }
@@ -88,12 +82,10 @@ class Tank {
       this.location.x += this.speed;
       moved = true;
       this.direction = "right";
-
       if (this.location.x > gameWidth) this.location.x = gameWidth;
        if (this.location.x > gameWidth/2 && this.team == 2) this.location.x = gameWidth/2;
     }
 
-    // Acceleration / Deceleration
     if (isMoving) {
       this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
     } else {
@@ -107,17 +99,17 @@ class Tank {
   }
 
   render() {
-    const container = document.querySelector(".tanksRoot") as HTMLElement;
+    const container = document.querySelector(".tanksRoot");
     if (!container) {
-      console.error("tank container not found");
+      console.error("container .tanksRoot לא נמצא ב־DOM");
       return;
     }
     if (!this.playerElement) {
       this.playerElement = document.createElement("div");
       this.playerElement.className = "tank";
       this.playerElement.style.position = "absolute";
-      this.playerElement.style.width = `${this.width}px`;
-      this.playerElement.style.height = `${this.height}px`;
+      this.playerElement.style.width = this.width + "px";
+      this.playerElement.style.height = this.height + "px";
       this.playerElement.style.backgroundImage = `url(${this.tankImageUrl})`;
       this.playerElement.style.backgroundSize = "contain";
       this.playerElement.style.backgroundRepeat = "no-repeat";
@@ -130,7 +122,6 @@ class Tank {
   updatePosition() {
     if (!this.playerElement) return;
 
-    // Remove previous direction classes
     this.playerElement.classList.remove(
       "facing-up",
       "facing-down",
@@ -138,33 +129,14 @@ class Tank {
       "facing-right"
     );
 
-    // Add current direction class
-    switch (this.direction) {
-      case "up":
-        this.playerElement.classList.add("facing-up");
-        break;
-      case "down":
-        this.playerElement.classList.add("facing-down");
-        break;
-      case "left":
-        this.playerElement.classList.add("facing-left");
-        break;
-      case "right":
-        this.playerElement.classList.add("facing-right");
-        break;
-    }
+    this.playerElement.classList.add("facing-" + this.direction);
 
     this.lastDirection = this.direction;
 
-    // Update position
-    this.playerElement.style.left = `${this.location.x}px`;
-    this.playerElement.style.top = `${this.location.y}px`;
+    this.playerElement.style.left = this.location.x + "px";
+    this.playerElement.style.top = this.location.y + "px";
   }
 }
-
-// ==============================
-// =========  CONTROLLER =========
-// ==============================
 
 const GAME_WIDTH = 1114;
 const GAME_HEIGHT = 660;
