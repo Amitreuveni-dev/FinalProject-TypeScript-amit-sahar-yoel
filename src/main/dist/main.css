@@ -200,3 +200,22 @@ button:active {
     transform: rotate(90deg);
   }
 }
+.navButton {
+  background-color: #4e54c8;
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+.navButton:hover {
+  background-color: #6c72de;
+  color: #fffbea;
+  transform: scale(1.05);
+}
+.navButton:active {
+  background-color: #3a40a1;
+}
