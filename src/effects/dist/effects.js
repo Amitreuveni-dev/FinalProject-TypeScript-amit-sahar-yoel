@@ -120,12 +120,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
     btn.innerHTML = sound.isMuted()
-        ? "<i class=\"fa fa-volume-off\" aria-hidden=\"true\"></i>"
-        : "<i class=\"fa fa-volume-up\" aria-hidden=\"true\"></i>";
+        ? "<i class=\"fa fa-volume-off fa-lg\" aria-hidden=\"true\"></i>"
+        : "<i class=\"fa fa-volume-up fa-lg\" aria-hidden=\"true\"></i>";
     btn.addEventListener("click", function () {
         var muted = sound.toggleMute();
         btn.innerHTML = muted
-            ? "<i class=\"fa fa-volume-off\" aria-hidden=\"true\"></i>"
-            : "<i class=\"fa fa-volume-up\" aria-hidden=\"true\"></i>";
+            ? "<i class=\"fa fa-volume-off fa-lg\" aria-hidden=\"true\"></i>"
+            : "<i class=\"fa fa-volume-up fa-lg\" aria-hidden=\"true\"></i>";
     });
 });

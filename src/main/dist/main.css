@@ -63,9 +63,6 @@ body {
   font-size: 0.6rem;
   font-weight: 500;
 }
-.header__settings-button {
-  font-size: 0.6rem;
-}
 
 button {
   background-color: #4e54c8;
@@ -205,6 +202,7 @@ button:active {
   }
 }
 .navButton {
+  align-items: center;
   background-color: #4e54c8;
   color: white;
   border: 1px solid white;
