@@ -39,7 +39,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 0.2rem;
   flex-shrink: 0;
 
   &__logo {
@@ -59,7 +59,7 @@ body {
   }
 
   &__main-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     white-space: nowrap;
   }
@@ -67,6 +67,9 @@ body {
   &__sub-title {
     font-size: 1rem;
     font-weight: 500;
+  }
+  &__settings-button{
+    font-size: 0.8rem;
   }
 }
 
