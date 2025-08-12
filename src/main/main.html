@@ -1,52 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Final Game</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    
+    <script src="dist/main.js" defer></script>
+    <link rel="stylesheet" href="dist/main.css" />
+    <script src="../effects/dist/effects.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hello World!</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-  <link rel="stylesheet" href="dist/main.css" />
+  <body>
+    <!-- <header class="header">
+      <img
+        src="../assets/playerTank.png"
+        alt="playerTank"
+        class="header__logo"
+      />
+    </header> -->
 
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Final</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+          </ul>
+          <article class="header__titles">
+            <!-- <h1 class="header__main-title">Tanks online</h1> -->
+            <h1 class="header__sub-title">Level : 1</h1>
+          </article>
+        </div>
 
-  <script src="dist/main.js" defer></script>
-  <script src="../effects/dist/effects.js" defer></script>
+        <div>
+          <button type="button" class="btn btn-outline navButton">
+            <a href="../settings/settings.html" class="header__settings-button"
+              ><i class="fa fa-cog fa-lg" aria-hidden="true"></i>
+            </a>
+          </button>
+          <button
+            id="muteBtn"
+            type="button"
+            class="btn btn-outline navButton"
+            style="width: 50px"
+          ></button>
+          <button type="button" class="btn btn-outline navButton">
+            <a href="../contact/contacnt.html" class="footer__contact-a"
+              ><i class="fa fa-phone" aria-hidden="true"></i>
+            </a>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <main class="main">
+      <div class="tanksRoot"></div>
+    </main>
 
-</head>
-
-<body>
-  <header class="header">
-    <img src="../assets/playerTank.png" alt="playerTank" class="header__logo" />
-    <article class="header__titles">
-      <h1 class="header__main-title">Tanks online</h1>
-      <h2 class="header__sub-title">Level : 1</h2>
-    </article>
-    <div>
-
-      <button type="button" class="btn btn-outline-primary navButton">
-        <a href="../settings/settings.html" class="header__settings-button"><i class="fa fa-cog fa-lg"
-            aria-hidden="true"></i>
-        </a>
-      </button>
-      <button id="muteBtn" type="button" class="btn btn-outline-primary navButton" style="width: 50px;">
-      </button>
-
-    </div>
-  </header>
-
-  <main class="main">
-    <div class="tanksRoot"></div>
-  </main>
-
-  <footer class="footer">
-    <p class="footer__copyright">&copy; All rights reserved 2025</p>
-    <h2 class="footer__sub-title">Use arrows/WASD to move, space/enter to shoot</h2>
-    <button>
-      <a href="../contact/contacnt.html" class="footer__contact-a">Contact us 📞</a>
-    </button>
-  </footer>
-</body>
-
+    <footer class="footer">
+      <p class="footer__copyright">&copy; All rights reserved 2025</p>
+      <h2 class="footer__sub-title">
+        Use arrows/WASD to move, space/enter to shoot
+      </h2>
+    </footer>
+  </body>
 </html>
