@@ -1,3 +1,6 @@
+////////////////////////////////////////////
+//////////// MODEL /////////////////////////
+////////////////////////////////////////////
 var Tank = /** @class */ (function () {
     function Tank(tankImageUrl, width, height, baseSpeed, initialDirection, initialLocation, controls, team) {
         var _this = this;
@@ -72,6 +75,9 @@ var Tank = /** @class */ (function () {
             this.render();
         }
     };
+    ////////////////////////////////////////////
+    //////////// VIEW //////////////////////////
+    ////////////////////////////////////////////
     Tank.prototype.render = function () {
         var container = document.querySelector(".tanksRoot");
         if (!container) {
@@ -103,15 +109,21 @@ var Tank = /** @class */ (function () {
     };
     return Tank;
 }());
+////////////////////////////////////////////
+//////////// CONTROLLER ////////////////////
+////////////////////////////////////////////
 var GAME_WIDTH = 1114;
 var GAME_HEIGHT = 660;
 var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 1);
 var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 2);
-tankA.render();
-tankB.render();
 function gameLoop() {
     tankA.move(GAME_WIDTH, GAME_HEIGHT);
     tankB.move(GAME_WIDTH, GAME_HEIGHT);
     requestAnimationFrame(gameLoop);
 }
+////////////////////////////////////////////
+//////////// INIT //////////////////////////
+////////////////////////////////////////////
+tankA.render();
+tankB.render();
 gameLoop();

@@ -1,3 +1,7 @@
+////////////////////////////////////////////
+//////////// MODEL /////////////////////////
+////////////////////////////////////////////
+
 type Direction = "up" | "down" | "left" | "right" | "none";
 
 class Tank {
@@ -76,14 +80,16 @@ class Tank {
       moved = true;
       this.direction = "left";
       if (this.location.x < 0) this.location.x = 0;
-      if (this.location.x < gameWidth / 2 && this.team == 1) this.location.x = gameWidth / 2;
+      if (this.location.x < gameWidth / 2 && this.team == 1)
+        this.location.x = gameWidth / 2;
     }
     if (this.keysPressed.has(this.controls.right)) {
       this.location.x += this.speed;
       moved = true;
       this.direction = "right";
       if (this.location.x > gameWidth) this.location.x = gameWidth;
-       if (this.location.x > gameWidth/2 && this.team == 2) this.location.x = gameWidth/2;
+      if (this.location.x > gameWidth / 2 && this.team == 2)
+        this.location.x = gameWidth / 2;
     }
 
     if (isMoving) {
@@ -95,8 +101,11 @@ class Tank {
     if (moved || this.speed > 0) {
       this.render();
     }
-  
   }
+
+  ////////////////////////////////////////////
+  //////////// VIEW //////////////////////////
+  ////////////////////////////////////////////
 
   render() {
     const container = document.querySelector(".tanksRoot");
@@ -138,6 +147,10 @@ class Tank {
   }
 }
 
+////////////////////////////////////////////
+//////////// CONTROLLER ////////////////////
+////////////////////////////////////////////
+
 const GAME_WIDTH = 1114;
 const GAME_HEIGHT = 660;
 
@@ -163,13 +176,17 @@ const tankB = new Tank(
   2
 );
 
-tankA.render();
-tankB.render();
-
 function gameLoop() {
   tankA.move(GAME_WIDTH, GAME_HEIGHT);
   tankB.move(GAME_WIDTH, GAME_HEIGHT);
   requestAnimationFrame(gameLoop);
 }
+
+////////////////////////////////////////////
+//////////// INIT //////////////////////////
+////////////////////////////////////////////
+
+tankA.render();
+tankB.render();
 
 gameLoop();
