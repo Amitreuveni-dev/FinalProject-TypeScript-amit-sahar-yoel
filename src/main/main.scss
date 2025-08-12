@@ -31,8 +31,6 @@ body {
   margin: 0;
 }
 
-
-
 button {
   background-color: #4e54c8;
   color: white;
@@ -81,58 +79,6 @@ button {
 .tanksRoot {
   position: absolute;
   inset: 0;
-}
-
-.footer {
-  position: sticky;
-
-  background-color: #4e54c8;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.2rem;
-  flex-shrink: 0;
-  height: 40px;
-
-  &__copyright {
-    font-size: 1rem;
-    font-weight: 500;
-  }
-
-  &__sub-title {
-    font-size: 1rem;
-    font-weight: 500;
-  }
-
-  button {
-    background-color: transparent;
-    border: 1px solid white;
-    border-radius: 8px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    a {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      display: block;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-    }
-
-    &:hover {
-      background-color: #6c72de;
-      transform: scale(1.05);
-    }
-
-    &:active {
-      background-color: #3a40a1;
-    }
-  }
 }
 
 .tank {

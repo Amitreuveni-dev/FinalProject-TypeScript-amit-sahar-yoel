@@ -1,5 +1,5 @@
 .navBar {
-  background-color: #bad0f1;
+  background-color: #85a8db;
 }
 .navBar__text {
   color: white;
@@ -62,6 +62,6 @@
 }
 .header__sub-title {
   color: white;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 500;
 }

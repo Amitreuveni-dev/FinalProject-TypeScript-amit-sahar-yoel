@@ -1,44 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact Us</title>
+    <script src="dist/contact.js" defer></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+    crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../main/dist/nav.css" />
+    <link rel="stylesheet" href="../main/dist/footer.css" />
+    <link rel="stylesheet" href="dist/contact.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contact Us</title>
-  <link rel="stylesheet" href="dist/contact.css" />
-  <script src="dist/contact.js" defer></script>
-</head>
+  <body>
+    <div class="wrapper">
+      <nav class="navbar navbar-expand-lg navBar">
+        <div class="container-fluid">
+          <span class="navbar-brand navBar__text">Final Project</span>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link navBar__text" href="../main/main.html"
+                  >Home <i class="fa fa-home" aria-hidden="true"></i
+                ></a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link navBar__text"
+                  href="../settings/settings.html"
+                  >settings <i class="fa fa-cog fa-lg" aria-hidden="true"></i
+                ></a>
+              </li>
+            </ul>
+            <article class="header__titles">
+              <!-- <h1 class="header__main-title">Tanks online</h1> -->
+              <h1 class="header__sub-title">Contact Page</h1>
+            </article>
+          </div>
 
-<body>
-  <div class="wrapper">
-    <header class="header">
-      <h1 class="header__title">Contact Us</h1>
-    </header>
+          <div></div>
+        </div>
+      </nav>
 
-    <main class="main-content">
-      <form class="settings-form contact__form">
-        <label for="name" class="settings-form__label">Name:</label>
-        <input type="text" id="name" name="name" required class="settings-form__input" />
+      <main class="main-content">
+        <form class="settings-form contact__form">
+          <label for="name" class="settings-form__label">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="settings-form__input"
+          />
 
-        <label for="email" class="settings-form__label">Email:</label>
-        <input type="email" id="email" name="email" required class="settings-form__input" />
+          <label for="email" class="settings-form__label">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            class="settings-form__input"
+          />
 
-        <label for="message" class="settings-form__label">Message:</label>
-        <textarea id="message" name="message" required class="settings-form__input" rows="5"></textarea>
+          <label for="message" class="settings-form__label">Message:</label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            class="settings-form__input"
+            rows="5"
+          ></textarea>
 
-        <button type="submit" class="settings-form__button">Send</button>
-      </form>
-    </main>
+          <!-- <button type="submit" class="settings-form__button">Send</button> -->
+          <button type="button" class="btn btn-outline subBtn">Send</button>
+        </form>
+      </main>
 
-    <footer class="footer">
-      <p class="footer__copyright">&copy; All rights reserved 2025</p>
-      <div class="footer__buttons">
-        <button class="footer__btn" onclick="window.location.href='../main/main.html'">
-          <a href="../main/main.html" class="footer__link">Home</a>
-        </button>
-      </div>
-    </footer>
-  </div>
-</body>
-
+      <footer class="footer">
+        <p class="footer__copyright">&copy; All rights reserved 2025</p>
+      </footer>
+    </div>
+  </body>
 </html>

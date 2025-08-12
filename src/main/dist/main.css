@@ -78,51 +78,6 @@ button:active {
   inset: 0;
 }
 
-.footer {
-  position: sticky;
-  background-color: #4e54c8;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.2rem;
-  flex-shrink: 0;
-  height: 40px;
-}
-.footer__copyright {
-  font-size: 1rem;
-  font-weight: 500;
-}
-.footer__sub-title {
-  font-size: 1rem;
-  font-weight: 500;
-}
-.footer button {
-  background-color: transparent;
-  border: 1px solid white;
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.footer button a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  display: block;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
-.footer button:hover {
-  background-color: #6c72de;
-  transform: scale(1.05);
-}
-.footer button:active {
-  background-color: #3a40a1;
-}
-
 .tank {
   position: absolute;
   width: 50px;

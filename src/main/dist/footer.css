@@ -1,0 +1,29 @@
+.footer {
+  background-color: #85a8db;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem;
+  flex-shrink: 0;
+  height: 40px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+.footer__copyright {
+  font-size: 0.95rem;
+  font-weight: 300;
+  opacity: 0.85;
+  letter-spacing: 0.02em;
+  margin-left: 1rem;
+  color: #f0f4fa;
+}
+.footer__sub-title {
+  font-size: 1rem;
+  color: white;
+  font-weight: 500;
+  margin: auto;
+}

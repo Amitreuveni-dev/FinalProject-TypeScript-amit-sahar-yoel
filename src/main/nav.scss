@@ -1,5 +1,6 @@
+
 .navBar {
-  background-color: rgb(186, 208, 241);
+  background-color: rgb(133, 168, 219);
   &__text{
     color: white;
     &:hover{
@@ -66,7 +67,7 @@
 
   &__sub-title {
     color: white;
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: 500;
   }
 }
