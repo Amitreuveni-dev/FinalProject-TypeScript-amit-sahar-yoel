@@ -95,8 +95,7 @@ button:active {
 .main {
   flex: 1;
   border: 20px solid gray;
-  max-width: 1200px;
-  width: 100%;
+  width: 1200px;
   margin: 0.5rem auto;
   background-color: #dadada;
   background-image: url("../../assets/background.png");
