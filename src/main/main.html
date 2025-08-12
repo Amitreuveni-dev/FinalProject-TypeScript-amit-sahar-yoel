@@ -14,7 +14,8 @@
       integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
       crossorigin="anonymous"
     />
-    
+
+    <link rel="stylesheet" href="./dist/nav.css" />
     <script src="dist/main.js" defer></script>
     <link rel="stylesheet" href="dist/main.css" />
     <script src="../effects/dist/effects.js" defer></script>
@@ -30,9 +31,9 @@
       />
     </header> -->
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navBar">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Final</a>
+        <a class="navbar-brand navBar__text" href="#">Final</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -47,13 +48,15 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link navBar__text" aria-current="page" href="#"
+                >Home</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
+              <a class="nav-link navBar__text" href="#">Features</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
+              <a class="nav-link navBar__text" href="#">Pricing</a>
             </li>
           </ul>
           <article class="header__titles">
@@ -75,8 +78,8 @@
             style="width: 50px"
           ></button>
           <button type="button" class="btn btn-outline navButton">
-            <a href="../contact/contacnt.html" class="footer__contact-a"
-              ><i class="fa fa-phone" aria-hidden="true"></i>
+            <a href="../contact/contacnt.html"
+              ><i class="fa fa-phone fa-lg" aria-hidden="true"></i>
             </a>
           </button>
         </div>
