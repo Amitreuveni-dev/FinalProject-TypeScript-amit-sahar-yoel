@@ -49,8 +49,8 @@ var Tank = /** @class */ (function () {
             moved = true;
             this.direction = "down";
             (_a = this.playerElement) === null || _a === void 0 ? void 0 : _a.classList.toggle("tankColorChangeDown");
-            if (this.location.y > gameHeight)
-                this.location.y = gameHeight;
+            if (this.location.y > gameHeight - 9)
+                this.location.y = gameHeight - 9;
         }
         if (this.keysPressed.has(this.controls.left)) {
             this.location.x -= this.speed;
@@ -67,8 +67,8 @@ var Tank = /** @class */ (function () {
             (_b = this.playerElement) === null || _b === void 0 ? void 0 : _b.classList.toggle("tankColorChangeLeft");
             if (this.location.x < 0)
                 this.location.x = 0;
-            if (this.location.x < gameWidth / 2 && this.team == 1)
-                this.location.x = gameWidth / 2;
+            if (this.location.x < gameWidth / 2 + 20 && this.team == 1)
+                this.location.x = gameWidth / 2 + 20;
         }
         if (this.keysPressed.has(this.controls.right)) {
             this.location.x += this.speed;
@@ -85,8 +85,8 @@ var Tank = /** @class */ (function () {
             (_c = this.playerElement) === null || _c === void 0 ? void 0 : _c.classList.toggle("tankColorChangeRight");
             if (this.location.x > gameWidth)
                 this.location.x = gameWidth;
-            if (this.location.x > gameWidth / 2 && this.team == 2)
-                this.location.x = gameWidth / 2;
+            if (this.location.x > gameWidth / 2 - 20 && this.team == 2)
+                this.location.x = gameWidth / 2 - 20;
         }
         if (isMoving) {
             this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);

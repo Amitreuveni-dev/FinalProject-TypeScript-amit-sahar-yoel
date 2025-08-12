@@ -76,7 +76,7 @@ class Tank {
       moved = true;
       this.direction = "down";
       this.playerElement?.classList.toggle("tankColorChangeDown");
-      if (this.location.y > gameHeight) this.location.y = gameHeight;
+      if (this.location.y > gameHeight - 9) this.location.y = gameHeight - 9;
     }
     if (this.keysPressed.has(this.controls.left)) {
       this.location.x -= this.speed;
@@ -90,7 +90,7 @@ class Tank {
       }
       this.playerElement?.classList.toggle("tankColorChangeLeft");
       if (this.location.x < 0) this.location.x = 0;
-      if (this.location.x < gameWidth / 2 && this.team == 1) this.location.x = gameWidth / 2;
+      if (this.location.x < gameWidth / 2+ 20 && this.team == 1) this.location.x = gameWidth / 2 + 20;
     }
     if (this.keysPressed.has(this.controls.right)) {
       this.location.x += this.speed;
@@ -104,7 +104,7 @@ class Tank {
       }
       this.playerElement?.classList.toggle("tankColorChangeRight");
       if (this.location.x > gameWidth) this.location.x = gameWidth;
-       if (this.location.x > gameWidth/2 && this.team == 2) this.location.x = gameWidth/2;
+       if (this.location.x > gameWidth/2 - 20 && this.team == 2) this.location.x = gameWidth/2  - 20;
     }
 
     if (isMoving) {
