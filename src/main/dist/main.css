@@ -156,29 +156,6 @@ button:active {
   background-color: #3a40a1;
 }
 
-.tank {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  transition: transform 0.1s ease;
-}
-
-.facing-up {
-  transform: rotate(270deg);
-}
-
-.facing-down {
-  transform: rotate(90deg);
-}
-
-.facing-left {
-  transform: scaleX(-1);
-}
-
-.facing-right {
-  transform: scaleX(1);
-}
-
 .navButton {
   align-items: center;
   background-color: #4e54c8;

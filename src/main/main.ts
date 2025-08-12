@@ -1,4 +1,4 @@
-type Direction = "up" | "down" | "left" | "right" | "none";
+type Direction = "up" | "down" | "left" | "right" | "none" | "up-right" | "up-left" | "down-right" | "down-left";
 
 class Tank {
   tankImageUrl: string;
@@ -62,26 +62,47 @@ class Tank {
     if (this.keysPressed.has(this.controls.up)) {
       this.location.y -= this.speed;
       moved = true;
-      this.direction = "up";
+      if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.right)) {
+        this.direction = "up-right";
+      } else {
+        this.direction = "up";
+      }
+
       if (this.location.y < 0) this.location.y = 0;
+      ;
     }
     if (this.keysPressed.has(this.controls.down)) {
       this.location.y += this.speed;
       moved = true;
       this.direction = "down";
+      this.playerElement?.classList.toggle("tankColorChangeDown");
       if (this.location.y > gameHeight) this.location.y = gameHeight;
     }
     if (this.keysPressed.has(this.controls.left)) {
       this.location.x -= this.speed;
       moved = true;
-      this.direction = "left";
+      if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.left)) {
+        this.direction = "up-left";
+      } else if (this.keysPressed.has(this.controls.down) && this.keysPressed.has(this.controls.left)) {
+        this.direction = "down-left";
+      } else {
+        this.direction = "left";
+      }
+      this.playerElement?.classList.toggle("tankColorChangeLeft");
       if (this.location.x < 0) this.location.x = 0;
       if (this.location.x < gameWidth / 2 && this.team == 1) this.location.x = gameWidth / 2;
     }
     if (this.keysPressed.has(this.controls.right)) {
       this.location.x += this.speed;
       moved = true;
-      this.direction = "right";
+      if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.right)) {
+        this.direction = "up-right";
+      } else if (this.keysPressed.has(this.controls.down) && this.keysPressed.has(this.controls.right)) {
+        this.direction = "down-right";
+      } else {
+        this.direction = "right";
+      }
+      this.playerElement?.classList.toggle("tankColorChangeRight");
       if (this.location.x > gameWidth) this.location.x = gameWidth;
        if (this.location.x > gameWidth/2 && this.team == 2) this.location.x = gameWidth/2;
     }
@@ -126,7 +147,11 @@ class Tank {
       "facing-up",
       "facing-down",
       "facing-left",
-      "facing-right"
+      "facing-right",
+      "facing-up-right",
+      "facing-up-left",
+      "facing-down-right",
+      "facing-down-left"
     );
 
     this.playerElement.classList.add("facing-" + this.direction);
