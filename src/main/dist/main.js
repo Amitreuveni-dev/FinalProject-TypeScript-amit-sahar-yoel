@@ -2,8 +2,8 @@
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
 var Bullet = /** @class */ (function () {
-    function Bullet(direction, speed) {
-        this.position = { x: 0, y: 0 };
+    function Bullet(direction, speed, startX, startY) {
+        this.position = { x: startX, y: startY };
         this.direction = direction;
         this.speed = speed;
     }
@@ -24,14 +24,7 @@ var Bullet = /** @class */ (function () {
             default:
                 console.error("Invalid direction for bullet movement");
         }
-    };
-    Bullet.prototype.render = function () {
-        var bullet = document.createElement("div");
-        bullet.classList.add("bullet");
-        bullet.style.position = "absolute";
-        bullet.style.left = this.position + "px";
-        bullet.style.top = this.position + "px";
-        document.body.appendChild(bullet);
+        this.render();
     };
     Bullet.prototype.hitTheWall = function () {
         if (this.position.x < 0 ||
@@ -41,6 +34,16 @@ var Bullet = /** @class */ (function () {
             return true;
         }
         return false;
+    };
+    Bullet.prototype.render = function () {
+        if (!this.element) {
+            this.element = document.createElement("div");
+            this.element.classList = "bullet";
+            this.element.style.position = "absolute";
+            document.body.appendChild(this.element);
+        }
+        this.element.style.left = this.position.x + "px";
+        this.element.style.top = this.position.y + "px";
     };
     return Bullet;
 }());
@@ -118,6 +121,9 @@ var Tank = /** @class */ (function () {
             this.render();
         }
     };
+    Tank.prototype.shoot = function () {
+        return new Bullet(this.direction, 5, this.location.x + this.width / 2, this.location.y + this.height / 2);
+    };
     ////////////////////////////////////////////
     //////////// VIEW //////////////////////////
     ////////////////////////////////////////////
@@ -157,8 +163,15 @@ var Tank = /** @class */ (function () {
 ////////////////////////////////////////////
 var GAME_WIDTH = 1114;
 var GAME_HEIGHT = 660;
+var bullets = [];
 var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 1);
 var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 2);
+document.addEventListener("keypress", function (e) {
+    if (e.key === "enter")
+        bullets.push(tankA.shoot());
+    if (e.key === " ")
+        bullets.push(tankB.shoot());
+});
 function gameLoop() {
     tankA.move(GAME_WIDTH, GAME_HEIGHT);
     tankB.move(GAME_WIDTH, GAME_HEIGHT);

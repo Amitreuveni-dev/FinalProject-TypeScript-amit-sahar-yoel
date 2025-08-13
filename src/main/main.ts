@@ -8,17 +8,20 @@ class Bullet {
   position: { x: number; y: number };
   direction: Direction;
   speed: number;
+  element?: HTMLElement;
 
   constructor(
     direction: Direction,
     speed: number,
+    startX: number,
+    startY: number,
   ) {
-    this.position = { x: 0, y: 0 };
+    this.position = { x: startX, y: startY };
     this.direction = direction;
     this.speed = speed;
   }
 
-  move() {
+  move(): void {
     switch (this.direction) {
       case "up":
         this.position.y -= this.speed
@@ -35,18 +38,12 @@ class Bullet {
       default:
         console.error("Invalid direction for bullet movement");
     }
+    this.render();
   }
 
-  render() {
-    const bullet = document.createElement("div");
-    bullet.classList.add("bullet");
-    bullet.style.position = "absolute";
-    bullet.style.left = this.position + "px";
-    bullet.style.top = this.position + "px";
-    document.body.appendChild(bullet);
-  }
-
-  hitTheWall() {
+  
+  
+  hitTheWall(): boolean {
     if (
       this.position.x < 0 ||
       this.position.x > GAME_WIDTH ||
@@ -57,7 +54,20 @@ class Bullet {
     }
     return false;
   }
+
+
+  render() {
+    if (!this.element) {
+      this.element = document.createElement("div");
+      this.element.classList = "bullet";
+      this.element.style.position = "absolute";
+      document.body.appendChild(this.element);
+    }
+    this.element.style.left = this.position.x + "px";
+    this.element.style.top = this.position.y + "px";
+  }
 }
+
 
 
 class Tank {
@@ -76,7 +86,7 @@ class Tank {
   keysPressed: Set<string> = new Set();
   playerElement?: HTMLElement;
   team: number;
-
+  
   constructor(
     tankImageUrl: string,
     width: number,
@@ -98,7 +108,7 @@ class Tank {
     this.location = initialLocation;
     this.controls = controls;
     this.team = team;
-
+    
     window.addEventListener("keydown", (e) => {
       if (
         e.key === this.controls.up ||
@@ -114,11 +124,11 @@ class Tank {
       this.keysPressed.delete(e.key);
     });
   }
-
+  
   move(gameWidth: number, gameHeight: number) {
     let moved = false;
     const isMoving = this.keysPressed.size > 0;
-
+    
     if (this.keysPressed.has(this.controls.up)) {
       this.location.y -= this.speed;
       moved = true;
@@ -147,17 +157,27 @@ class Tank {
       if (this.location.x > gameWidth / 2 && this.team == 2)
         this.location.x = gameWidth / 2;
     }
-
+    
     if (isMoving) {
       this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
     } else {
       this.speed = Math.max(this.speed - this.deceleration, 0);
     }
-
+    
     if (moved || this.speed > 0) {
       this.render();
     }
   }
+  shoot(): Bullet {
+    return new Bullet(
+      this.direction,
+      5,
+      this.location.x + this.width / 2,
+      this.location.y + this.height / 2
+    );
+
+  }
+
 
   ////////////////////////////////////////////
   //////////// VIEW //////////////////////////
@@ -183,10 +203,10 @@ class Tank {
     }
     this.updatePosition();
   }
-
+  
   updatePosition() {
     if (!this.playerElement) return;
-
+    
     this.playerElement.classList.remove(
       "facing-up",
       "facing-down",
@@ -209,6 +229,8 @@ class Tank {
 
 const GAME_WIDTH = 1114;
 const GAME_HEIGHT = 660;
+const bullets: Bullet[] = []
+
 
 const tankA = new Tank(
   "../assets/playerTank.png",
@@ -231,6 +253,12 @@ const tankB = new Tank(
   { up: "w", down: "s", left: "a", right: "d" },
   2
 );
+
+document.addEventListener("keypress", (e) => {
+  if(e.key === "enter") bullets.push(tankA.shoot());
+  if(e.key === " ") bullets.push(tankB.shoot());
+});
+
 
 function gameLoop() {
   tankA.move(GAME_WIDTH, GAME_HEIGHT);
