@@ -164,7 +164,7 @@ class Tank {
   playerElement?: HTMLElement;
   team: number;
   isAlive: boolean = true;
-  
+    
   constructor(
     tankImageUrl: string,
     width: number,
@@ -215,6 +215,7 @@ class Tank {
     }
 
   }
+
 
   move(gameWidth: number, gameHeight: number) {
     if(!this.isAlive) return;
@@ -339,7 +340,6 @@ class Tank {
 
   return new Bullet(this.direction, 5, startX, startY);
 }
-
 
   isHitBy(bullet: Bullet): boolean {
     if(!this.isAlive) return false;
@@ -467,8 +467,54 @@ const gameLoop = () => {
   tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
   tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
 
+  tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+  tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+
   bullets.forEach((bullet, index) => {
     bullet.move();
+
+    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+      tankA.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankB.isHitBy(bullet)) {
+      tankB.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+      tankA.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankB.isHitBy(bullet)) {
+      tankB.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+
+    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+      tankA.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankB.isHitBy(bullet)) {
+      tankB.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
 
 
     if(tankA.isAlive && tankA.isHitBy(bullet)) {
@@ -498,3 +544,4 @@ const gameLoop = () => {
 
 
 gameLoop();
+

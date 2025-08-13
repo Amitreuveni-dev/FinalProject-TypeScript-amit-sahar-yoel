@@ -1,10 +1,17 @@
-
 .navBar {
-  background-color: rgb(133, 168, 219);
-  &__text{
+  font-weight: 500;
+  background: linear-gradient(90deg, #722828, black, #2c3453);
+  border-bottom: 1px solid #ffffff;
+  &__text {
     color: white;
-    &:hover{
-        color: rgb(161, 180, 209)
+    padding: 2px 0; // קצת רווח בשביל שהקו לא יצמד לטקסט
+    transition: border 0.3s ease, padding 0.3s ease;
+
+    &:hover {
+      color: rgb(255, 255, 255);
+      border-bottom: 1px solid #ffffff;
+      border-top: 1px solid #ffffff;
+      padding: 4px 0; // יוצר תחושה של הרחבה קלה
     }
   }
 }
@@ -35,30 +42,6 @@
   }
 }
 .header {
-  background-color: #4e54c8;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.2rem;
-  flex-shrink: 0;
-
-  &__logo {
-    width: 60px;
-    height: auto;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  &__titles {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.2rem;
-    flex-grow: 1;
-    padding: 0 1rem;
-  }
-
   &__main-title {
     font-size: 1rem;
     font-weight: 700;

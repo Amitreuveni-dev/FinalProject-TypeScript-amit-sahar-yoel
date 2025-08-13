@@ -352,8 +352,52 @@ tankB.render();
 var gameLoop = function () {
     tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
     tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+    tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+    tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
     bullets.forEach(function (bullet, index) {
         bullet.move();
+        if (tankA.isAlive && tankA.isHitBy(bullet)) {
+            tankA.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
+        if (tankB.isHitBy(bullet)) {
+            tankB.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
+        if (tankA.isAlive && tankA.isHitBy(bullet)) {
+            tankA.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
+        if (tankB.isHitBy(bullet)) {
+            tankB.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
+        if (tankA.isAlive && tankA.isHitBy(bullet)) {
+            tankA.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
+        if (tankB.isHitBy(bullet)) {
+            tankB.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
         if (tankA.isAlive && tankA.isHitBy(bullet)) {
             tankA.destroy();
             if (bullet.element)

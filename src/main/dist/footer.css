@@ -1,5 +1,5 @@
 .footer {
-  background-color: #85a8db;
+  background-color: #9f3333;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -18,11 +18,11 @@
   font-weight: 300;
   opacity: 0.85;
   letter-spacing: 0.02em;
-  margin-left: 1rem;
+  margin-top: 1rem;
   color: #f0f4fa;
 }
 .footer__sub-title {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: white;
   font-weight: 500;
   margin: auto;
