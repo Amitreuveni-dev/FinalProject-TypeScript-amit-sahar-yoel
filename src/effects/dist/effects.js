@@ -49,6 +49,12 @@ var SoundManager = /** @class */ (function () {
             _this.backgroundMusic.play()["catch"](function () { });
         });
     }
+    SoundManager.prototype.setVolume = function (volume) {
+        this.backgroundMusic.volume = Math.max(0, Math.min(1, volume));
+    };
+    SoundManager.prototype.getVolume = function () {
+        return this.backgroundMusic.volume;
+    };
     SoundManager.prototype.playBackground = function () {
         return __awaiter(this, void 0, void 0, function () {
             var err_1;
@@ -88,6 +94,7 @@ var SoundManager = /** @class */ (function () {
 }());
 // יצירת מופע יחיד
 var sound = new SoundManager("../assets/backmusic.mp3");
+sound.setVolume(0.3); // הגדרת עוצמת השמע ל-50%
 // הפעלה על אינטראקציה ראשונה: עכבר/טאצ' או חיצים/Enter/Space
 var started = false;
 var startOnce = function () {

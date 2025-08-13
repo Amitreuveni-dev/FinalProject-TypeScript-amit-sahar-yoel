@@ -163,7 +163,8 @@ class Tank {
   keysPressed: Set<string> = new Set();
   playerElement?: HTMLElement;
   team: number;
-
+  isAlive: boolean = true;
+  
   constructor(
     tankImageUrl: string,
     width: number,
@@ -215,9 +216,8 @@ class Tank {
 
   }
 
-}
-
-  move(gameWidth: number) {
+  move(gameWidth: number, gameHeight: number) {
+    if(!this.isAlive) return;
     let moved = false;
     const isMoving = this.keysPressed.size > 0;
 
@@ -335,18 +335,39 @@ class Tank {
         break;
     }
 
-    return new Bullet(this.direction, 5, startX, startY);
-  }
-
-  return (new Bullet(this.direction, 5, startX, startY));
+  return new Bullet(this.direction, 5, startX, startY);
 }
 
+  isHitBy(bullet: Bullet): boolean {
+    if(!this.isAlive) return false;
+    
+    const bulletX = bullet.position.x;
+    const bulletY = bullet.position.y;
 
+    return(
+      bulletX + 8 > this.location.x &&
+      bulletX < this.location.x + this.width &&
+      bulletY + 8 > this.location.y &&
+      bulletY < this.location.y + this.height
+    );
+  }
+
+  destroy() {
+    this.isAlive = false;
+    if(this.playerElement) {
+      this.playerElement.remove();
+      this.playerElement = undefined;
+    }
+  }
+
+  
+  
   ////////////////////////////////////////////
   //////////// VIEW //////////////////////////
   ////////////////////////////////////////////
-
+  
   render() {
+    if(!this.isAlive) return;
     const container = document.querySelector(".tanksRoot");
     if (!container) {
       console.error("container .tanksRoot לא נמצא ב־DOM");
@@ -366,10 +387,10 @@ class Tank {
     }
     this.updatePosition();
   }
-
+  
   updatePosition() {
     if (!this.playerElement) return;
-
+    
     this.playerElement.classList.remove(
       "facing-up",
       "facing-down",
@@ -380,11 +401,11 @@ class Tank {
       "facing-down-right",
       "facing-down-left"
     );
-
+    
     this.playerElement.classList.add("facing-" + this.direction);
-
+    
     this.lastDirection = this.direction;
-
+    
     this.playerElement.style.left = this.location.x + "px";
     this.playerElement.style.top = this.location.y + "px";
   }
@@ -423,12 +444,6 @@ document.addEventListener("keypress", (e) => {
 });
 
   
-    window.addEventListener("resize", () => {
-      console.log("Resizing the game screen");
-      screenAdjustment.adjustGameWidthAndHeight();
-
-    });
-  
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
@@ -436,11 +451,40 @@ tankB.render();
 
 
 const gameLoop = () => {
-  tankA.move(screenAdjustment.gameWidth);
-  tankB.move(screenAdjustment.gameWidth);
+
+  tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+  tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
 
   bullets.forEach((bullet, index) => {
     bullet.move();
+
+    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+      tankA.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankB.isHitBy(bullet)) {
+      tankB.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+      tankA.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankB.isHitBy(bullet)) {
+      tankB.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
 
     if (bullet.hitTheWall()) {
       if (bullet.element) bullet.element.remove();
@@ -455,3 +499,4 @@ const gameLoop = () => {
 
 
 gameLoop();
+

@@ -1,6 +1,11 @@
 class SoundManager {
   private backgroundMusic: HTMLAudioElement;
-
+  setVolume(volume: number) {
+    this.backgroundMusic.volume = Math.max(0, Math.min(1, volume));
+  }
+  getVolume() {
+    return this.backgroundMusic.volume;
+  }
   constructor(musicPath: string) {
     this.backgroundMusic = new Audio(musicPath);
     this.backgroundMusic.loop = true;
@@ -47,7 +52,7 @@ class SoundManager {
 
 // יצירת מופע יחיד
 const sound = new SoundManager("../assets/backmusic.mp3");
-
+sound.setVolume(0.3); // הגדרת עוצמת השמע ל-50%
 // הפעלה על אינטראקציה ראשונה: עכבר/טאצ' או חיצים/Enter/Space
 let started = false;
 const startOnce = () => {
@@ -56,7 +61,6 @@ const startOnce = () => {
   sound.playBackground();
   document.removeEventListener("pointerdown", startOnce);
 };
-
 
 document.addEventListener("pointerdown", startOnce, { once: false });
 document.addEventListener("keydown", startOnce);
