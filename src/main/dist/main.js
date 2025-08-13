@@ -90,7 +90,7 @@ var Bullet = /** @class */ (function () {
         if (this.position.x < 0 ||
             this.position.x > screenAdjustment.gameWidth + 50 ||
             this.position.y < 0 ||
-            this.position.y > screenAdjustment.gameHeight + 100) {
+            this.position.y > screenAdjustment.gameHeight + 45) {
             return true;
         }
         return false;
