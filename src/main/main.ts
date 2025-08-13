@@ -360,14 +360,12 @@ class Tank {
     }
   }
 
-  return (new Bullet(this.direction, 5, startX, startY));
-}
-
-
+  
+  
   ////////////////////////////////////////////
   //////////// VIEW //////////////////////////
   ////////////////////////////////////////////
-
+  
   render() {
     if(!this.isAlive) return;
     const container = document.querySelector(".tanksRoot");
@@ -389,10 +387,10 @@ class Tank {
     }
     this.updatePosition();
   }
-
+  
   updatePosition() {
     if (!this.playerElement) return;
-
+    
     this.playerElement.classList.remove(
       "facing-up",
       "facing-down",
@@ -403,11 +401,11 @@ class Tank {
       "facing-down-right",
       "facing-down-left"
     );
-
+    
     this.playerElement.classList.add("facing-" + this.direction);
-
+    
     this.lastDirection = this.direction;
-
+    
     this.playerElement.style.left = this.location.x + "px";
     this.playerElement.style.top = this.location.y + "px";
   }
@@ -445,12 +443,6 @@ document.addEventListener("keypress", (e) => {
   if (e.key === " ") bullets.push(tankB.shoot());
 });
 
-  
-    window.addEventListener("resize", () => {
-      console.log("Resizing the game screen");
-      screenAdjustment.adjustGameWidthAndHeight();
-
-    });
   
 tankA.setInitialLocation();
 tankB.setInitialLocation();

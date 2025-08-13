@@ -334,10 +334,6 @@ document.addEventListener("keypress", function (e) {
     if (e.key === " ")
         bullets.push(tankB.shoot());
 });
-window.addEventListener("resize", function () {
-    console.log("Resizing the game screen");
-    screenAdjustment.adjustGameWidthAndHeight();
-});
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
