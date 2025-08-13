@@ -218,6 +218,7 @@ class Tank {
   }
 
   move(gameWidth: number, gameHeight: number) {
+    if(!this.isAlive) return;
     let moved = false;
     const isMoving = this.keysPressed.size > 0;
 
@@ -368,6 +369,7 @@ class Tank {
   ////////////////////////////////////////////
 
   render() {
+    if(!this.isAlive) return;
     const container = document.querySelector(".tanksRoot");
     if (!container) {
       console.error("container .tanksRoot לא נמצא ב־DOM");
@@ -443,11 +445,6 @@ document.addEventListener("keypress", (e) => {
   if (e.key === " ") bullets.push(tankB.shoot());
 });
 
-
-// window.addEventListener("resize", () => {
-//   console.log("Resizing the game screen");
-//   window.location.reload();
-// });
 
 tankA.setInitialLocation();
 tankB.setInitialLocation();

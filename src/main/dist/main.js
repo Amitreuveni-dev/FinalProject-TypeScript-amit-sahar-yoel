@@ -153,6 +153,8 @@ var Tank = /** @class */ (function () {
         }
     };
     Tank.prototype.move = function (gameWidth, gameHeight) {
+        if (!this.isAlive)
+            return;
         var moved = false;
         var isMoving = this.keysPressed.size > 0;
         // Get current key states
@@ -290,6 +292,8 @@ var Tank = /** @class */ (function () {
     //////////// VIEW //////////////////////////
     ////////////////////////////////////////////
     Tank.prototype.render = function () {
+        if (!this.isAlive)
+            return;
         var container = document.querySelector(".tanksRoot");
         if (!container) {
             console.error("container .tanksRoot לא נמצא ב־DOM");
@@ -332,10 +336,6 @@ document.addEventListener("keypress", function (e) {
     if (e.key === " ")
         bullets.push(tankB.shoot());
 });
-// window.addEventListener("resize", () => {
-//   console.log("Resizing the game screen");
-//   window.location.reload();
-// });
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
@@ -345,6 +345,20 @@ var gameLoop = function () {
     tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
     bullets.forEach(function (bullet, index) {
         bullet.move();
+        if (tankA.isAlive && tankA.isHitBy(bullet)) {
+            tankA.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
+        if (tankB.isHitBy(bullet)) {
+            tankB.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
         if (tankA.isAlive && tankA.isHitBy(bullet)) {
             tankA.destroy();
             if (bullet.element)
