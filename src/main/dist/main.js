@@ -21,8 +21,6 @@ var screenSize = /** @class */ (function () {
             if (windowWidth) {
                 if (windowWidth >= 1211) {
                     this.largeScreen();
-                    this.gameWidth = 1117;
-                    this.gameHeight = 656;
                 }
                 else if (windowWidth > 815) {
                     this.mediumScreen();
@@ -60,6 +58,7 @@ var Tank = /** @class */ (function () {
         this.deceleration = baseSpeed * 0.15;
         this.direction = initialDirection;
         this.location = initialLocation;
+        this.initialLocation = initialLocation;
         this.controls = controls;
         this.team = team;
         window.addEventListener("keydown", function (e) {
@@ -74,6 +73,16 @@ var Tank = /** @class */ (function () {
             _this.keysPressed["delete"](e.key);
         });
     }
+    Tank.prototype.setInitialLocation = function () {
+        if (this.team === 1) {
+            this.initialLocation.x = 8;
+            this.initialLocation.y = 280;
+        }
+        if (this.team === 2) {
+            this.initialLocation.x = screenAdjustment.gameWidth - 100;
+            this.initialLocation.y = 280;
+        }
+    };
     Tank.prototype.move = function (gameWidth, gameHeight) {
         var moved = false;
         var isMoving = this.keysPressed.size > 0;
@@ -98,17 +107,17 @@ var Tank = /** @class */ (function () {
             this.location.x -= this.speed;
             moved = true;
             this.location.x = Math.max(0, this.location.x);
-            // Team 1 boundary
-            if (this.location.x < gameWidth / 2 + 10 && this.team === 1) {
+            // Team 2 boundary
+            if (this.location.x < gameWidth / 2 + 10 && this.team === 2) {
                 this.location.x = gameWidth / 2 + 10;
             }
         }
         if (right) {
             this.location.x += this.speed;
             moved = true;
-            this.location.x = Math.min(gameWidth, this.location.x);
-            // Team 2 boundary
-            if (this.location.x > gameWidth / 2 - 18 && this.team === 2) {
+            this.location.x = Math.min(screenAdjustment.gameWidth, this.location.x);
+            // Team 1 boundary
+            if (this.location.x > screenAdjustment.gameWidth / 2 - 18 && this.team === 1) {
                 this.location.x = gameWidth / 2 - 18;
             }
         }
@@ -180,8 +189,10 @@ var Tank = /** @class */ (function () {
     };
     return Tank;
 }());
-var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 1);
-var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 2);
+var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 1);
+var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
+tankA.setInitialLocation();
+tankB.setInitialLocation();
 tankA.render();
 tankB.render();
 var gameLoop = function () {

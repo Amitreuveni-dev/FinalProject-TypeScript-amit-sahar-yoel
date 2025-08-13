@@ -31,12 +31,10 @@ class screenSize {
 
   adjustGameWidthAndHeight() {
     try {
-      const windowWidth = window.innerWidth
+      const windowWidth = window.innerWidth;
       if (windowWidth) {
         if (windowWidth >= 1211) {
           this.largeScreen();
-          this.gameWidth = 1117;
-          this.gameHeight = 656;
         } else if (windowWidth > 815) {
           this.mediumScreen();
         } else {
@@ -53,6 +51,7 @@ class screenSize {
 }
 
 const screenAdjustment = new screenSize(0, 0);
+
 screenAdjustment.adjustGameWidthAndHeight();
 console.log(screenAdjustment);
 
@@ -62,6 +61,7 @@ class Tank {
   height: number;
   speed: number = 0;
   baseSpeed: number;
+  initialLocation : { x: number; y: number };
   maxSpeed: number;
   acceleration: number;
   deceleration: number;
@@ -92,8 +92,11 @@ class Tank {
     this.deceleration = baseSpeed * 0.15;
     this.direction = initialDirection;
     this.location = initialLocation;
+    this.initialLocation = initialLocation ;
     this.controls = controls;
     this.team = team;
+
+    
 
     window.addEventListener("keydown", (e) => {
       if (
@@ -111,83 +114,95 @@ class Tank {
     });
   }
 
-move(gameWidth: number, gameHeight: number) {
-  let moved = false;
-  const isMoving = this.keysPressed.size > 0;
-
-  // Get current key states
-  const up = this.keysPressed.has(this.controls.up);
-  const down = this.keysPressed.has(this.controls.down);
-  const left = this.keysPressed.has(this.controls.left);
-  const right = this.keysPressed.has(this.controls.right);
-
-  // Handle vertical movement
-  if (up) {
-    this.location.y -= this.speed;
-    moved = true;
-    this.location.y = Math.max(0, this.location.y);
+setInitialLocation() {
+  if (this.team === 1){
+    this.initialLocation.x = 8
+    this.initialLocation.y = 280;
   }
-  
-  if (down) {
-    this.location.y += this.speed;
-    moved = true;
-    this.location.y = Math.min(screenAdjustment.gameHeight, this.location.y);
+  if (this.team === 2){
+    this.initialLocation.x = screenAdjustment.gameWidth - 100
+    this.initialLocation.y = 280;
   }
 
-  // Handle horizontal movement
-  if (left) {
-    this.location.x -= this.speed;
-    moved = true;
-    this.location.x = Math.max(0, this.location.x);
-    
-    // Team 1 boundary
-    if (this.location.x < gameWidth / 2 + 10 && this.team === 1) {
-      this.location.x = gameWidth / 2 + 10;
-    }
-  }
-
-  if (right) {
-    this.location.x += this.speed;
-    moved = true;
-    this.location.x = Math.min(gameWidth, this.location.x);
-    
-    // Team 2 boundary
-    if (this.location.x > gameWidth / 2 - 18 && this.team === 2) {
-      this.location.x = gameWidth / 2 - 18;
-    }
-  }
-
-  // Update direction based on key combinations
-  if (up && right) {
-    this.direction = "up-right";
-  } else if (up && left) {
-    this.direction = "up-left";
-  } else if (down && right) {
-    this.direction = "down-right";
-  } else if (down && left) {
-    this.direction = "down-left";
-  } else if (up) {
-    this.direction = "up";
-  } else if (down) {
-    this.direction = "down";
-  } else if (left) {
-    this.direction = "left";
-  } else if (right) {
-    this.direction = "right";
-  }
-
-  // Handle speed acceleration/deceleration
-  if (isMoving) {
-    this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
-  } else {
-    this.speed = Math.max(this.speed - this.deceleration, 0);
-  }
-
-  if (moved || this.speed > 0) {
-    console.log(tankA.location);
-    this.render();
-  }
 }
+
+  move(gameWidth: number, gameHeight: number) {
+    let moved = false;
+    const isMoving = this.keysPressed.size > 0;
+
+    // Get current key states
+    const up = this.keysPressed.has(this.controls.up);
+    const down = this.keysPressed.has(this.controls.down);
+    const left = this.keysPressed.has(this.controls.left);
+    const right = this.keysPressed.has(this.controls.right);
+
+    // Handle vertical movement
+    if (up) {
+      this.location.y -= this.speed;
+      moved = true;
+      this.location.y = Math.max(0, this.location.y);
+    }
+
+    if (down) {
+      this.location.y += this.speed;
+      moved = true;
+      this.location.y = Math.min(screenAdjustment.gameHeight, this.location.y);
+    }
+
+    // Handle horizontal movement
+    if (left) {
+      this.location.x -= this.speed;
+      moved = true;
+      this.location.x = Math.max(0, this.location.x);
+
+      // Team 2 boundary
+      if (this.location.x < gameWidth / 2 + 10 && this.team === 2) {
+        this.location.x = gameWidth / 2 + 10;
+      }
+    }
+
+    if (right) {
+      this.location.x += this.speed;
+      moved = true;
+      this.location.x = Math.min(screenAdjustment.gameWidth, this.location.x);
+
+      // Team 1 boundary
+      if (this.location.x > screenAdjustment.gameWidth / 2 - 18 && this.team === 1) {
+        this.location.x = gameWidth / 2 - 18;
+      }
+    }
+
+    // Update direction based on key combinations
+    if (up && right) {
+      this.direction = "up-right";
+    } else if (up && left) {
+      this.direction = "up-left";
+    } else if (down && right) {
+      this.direction = "down-right";
+    } else if (down && left) {
+      this.direction = "down-left";
+    } else if (up) {
+      this.direction = "up";
+    } else if (down) {
+      this.direction = "down";
+    } else if (left) {
+      this.direction = "left";
+    } else if (right) {
+      this.direction = "right";
+    }
+
+    // Handle speed acceleration/deceleration
+    if (isMoving) {
+      this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
+    } else {
+      this.speed = Math.max(this.speed - this.deceleration, 0);
+    }
+
+    if (moved || this.speed > 0) {
+      console.log(tankA.location);
+      this.render();
+    }
+  }
 
   render() {
     const container = document.querySelector(".tanksRoot");
@@ -233,17 +248,6 @@ move(gameWidth: number, gameHeight: number) {
   }
 }
 
-const tankA = new Tank(
-  "../assets/playerTank.png",
-  50,
-  50,
-  0.2,
-  "left",
-  { x: 1100, y: 0 },
-  { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" },
-  1
-);
-
 const tankB = new Tank(
   "../assets/enemyTank.png",
   50,
@@ -252,16 +256,32 @@ const tankB = new Tank(
   "right",
   { x: 10, y: 5 },
   { up: "w", down: "s", left: "a", right: "d" },
+  1
+);
+
+
+const tankA = new Tank(
+  "../assets/playerTank.png",
+  50,
+  50,
+  0.2,
+  "left",
+  { x: 1100, y: 0 },
+  { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" },
   2
 );
 
+
+tankA.setInitialLocation();
+tankB.setInitialLocation();
 tankA.render();
 tankB.render();
+
 
 const gameLoop = () => {
   tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
   tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
-  
+
   requestAnimationFrame(gameLoop);
 };
 
