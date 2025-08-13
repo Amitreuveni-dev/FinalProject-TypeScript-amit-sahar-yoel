@@ -21,16 +21,16 @@ class screenSize {
     this.gameHeight = gameHeight;
   }
   largeScreen() {
-    this.gameWidth = 1200;
-    this.gameHeight = 800;
-  }
-  mediumScreen() {
-    this.gameWidth = 800;
+    this.gameWidth = 1106;
     this.gameHeight = 650;
   }
+  mediumScreen() {
+    this.gameWidth = 708;
+    this.gameHeight = 570;
+  }
   smallScreen() {
-    this.gameWidth = 550;
-    this.gameHeight = 550;
+    this.gameWidth = 457;
+    this.gameHeight = 460;
   }
 
   adjustGameWidthAndHeight() {
@@ -52,6 +52,9 @@ class screenSize {
       return undefined;
     }
   }
+
+
+
 }
 
 const screenAdjustment = new screenSize(0, 0);
@@ -77,43 +80,43 @@ class Bullet {
   }
 
   move(): void {
-  switch (this.direction) {
-    case "up":
-      this.position.y -= this.speed;
-      break;
-    case "down":
-      this.position.y += this.speed;
-      break;
-    case "left":
-      this.position.x -= this.speed;
-      break;
-    case "right":
-      this.position.x += this.speed;
-      break;
-    case "up-right":
-      this.position.x += this.speed;
-      this.position.y -= this.speed;
-      break;
-    case "up-left":
-      this.position.x -= this.speed;
-      this.position.y -= this.speed;
-      break;
-    case "down-right":
-      this.position.x += this.speed;
-      this.position.y += this.speed;
-      break;
-    case "down-left":
-      this.position.x -= this.speed;
-      this.position.y += this.speed;
-      break;
-    default:
-      console.error("Invalid direction for bullet movement");
+    switch (this.direction) {
+      case "up":
+        this.position.y -= this.speed;
+        break;
+      case "down":
+        this.position.y += this.speed;
+        break;
+      case "left":
+        this.position.x -= this.speed;
+        break;
+      case "right":
+        this.position.x += this.speed;
+        break;
+      case "up-right":
+        this.position.x += this.speed;
+        this.position.y -= this.speed;
+        break;
+      case "up-left":
+        this.position.x -= this.speed;
+        this.position.y -= this.speed;
+        break;
+      case "down-right":
+        this.position.x += this.speed;
+        this.position.y += this.speed;
+        break;
+      case "down-left":
+        this.position.x -= this.speed;
+        this.position.y += this.speed;
+        break;
+      default:
+        console.error("Invalid direction for bullet movement");
+    }
+    this.render();
   }
-  this.render();
-}
 
-  
-  
+
+
   hitTheWall(): boolean {
     if (
       this.position.x < 0 ||
@@ -129,13 +132,13 @@ class Bullet {
 
   render() {
     const container = document.querySelector(".tanksRoot");
-    if(!container) return;
+    if (!container) return;
 
     if (!this.element) {
-  this.element = document.createElement("div");
-  this.element.className = "bullet";
-  if(container) container.appendChild(this.element);
-}
+      this.element = document.createElement("div");
+      this.element.className = "bullet";
+      if (container) container.appendChild(this.element);
+    }
 
     this.element.style.left = this.position.x + "px";
     this.element.style.top = this.position.y + "px";
@@ -150,7 +153,7 @@ class Tank {
   height: number;
   speed: number = 0;
   baseSpeed: number;
-  initialLocation : { x: number; y: number };
+  initialLocation: { x: number; y: number };
   maxSpeed: number;
   acceleration: number;
   deceleration: number;
@@ -182,7 +185,7 @@ class Tank {
     this.deceleration = baseSpeed * 0.15;
     this.direction = initialDirection;
     this.location = initialLocation;
-    this.initialLocation = initialLocation ;
+    this.initialLocation = initialLocation;
     this.controls = controls;
     this.team = team;
 
@@ -202,17 +205,17 @@ class Tank {
     });
   }
 
-setInitialLocation() {
-  if (this.team === 1){
-    this.initialLocation.x = 8
-    this.initialLocation.y = 280;
-  }
-  if (this.team === 2){
-    this.initialLocation.x = screenAdjustment.gameWidth - 100
-    this.initialLocation.y = 280;
-  }
+  setInitialLocation() {
+    if (this.team === 1) {
+      this.initialLocation.x = 8
+      this.initialLocation.y = 280;
+    }
+    if (this.team === 2) {
+      this.initialLocation.x = screenAdjustment.gameWidth
+      this.initialLocation.y = 280;
+    }
 
-}
+  }
 
   move(gameWidth: number, gameHeight: number) {
     let moved = false;
@@ -244,8 +247,8 @@ setInitialLocation() {
       this.location.x = Math.max(0, this.location.x);
 
       // Team 2 boundary
-      if (this.location.x < gameWidth / 2 + 10 && this.team === 2) {
-        this.location.x = gameWidth / 2 + 10;
+      if (this.location.x < gameWidth / 2 + 25 && this.team === 2) {
+        this.location.x = gameWidth / 2 + 25;
       }
     }
 
@@ -255,8 +258,8 @@ setInitialLocation() {
       this.location.x = Math.min(screenAdjustment.gameWidth, this.location.x);
 
       // Team 1 boundary
-      if (this.location.x > screenAdjustment.gameWidth / 2 - 18 && this.team === 1) {
-        this.location.x = gameWidth / 2 - 18;
+      if (this.location.x > screenAdjustment.gameWidth / 2 - 25 && this.team === 1) {
+        this.location.x = gameWidth / 2 - 25;
       }
     }
 
@@ -285,53 +288,53 @@ setInitialLocation() {
     } else {
       this.speed = Math.max(this.speed - this.deceleration, 0);
     }
-    
+
     if (moved || this.speed > 0) {
       console.log(tankA.location);
       this.render();
     }
   }
   shoot(): Bullet {
-  const bulletSize = 8;
-  const centerX = this.location.x + this.width / 2 - bulletSize / 2;
-  const centerY = this.location.y + this.height / 2 - bulletSize / 2;
-  let startX = centerX;
-  let startY = centerY;
+    const bulletSize = 8;
+    const centerX = this.location.x + this.width / 2 - bulletSize / 2;
+    const centerY = this.location.y + this.height / 2 - bulletSize / 2;
+    let startX = centerX;
+    let startY = centerY;
 
-  switch (this.direction) {
-    case "up":
-      startY = this.location.y - bulletSize;
-      startX = centerX;
-      break;
-    case "down":
-      startY = this.location.y + this.height;
-      startX = centerX;
-      break;
-    case "left":
-      startX = this.location.x - bulletSize;
-      startY = centerY;
-      break;
-    case "right":
-      startX = this.location.x + this.width;
-      startY = centerY;
-      break;
-    case "up-right":
-      startX = this.location.x + this.width;
-      startY = this.location.y - bulletSize;
-      break;
-    case "up-left":
-      startX = this.location.x - bulletSize;
-      startY = this.location.y - bulletSize;
-      break;
-    case "down-right":
-      startX = this.location.x + this.width;
-      startY = this.location.y + this.height;
-      break;
-    case "down-left":
-      startX = this.location.x - bulletSize;
-      startY = this.location.y + this.height;
-      break;
-  }
+    switch (this.direction) {
+      case "up":
+        startY = this.location.y - bulletSize;
+        startX = centerX;
+        break;
+      case "down":
+        startY = this.location.y + this.height;
+        startX = centerX;
+        break;
+      case "left":
+        startX = this.location.x - bulletSize;
+        startY = centerY;
+        break;
+      case "right":
+        startX = this.location.x + this.width;
+        startY = centerY;
+        break;
+      case "up-right":
+        startX = this.location.x + this.width;
+        startY = this.location.y - bulletSize;
+        break;
+      case "up-left":
+        startX = this.location.x - bulletSize;
+        startY = this.location.y - bulletSize;
+        break;
+      case "down-right":
+        startX = this.location.x + this.width;
+        startY = this.location.y + this.height;
+        break;
+      case "down-left":
+        startX = this.location.x - bulletSize;
+        startY = this.location.y + this.height;
+        break;
+    }
 
   return new Bullet(this.direction, 5, startX, startY);
 }
@@ -384,10 +387,10 @@ setInitialLocation() {
     }
     this.updatePosition();
   }
-  
+
   updatePosition() {
     if (!this.playerElement) return;
-    
+
     this.playerElement.classList.remove(
       "facing-up",
       "facing-down",
@@ -436,9 +439,15 @@ const tankA = new Tank(
 );
 
 document.addEventListener("keypress", (e) => {
-  if(e.key === "Enter") bullets.push(tankA.shoot());
-  if(e.key === " ") bullets.push(tankB.shoot());
+  if (e.key === "Enter") bullets.push(tankA.shoot());
+  if (e.key === " ") bullets.push(tankB.shoot());
 });
+
+
+// window.addEventListener("resize", () => {
+//   console.log("Resizing the game screen");
+//   window.location.reload();
+// });
 
 tankA.setInitialLocation();
 tankB.setInitialLocation();
@@ -468,18 +477,30 @@ const gameLoop = () => {
       return;
     }
 
-    if(bullet.hitTheWall()) {
+    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+      tankA.destroy();
       if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankB.isHitBy(bullet)) {
+      tankB.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if (bullet.hitTheWall()) {
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
     }
   });
 
+
   requestAnimationFrame(gameLoop);
 };
 
-////////////////////////////////////////////
-//////////// INIT //////////////////////////
-////////////////////////////////////////////
 
 
 gameLoop();
