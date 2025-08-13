@@ -59,6 +59,7 @@ Build a **client-side web application** using **TypeScript**, **Model-View-Contr
 - Collision detection and game physics
 - Save/load game progress
 
+
 ## Evaluation Criteria
 
 ### Technical Excellence (40%)
