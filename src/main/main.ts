@@ -21,16 +21,16 @@ class screenSize {
     this.gameHeight = gameHeight;
   }
   largeScreen() {
-    this.gameWidth = 1200;
-    this.gameHeight = 800;
-  }
-  mediumScreen() {
-    this.gameWidth = 800;
+    this.gameWidth = 1106;
     this.gameHeight = 650;
   }
+  mediumScreen() {
+    this.gameWidth = 708;
+    this.gameHeight = 570;
+  }
   smallScreen() {
-    this.gameWidth = 550;
-    this.gameHeight = 550;
+    this.gameWidth = 457;
+    this.gameHeight = 460;
   }
 
   adjustGameWidthAndHeight() {
@@ -52,6 +52,9 @@ class screenSize {
       return undefined;
     }
   }
+
+  
+
 }
 
 const screenAdjustment = new screenSize(0, 0);
@@ -112,7 +115,7 @@ class Bullet {
   this.render();
 }
 
-  
+
   
   hitTheWall(): boolean {
     if (
@@ -207,7 +210,7 @@ setInitialLocation() {
     this.initialLocation.y = 280;
   }
   if (this.team === 2){
-    this.initialLocation.x = screenAdjustment.gameWidth - 100
+    this.initialLocation.x = screenAdjustment.gameWidth
     this.initialLocation.y = 280;
   }
 
@@ -243,8 +246,8 @@ setInitialLocation() {
       this.location.x = Math.max(0, this.location.x);
 
       // Team 2 boundary
-      if (this.location.x < gameWidth / 2 + 10 && this.team === 2) {
-        this.location.x = gameWidth / 2 + 10;
+      if (this.location.x < gameWidth / 2 + 25 && this.team === 2) {
+        this.location.x = gameWidth / 2 + 25;
       }
     }
 
@@ -254,8 +257,8 @@ setInitialLocation() {
       this.location.x = Math.min(screenAdjustment.gameWidth, this.location.x);
 
       // Team 1 boundary
-      if (this.location.x > screenAdjustment.gameWidth / 2 - 18 && this.team === 1) {
-        this.location.x = gameWidth / 2 - 18;
+      if (this.location.x > screenAdjustment.gameWidth / 2 - 25 && this.team === 1) {
+        this.location.x = gameWidth / 2 - 25;
       }
     }
 
@@ -417,6 +420,12 @@ document.addEventListener("keypress", (e) => {
   if(e.key === " ") bullets.push(tankB.shoot());
 });
 
+  
+    // window.addEventListener("resize", () => {
+    //   console.log("Resizing the game screen");
+    //   window.location.reload();
+    // });
+  
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
@@ -436,12 +445,10 @@ const gameLoop = () => {
     }
   });
 
+  
   requestAnimationFrame(gameLoop);
 };
 
-////////////////////////////////////////////
-//////////// INIT //////////////////////////
-////////////////////////////////////////////
 
 
 gameLoop();
