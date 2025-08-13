@@ -63,7 +63,7 @@ button {
 }
 
 .main {
-  
+
   border: 20px solid gray;
   width: 1200px;
   height: 800px;
@@ -77,24 +77,24 @@ button {
 }
 
 @media (min-width: 1211px) {
-    .main {
-        width: 1200px;
-        height: 800px;
-    }
+  .main {
+    width: 1200px;
+    height: 800px;
+  }
 }
 
 @media (max-width: 1210px) {
-    .main {
-        width: 800px;
-        height: 650px;
-    }
+  .main {
+    width: 800px;
+    height: 650px;
+  }
 }
 
 @media (max-width: 815px) {
-    .main {
-        width: 550px;
-        height: 550px;
-    }
+  .main {
+    width: 550px;
+    height: 550px;
+  }
 }
 
 
@@ -157,6 +157,13 @@ button {
   }
 }
 
+.bullet {
+  width: 8px;
+  height: 8px;
+  background-color: yellow;
+  border-radius: 50%;
+  position: absolute;
+}
 
 
 .tank {
@@ -168,8 +175,6 @@ button {
 
 
 .navButton {
-  // height: 40px;
-  // width: 50px;
   align-items: center;
   background-color: #4e54c8;
   color: white;
@@ -180,15 +185,38 @@ button {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, transform 0.2s;
+
+
+}
+
+.facing-up {
+  transform: rotate(0deg);
+}
+
 .facing-down {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
 }
 
 .facing-left {
-  transform: scaleX(-1);
+  transform: rotate(-90deg);
 }
 
 .facing-right {
-  transform: scaleX(1);
+  transform: rotate(90deg);
 }
+
+.facing-up-right {
+  transform: rotate(45deg);
+}
+
+.facing-up-left {
+  transform: rotate(-45deg);
+}
+
+.facing-down-right {
+  transform: rotate(135deg);
+}
+
+.facing-down-left {
+  transform: rotate(-135deg);
 }

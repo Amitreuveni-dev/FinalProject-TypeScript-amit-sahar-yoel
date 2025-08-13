@@ -140,6 +140,14 @@ button:active {
   background-color: #3a40a1;
 }
 
+.bullet {
+  width: 8px;
+  height: 8px;
+  background-color: yellow;
+  border-radius: 50%;
+  position: absolute;
+}
+
 .tank {
   position: absolute;
   width: 50px;
@@ -159,12 +167,35 @@ button:active {
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, transform 0.2s;
 }
-.navButton .facing-down {
+
+.facing-up {
+  transform: rotate(0deg);
+}
+
+.facing-down {
+  transform: rotate(180deg);
+}
+
+.facing-left {
+  transform: rotate(-90deg);
+}
+
+.facing-right {
   transform: rotate(90deg);
 }
-.navButton .facing-left {
-  transform: scaleX(-1);
+
+.facing-up-right {
+  transform: rotate(45deg);
 }
-.navButton .facing-right {
-  transform: scaleX(1);
+
+.facing-up-left {
+  transform: rotate(-45deg);
+}
+
+.facing-down-right {
+  transform: rotate(135deg);
+}
+
+.facing-down-left {
+  transform: rotate(-135deg);
 }
