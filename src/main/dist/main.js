@@ -1,6 +1,49 @@
 ////////////////////////////////////////////
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
+var Bullet = /** @class */ (function () {
+    function Bullet(direction, speed) {
+        this.position = { x: 0, y: 0 };
+        this.direction = direction;
+        this.speed = speed;
+    }
+    Bullet.prototype.move = function () {
+        switch (this.direction) {
+            case "up":
+                this.position.y -= this.speed;
+                break;
+            case "down":
+                this.position.y += this.speed;
+                break;
+            case "left":
+                this.position.x -= this.speed;
+                break;
+            case "right":
+                this.position.x += this.speed;
+                break;
+            default:
+                console.error("Invalid direction for bullet movement");
+        }
+    };
+    Bullet.prototype.render = function () {
+        var bullet = document.createElement("div");
+        bullet.classList.add("bullet");
+        bullet.style.position = "absolute";
+        bullet.style.left = this.position + "px";
+        bullet.style.top = this.position + "px";
+        document.body.appendChild(bullet);
+    };
+    Bullet.prototype.hitTheWall = function () {
+        if (this.position.x < 0 ||
+            this.position.x > GAME_WIDTH ||
+            this.position.y < 0 ||
+            this.position.y > GAME_WIDTH) {
+            return true;
+        }
+        return false;
+    };
+    return Bullet;
+}());
 var Tank = /** @class */ (function () {
     function Tank(tankImageUrl, width, height, baseSpeed, initialDirection, initialLocation, controls, team) {
         var _this = this;
