@@ -368,20 +368,6 @@ var gameLoop = function () {
             bullets.splice(index, 1);
             return;
         }
-        if (tankA.isAlive && tankA.isHitBy(bullet)) {
-            tankA.destroy();
-            if (bullet.element)
-                bullet.element.remove();
-            bullets.splice(index, 1);
-            return;
-        }
-        if (tankB.isHitBy(bullet)) {
-            tankB.destroy();
-            if (bullet.element)
-                bullet.element.remove();
-            bullets.splice(index, 1);
-            return;
-        }
         if (bullet.hitTheWall()) {
             if (bullet.element)
                 bullet.element.remove();
