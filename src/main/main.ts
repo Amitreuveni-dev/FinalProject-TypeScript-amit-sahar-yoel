@@ -1,6 +1,7 @@
 ////////////////////////////////////////////
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
+// import { getTankSpeed , setTankSpeed } from "../settings/settings"; 
 
 type Direction =
   | "up"
@@ -52,11 +53,15 @@ class screenSize {
       return undefined;
     }
   }
-
-
-
 }
-
+function bulletFired() {
+  const audio = new Audio("../assets/shootSound.mp3");
+  audio.play();
+}
+function hitBulledHitTank(){
+  const audio = new Audio("../assets/hitSound.mp3");
+  audio.play();
+}
 const screenAdjustment = new screenSize(0, 0);
 
 screenAdjustment.adjustGameWidthAndHeight();
@@ -67,11 +72,13 @@ class Bullet {
   speed: number;
   element?: HTMLElement;
 
+
+
   constructor(
     direction: Direction,
     speed: number,
     startX: number,
-    startY: number,
+    startY: number
   ) {
     this.position = { x: startX, y: startY };
     this.direction = direction;
@@ -114,8 +121,6 @@ class Bullet {
     this.render();
   }
 
-
-
   hitTheWall(): boolean {
     if (
       this.position.x < 0 ||
@@ -127,7 +132,6 @@ class Bullet {
     }
     return false;
   }
-
 
   render() {
     const container = document.querySelector(".tanksRoot");
@@ -143,8 +147,6 @@ class Bullet {
     this.element.style.top = this.position.y + "px";
   }
 }
-
-
 
 class Tank {
   tankImageUrl: string;
@@ -164,7 +166,31 @@ class Tank {
   playerElement?: HTMLElement;
   team: number;
   isAlive: boolean = true;
-    
+  moveSound?: HTMLAudioElement;
+
+  setMoveSound() {
+    // console.log("moves");
+    if (!this.moveSound) {
+      this.moveSound = this.getMoveSound();
+      this.moveSound.loop = true;
+    }
+    if (this.moveSound.paused) {
+      this.moveSound.currentTime = 0;
+      this.moveSound.play();
+    }
+  }
+
+  stopMoveSound() {
+    if (this.moveSound && !this.moveSound.paused) {
+      this.moveSound.pause();
+      this.moveSound.currentTime = 0;
+    }
+  }
+
+  getMoveSound() {
+    return new Audio("../assets/movingSound.mp3");
+  }
+
   constructor(
     tankImageUrl: string,
     width: number,
@@ -206,19 +232,17 @@ class Tank {
 
   setInitialLocation() {
     if (this.team === 1) {
-      this.initialLocation.x = 8
+      this.initialLocation.x = 8;
       this.initialLocation.y = 280;
     }
     if (this.team === 2) {
-      this.initialLocation.x = screenAdjustment.gameWidth
+      this.initialLocation.x = screenAdjustment.gameWidth;
       this.initialLocation.y = 280;
     }
-
   }
 
-
   move(gameWidth: number, gameHeight: number) {
-    if(!this.isAlive) return;
+    if (!this.isAlive) return;
     let moved = false;
     const isMoving = this.keysPressed.size > 0;
 
@@ -259,7 +283,10 @@ class Tank {
       this.location.x = Math.min(screenAdjustment.gameWidth, this.location.x);
 
       // Team 1 boundary
-      if (this.location.x > screenAdjustment.gameWidth / 2 - 25 && this.team === 1) {
+      if (
+        this.location.x > screenAdjustment.gameWidth / 2 - 25 &&
+        this.team === 1
+      ) {
         this.location.x = gameWidth / 2 - 25;
       }
     }
@@ -294,7 +321,7 @@ class Tank {
       this.render();
     }
   }
-  shoot(alive: boolean): Bullet|null {
+  shoot(alive: boolean): Bullet | null {
     if (!alive) return null;
 
     const bulletSize = 8;
@@ -338,16 +365,16 @@ class Tank {
         break;
     }
 
-  return new Bullet(this.direction, 5, startX, startY);
-}
+    return new Bullet(this.direction, 5, startX, startY);
+  }
 
   isHitBy(bullet: Bullet): boolean {
-    if(!this.isAlive) return false;
-    
+    if (!this.isAlive) return false;
+
     const bulletX = bullet.position.x;
     const bulletY = bullet.position.y;
 
-    return(
+    return (
       bulletX + 8 > this.location.x &&
       bulletX < this.location.x + this.width &&
       bulletY + 8 > this.location.y &&
@@ -357,20 +384,18 @@ class Tank {
 
   destroy() {
     this.isAlive = false;
-    if(this.playerElement) {
+    if (this.playerElement) {
       this.playerElement.remove();
       this.playerElement = undefined;
     }
   }
 
-  
-  
   ////////////////////////////////////////////
   //////////// VIEW //////////////////////////
   ////////////////////////////////////////////
-  
+
   render() {
-    if(!this.isAlive) return;
+    if (!this.isAlive) return;
     const container = document.querySelector(".tanksRoot");
     if (!container) {
       console.error("container .tanksRoot לא נמצא ב־DOM");
@@ -390,10 +415,10 @@ class Tank {
     }
     this.updatePosition();
   }
-  
+
   updatePosition() {
     if (!this.playerElement) return;
-    
+
     this.playerElement.classList.remove(
       "facing-up",
       "facing-down",
@@ -404,11 +429,11 @@ class Tank {
       "facing-down-right",
       "facing-down-left"
     );
-    
+
     this.playerElement.classList.add("facing-" + this.direction);
-    
+
     this.lastDirection = this.direction;
-    
+
     this.playerElement.style.left = this.location.x + "px";
     this.playerElement.style.top = this.location.y + "px";
   }
@@ -427,8 +452,7 @@ const tankB = new Tank(
   { up: "w", down: "s", left: "a", right: "d" },
   1
 );
-const bullets: Bullet[] = []
-
+const bullets: Bullet[] = [];
 
 const tankA = new Tank(
   "../assets/playerTank.png",
@@ -445,25 +469,26 @@ document.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     const bullet = tankA.shoot(tankA.isAlive);
     if (bullet) bullets.push(bullet);
+    bulletFired();
   }
   if (e.key === " ") {
     const bullet = tankB.shoot(tankB.isAlive);
     if (bullet) bullets.push(bullet);
+    bulletFired();
   }
 });
 
 window.addEventListener("resize", () => {
   screenAdjustment.adjustGameWidthAndHeight();
 });
-  
+
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
 tankB.render();
 
-
 const gameLoop = () => {
-
+  
   tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
   tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
 
@@ -473,60 +498,66 @@ const gameLoop = () => {
   bullets.forEach((bullet, index) => {
     bullet.move();
 
-    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+    if (tankA.isAlive && tankA.isHitBy(bullet)) {
       tankA.destroy();
-      if(bullet.element) bullet.element.remove();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
       return;
     }
 
-    if(tankB.isHitBy(bullet)) {
+    if (tankB.isHitBy(bullet)) {
       tankB.destroy();
-      if(bullet.element) bullet.element.remove();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
       return;
     }
 
-    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+    if (tankA.isAlive && tankA.isHitBy(bullet)) {
       tankA.destroy();
-      if(bullet.element) bullet.element.remove();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
       return;
     }
 
-    if(tankB.isHitBy(bullet)) {
+    if (tankB.isHitBy(bullet)) {
       tankB.destroy();
-      if(bullet.element) bullet.element.remove();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
       return;
     }
 
-
-    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+    if (tankA.isAlive && tankA.isHitBy(bullet)) {
       tankA.destroy();
-      if(bullet.element) bullet.element.remove();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
       return;
     }
 
-    if(tankB.isHitBy(bullet)) {
+    if (tankB.isHitBy(bullet)) {
       tankB.destroy();
-      if(bullet.element) bullet.element.remove();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
       return;
     }
 
-
-    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+    if (tankA.isAlive && tankA.isHitBy(bullet)) {
       tankA.destroy();
-      if(bullet.element) bullet.element.remove();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
       return;
     }
 
-    if(tankB.isHitBy(bullet)) {
+    if (tankB.isHitBy(bullet)) {
       tankB.destroy();
-      if(bullet.element) bullet.element.remove();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
       return;
     }
@@ -536,12 +567,19 @@ const gameLoop = () => {
       bullets.splice(index, 1);
     }
   });
+  if (tankA.keysPressed.size > 0 && tankA.isAlive) {
+    tankA.setMoveSound();
+  } else {
+    tankA.stopMoveSound();
+  }
 
-
+  // For tankB
+  if (tankB.keysPressed.size > 0 && tankB.isAlive) {
+    tankB.setMoveSound();
+  } else {
+    tankB.stopMoveSound();
+  }
   requestAnimationFrame(gameLoop);
 };
-
-
-
+// setTankSpeed(10)
 gameLoop();
-

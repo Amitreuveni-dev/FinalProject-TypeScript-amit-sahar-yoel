@@ -10,7 +10,7 @@ html,
 body {
   height: 100%;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(90deg, #722828, black,#2c3453);
+  background: linear-gradient(90deg, #722828, black, #2c3453);
   color: #2b2e4a;
   display: flex;
   flex-direction: column;
@@ -63,7 +63,6 @@ button {
 }
 
 .main {
-
   border: 20px solid gray;
   width: 1200px;
   height: 800px;
@@ -97,8 +96,6 @@ button {
   }
 }
 
-
-
 .tanksRoot {
   position: absolute;
   inset: 0;
@@ -106,7 +103,6 @@ button {
 
 .footer {
   position: sticky;
-
 
   background-color: #4e54c8;
   color: white;
@@ -165,14 +161,12 @@ button {
   position: absolute;
 }
 
-
 .tank {
   position: absolute;
   width: 50px;
   height: 50px;
   transition: transform 0.1s ease;
 }
-
 
 // .navButton {
 //   align-items: center;
@@ -185,7 +179,6 @@ button {
 //   font-size: 1rem;
 //   cursor: pointer;
 //   transition: background-color 0.3s, color 0.3s, transform 0.2s;
-
 
 // }
 

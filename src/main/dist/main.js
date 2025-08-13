@@ -1,6 +1,7 @@
 ////////////////////////////////////////////
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
+// import { getTankSpeed , setTankSpeed } from "../settings/settings"; 
 var screenSize = /** @class */ (function () {
     function screenSize(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
@@ -43,6 +44,14 @@ var screenSize = /** @class */ (function () {
     };
     return screenSize;
 }());
+function bulletFired() {
+    var audio = new Audio("../assets/shootSound.mp3");
+    audio.play();
+}
+function hitBulledHitTank() {
+    var audio = new Audio("../assets/hitSound.mp3");
+    audio.play();
+}
 var screenAdjustment = new screenSize(0, 0);
 screenAdjustment.adjustGameWidthAndHeight();
 var Bullet = /** @class */ (function () {
@@ -141,6 +150,26 @@ var Tank = /** @class */ (function () {
             _this.keysPressed["delete"](e.key);
         });
     }
+    Tank.prototype.setMoveSound = function () {
+        // console.log("moves");
+        if (!this.moveSound) {
+            this.moveSound = this.getMoveSound();
+            this.moveSound.loop = true;
+        }
+        if (this.moveSound.paused) {
+            this.moveSound.currentTime = 0;
+            this.moveSound.play();
+        }
+    };
+    Tank.prototype.stopMoveSound = function () {
+        if (this.moveSound && !this.moveSound.paused) {
+            this.moveSound.pause();
+            this.moveSound.currentTime = 0;
+        }
+    };
+    Tank.prototype.getMoveSound = function () {
+        return new Audio("../assets/movingSound.mp3");
+    };
     Tank.prototype.setInitialLocation = function () {
         if (this.team === 1) {
             this.initialLocation.x = 8;
@@ -187,7 +216,8 @@ var Tank = /** @class */ (function () {
             moved = true;
             this.location.x = Math.min(screenAdjustment.gameWidth, this.location.x);
             // Team 1 boundary
-            if (this.location.x > screenAdjustment.gameWidth / 2 - 25 && this.team === 1) {
+            if (this.location.x > screenAdjustment.gameWidth / 2 - 25 &&
+                this.team === 1) {
                 this.location.x = gameWidth / 2 - 25;
             }
         }
@@ -335,11 +365,13 @@ document.addEventListener("keypress", function (e) {
         var bullet = tankA.shoot(tankA.isAlive);
         if (bullet)
             bullets.push(bullet);
+        bulletFired();
     }
     if (e.key === " ") {
         var bullet = tankB.shoot(tankB.isAlive);
         if (bullet)
             bullets.push(bullet);
+        bulletFired();
     }
 });
 window.addEventListener("resize", function () {
@@ -358,6 +390,7 @@ var gameLoop = function () {
         bullet.move();
         if (tankA.isAlive && tankA.isHitBy(bullet)) {
             tankA.destroy();
+            hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
@@ -365,6 +398,7 @@ var gameLoop = function () {
         }
         if (tankB.isHitBy(bullet)) {
             tankB.destroy();
+            hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
@@ -372,6 +406,7 @@ var gameLoop = function () {
         }
         if (tankA.isAlive && tankA.isHitBy(bullet)) {
             tankA.destroy();
+            hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
@@ -379,6 +414,7 @@ var gameLoop = function () {
         }
         if (tankB.isHitBy(bullet)) {
             tankB.destroy();
+            hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
@@ -386,6 +422,7 @@ var gameLoop = function () {
         }
         if (tankA.isAlive && tankA.isHitBy(bullet)) {
             tankA.destroy();
+            hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
@@ -393,6 +430,7 @@ var gameLoop = function () {
         }
         if (tankB.isHitBy(bullet)) {
             tankB.destroy();
+            hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
@@ -400,6 +438,7 @@ var gameLoop = function () {
         }
         if (tankA.isAlive && tankA.isHitBy(bullet)) {
             tankA.destroy();
+            hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
@@ -407,6 +446,7 @@ var gameLoop = function () {
         }
         if (tankB.isHitBy(bullet)) {
             tankB.destroy();
+            hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
@@ -418,6 +458,20 @@ var gameLoop = function () {
             bullets.splice(index, 1);
         }
     });
+    if (tankA.keysPressed.size > 0 && tankA.isAlive) {
+        tankA.setMoveSound();
+    }
+    else {
+        tankA.stopMoveSound();
+    }
+    // For tankB
+    if (tankB.keysPressed.size > 0 && tankB.isAlive) {
+        tankB.setMoveSound();
+    }
+    else {
+        tankB.stopMoveSound();
+    }
     requestAnimationFrame(gameLoop);
 };
+// setTankSpeed(10)
 gameLoop();
