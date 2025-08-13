@@ -161,6 +161,7 @@ class Tank {
   keysPressed: Set<string> = new Set();
   playerElement?: HTMLElement;
   team: number;
+  isAlive: boolean = true;
   
   constructor(
     tankImageUrl: string,
@@ -335,6 +336,28 @@ setInitialLocation() {
   return new Bullet(this.direction, 5, startX, startY);
 }
 
+  isHitBy(bullet: Bullet): boolean {
+    if(!this.isAlive) return false;
+    
+    const bulletX = bullet.position.x;
+    const bulletY = bullet.position.y;
+
+    return(
+      bulletX + 8 > this.location.x &&
+      bulletX < this.location.x + this.width &&
+      bulletY + 8 > this.location.y &&
+      bulletY < this.location.y + this.height
+    );
+  }
+
+  destroy() {
+    this.isAlive = false;
+    if(this.playerElement) {
+      this.playerElement.remove();
+      this.playerElement = undefined;
+    }
+  }
+
 
 
   ////////////////////////////////////////////
@@ -424,11 +447,26 @@ tankB.render();
 
 
 const gameLoop = () => {
+
   tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
   tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
 
   bullets.forEach((bullet, index) => {
     bullet.move();
+
+    if(tankA.isAlive && tankA.isHitBy(bullet)) {
+      tankA.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
+
+    if(tankB.isHitBy(bullet)) {
+      tankB.destroy();
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+      return;
+    }
 
     if(bullet.hitTheWall()) {
       if(bullet.element) bullet.element.remove();

@@ -117,6 +117,7 @@ var Tank = /** @class */ (function () {
         this.speed = 0;
         this.lastDirection = "none";
         this.keysPressed = new Set();
+        this.isAlive = true;
         this.tankImageUrl = tankImageUrl;
         this.width = width;
         this.height = height;
@@ -268,6 +269,23 @@ var Tank = /** @class */ (function () {
         }
         return new Bullet(this.direction, 5, startX, startY);
     };
+    Tank.prototype.isHitBy = function (bullet) {
+        if (!this.isAlive)
+            return false;
+        var bulletX = bullet.position.x;
+        var bulletY = bullet.position.y;
+        return (bulletX + 8 > this.location.x &&
+            bulletX < this.location.x + this.width &&
+            bulletY + 8 > this.location.y &&
+            bulletY < this.location.y + this.height);
+    };
+    Tank.prototype.destroy = function () {
+        this.isAlive = false;
+        if (this.playerElement) {
+            this.playerElement.remove();
+            this.playerElement = undefined;
+        }
+    };
     ////////////////////////////////////////////
     //////////// VIEW //////////////////////////
     ////////////////////////////////////////////
@@ -323,6 +341,20 @@ var gameLoop = function () {
     tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
     bullets.forEach(function (bullet, index) {
         bullet.move();
+        if (tankA.isAlive && tankA.isHitBy(bullet)) {
+            tankA.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
+        if (tankB.isHitBy(bullet)) {
+            tankB.destroy();
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+            return;
+        }
         if (bullet.hitTheWall()) {
             if (bullet.element)
                 bullet.element.remove();
