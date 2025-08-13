@@ -2,7 +2,62 @@
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
 
-type Direction = "up" | "down" | "left" | "right" | "none";
+type Direction =
+  | "up"
+  | "down"
+  | "left"
+  | "right"
+  | "none"
+  | "up-right"
+  | "up-left"
+  | "down-right"
+  | "down-left";
+
+class screenSize {
+  gameWidth: number;
+  gameHeight: number;
+  constructor(gameWidth: number, gameHeight: number) {
+    this.gameWidth = gameWidth;
+    this.gameHeight = gameHeight;
+  }
+  largeScreen() {
+    this.gameWidth = 1200;
+    this.gameHeight = 800;
+  }
+  mediumScreen() {
+    this.gameWidth = 800;
+    this.gameHeight = 650;
+  }
+  smallScreen() {
+    this.gameWidth = 550;
+    this.gameHeight = 550;
+  }
+
+  adjustGameWidthAndHeight() {
+    try {
+      const windowWidth = window.innerWidth;
+      if (windowWidth) {
+        if (windowWidth >= 1211) {
+          this.largeScreen();
+        } else if (windowWidth > 815) {
+          this.mediumScreen();
+        } else {
+          this.smallScreen();
+        }
+      } else {
+        throw new Error("Main element not found");
+      }
+    } catch (error) {
+      console.error("Error checking main size:", error);
+      return undefined;
+    }
+  }
+}
+
+const screenAdjustment = new screenSize(0, 0);
+
+screenAdjustment.adjustGameWidthAndHeight();
+console.log(screenAdjustment);
 
 class Bullet {
   position: { x: number; y: number };
@@ -76,6 +131,7 @@ class Tank {
   height: number;
   speed: number = 0;
   baseSpeed: number;
+  initialLocation : { x: number; y: number };
   maxSpeed: number;
   acceleration: number;
   deceleration: number;
@@ -106,9 +162,10 @@ class Tank {
     this.deceleration = baseSpeed * 0.15;
     this.direction = initialDirection;
     this.location = initialLocation;
+    this.initialLocation = initialLocation ;
     this.controls = controls;
     this.team = team;
-    
+
     window.addEventListener("keydown", (e) => {
       if (
         e.key === this.controls.up ||
@@ -124,40 +181,85 @@ class Tank {
       this.keysPressed.delete(e.key);
     });
   }
-  
+
+setInitialLocation() {
+  if (this.team === 1){
+    this.initialLocation.x = 8
+    this.initialLocation.y = 280;
+  }
+  if (this.team === 2){
+    this.initialLocation.x = screenAdjustment.gameWidth - 100
+    this.initialLocation.y = 280;
+  }
+
+}
+
   move(gameWidth: number, gameHeight: number) {
     let moved = false;
     const isMoving = this.keysPressed.size > 0;
-    
-    if (this.keysPressed.has(this.controls.up)) {
+
+    // Get current key states
+    const up = this.keysPressed.has(this.controls.up);
+    const down = this.keysPressed.has(this.controls.down);
+    const left = this.keysPressed.has(this.controls.left);
+    const right = this.keysPressed.has(this.controls.right);
+
+    // Handle vertical movement
+    if (up) {
       this.location.y -= this.speed;
       moved = true;
-      this.direction = "up";
-      if (this.location.y < 0) this.location.y = 0;
+      this.location.y = Math.max(0, this.location.y);
     }
-    if (this.keysPressed.has(this.controls.down)) {
+
+    if (down) {
       this.location.y += this.speed;
       moved = true;
-      this.direction = "down";
-      if (this.location.y > gameHeight) this.location.y = gameHeight;
+      this.location.y = Math.min(screenAdjustment.gameHeight, this.location.y);
     }
-    if (this.keysPressed.has(this.controls.left)) {
+
+    // Handle horizontal movement
+    if (left) {
       this.location.x -= this.speed;
       moved = true;
-      this.direction = "left";
-      if (this.location.x < 0) this.location.x = 0;
-      if (this.location.x < gameWidth / 2 && this.team == 1)
-        this.location.x = gameWidth / 2;
+      this.location.x = Math.max(0, this.location.x);
+
+      // Team 2 boundary
+      if (this.location.x < gameWidth / 2 + 10 && this.team === 2) {
+        this.location.x = gameWidth / 2 + 10;
+      }
     }
-    if (this.keysPressed.has(this.controls.right)) {
+
+    if (right) {
       this.location.x += this.speed;
       moved = true;
-      this.direction = "right";
-      if (this.location.x > gameWidth) this.location.x = gameWidth;
-      if (this.location.x > gameWidth / 2 && this.team == 2)
-        this.location.x = gameWidth / 2;
+      this.location.x = Math.min(screenAdjustment.gameWidth, this.location.x);
+
+      // Team 1 boundary
+      if (this.location.x > screenAdjustment.gameWidth / 2 - 18 && this.team === 1) {
+        this.location.x = gameWidth / 2 - 18;
+      }
     }
-    
+
+    // Update direction based on key combinations
+    if (up && right) {
+      this.direction = "up-right";
+    } else if (up && left) {
+      this.direction = "up-left";
+    } else if (down && right) {
+      this.direction = "down-right";
+    } else if (down && left) {
+      this.direction = "down-left";
+    } else if (up) {
+      this.direction = "up";
+    } else if (down) {
+      this.direction = "down";
+    } else if (left) {
+      this.direction = "left";
+    } else if (right) {
+      this.direction = "right";
+    }
+
+    // Handle speed acceleration/deceleration
     if (isMoving) {
       this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
     } else {
@@ -165,6 +267,7 @@ class Tank {
     }
     
     if (moved || this.speed > 0) {
+      console.log(tankA.location);
       this.render();
     }
   }
@@ -211,7 +314,11 @@ class Tank {
       "facing-up",
       "facing-down",
       "facing-left",
-      "facing-right"
+      "facing-right",
+      "facing-up-right",
+      "facing-up-left",
+      "facing-down-right",
+      "facing-down-left"
     );
 
     this.playerElement.classList.add("facing-" + this.direction);
@@ -226,9 +333,16 @@ class Tank {
 ////////////////////////////////////////////
 //////////// CONTROLLER ////////////////////
 ////////////////////////////////////////////
-
-const GAME_WIDTH = 1114;
-const GAME_HEIGHT = 660;
+const tankB = new Tank(
+  "../assets/enemyTank.png",
+  50,
+  50,
+  0.2,
+  "right",
+  { x: 10, y: 5 },
+  { up: "w", down: "s", left: "a", right: "d" },
+  1
+);
 const bullets: Bullet[] = []
 
 
@@ -240,17 +354,6 @@ const tankA = new Tank(
   "left",
   { x: 1100, y: 0 },
   { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" },
-  1
-);
-
-const tankB = new Tank(
-  "../assets/enemyTank.png",
-  50,
-  50,
-  0.2,
-  "right",
-  { x: 10, y: 5 },
-  { up: "w", down: "s", left: "a", right: "d" },
   2
 );
 
@@ -259,12 +362,18 @@ document.addEventListener("keypress", (e) => {
   if(e.key === " ") bullets.push(tankB.shoot());
 });
 
+tankA.setInitialLocation();
+tankB.setInitialLocation();
+tankA.render();
+tankB.render();
 
-function gameLoop() {
-  tankA.move(GAME_WIDTH, GAME_HEIGHT);
-  tankB.move(GAME_WIDTH, GAME_HEIGHT);
+
+const gameLoop = () => {
+  tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+  tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+
   requestAnimationFrame(gameLoop);
-}
+};
 
 ////////////////////////////////////////////
 //////////// INIT //////////////////////////

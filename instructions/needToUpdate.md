@@ -17,10 +17,12 @@ Sahar -
 
 
 Yoel -
-1. Try to make 3d animations so it will look okay.
+1. Try to make 3d animations so it will look okay. ---
 2. make the game compatible for small screen.
 3. if you will make it, make a feature of speed to add speed to the tank.
 4. make a safe zone.
 
 
-g
+
+
+
