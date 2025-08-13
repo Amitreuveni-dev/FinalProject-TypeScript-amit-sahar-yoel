@@ -3,9 +3,10 @@ Need to do :
 Amit - 
 
 Tank shoots -
-1. including - bullet speed, 
-2. tank gets destroyed,
-3. make tank bullet sound
+1. make tank bullet sound
+2. fix lasers
+3. fix the tank hitbox
+
 
 Sahar - 
 1. fixing footer - ( Footer will not be on top of the game and will be sticky to the bottom of the screen) 
