@@ -8,7 +8,7 @@ var screenSize = /** @class */ (function () {
     }
     screenSize.prototype.largeScreen = function () {
         this.gameWidth = 1106;
-        this.gameHeight = 650;
+        this.gameHeight = 712;
     };
     screenSize.prototype.mediumScreen = function () {
         this.gameWidth = 708;

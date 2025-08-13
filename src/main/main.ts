@@ -22,7 +22,7 @@ class screenSize {
   }
   largeScreen() {
     this.gameWidth = 1106;
-    this.gameHeight = 650;
+    this.gameHeight = 712;
   }
   mediumScreen() {
     this.gameWidth = 708;
@@ -112,6 +112,7 @@ class Bullet {
         console.error("Invalid direction for bullet movement");
     }
     this.render();
+    
   }
 
 
@@ -536,7 +537,6 @@ const gameLoop = () => {
       bullets.splice(index, 1);
     }
   });
-
 
   requestAnimationFrame(gameLoop);
 };
