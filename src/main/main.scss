@@ -102,9 +102,10 @@ button {
 }
 
 .main {
-  flex: 1;
+  
   border: 20px solid gray;
   width: 1200px;
+  height: 800px;
   margin: 0.5rem auto;
   background-color: rgb(218, 218, 218);
   background-image: url("../../assets/background.png");
@@ -113,6 +114,29 @@ button {
   background-position: center;
   position: relative;
 }
+
+@media (min-width: 1211px) {
+    .main {
+        width: 1200px;
+        height: 800px;
+    }
+}
+
+@media (max-width: 1210px) {
+    .main {
+        width: 800px;
+        height: 650px;
+    }
+}
+
+@media (max-width: 815px) {
+    .main {
+        width: 550px;
+        height: 550px;
+    }
+}
+
+
 
 .tanksRoot {
   position: absolute;

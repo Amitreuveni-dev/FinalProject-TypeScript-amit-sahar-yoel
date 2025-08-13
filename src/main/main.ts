@@ -1,4 +1,60 @@
-type Direction = "up" | "down" | "left" | "right" | "none" | "up-right" | "up-left" | "down-right" | "down-left";
+type Direction =
+  | "up"
+  | "down"
+  | "left"
+  | "right"
+  | "none"
+  | "up-right"
+  | "up-left"
+  | "down-right"
+  | "down-left";
+
+class screenSize {
+  gameWidth: number;
+  gameHeight: number;
+  constructor(gameWidth: number, gameHeight: number) {
+    this.gameWidth = gameWidth;
+    this.gameHeight = gameHeight;
+  }
+  largeScreen() {
+    this.gameWidth = 1200;
+    this.gameHeight = 800;
+  }
+  mediumScreen() {
+    this.gameWidth = 800;
+    this.gameHeight = 650;
+  }
+  smallScreen() {
+    this.gameWidth = 550;
+    this.gameHeight = 550;
+  }
+
+  adjustGameWidthAndHeight() {
+    try {
+      const windowWidth = window.innerWidth
+      if (windowWidth) {
+        if (windowWidth >= 1211) {
+          this.largeScreen();
+          this.gameWidth = 1117;
+          this.gameHeight = 656;
+        } else if (windowWidth > 815) {
+          this.mediumScreen();
+        } else {
+          this.smallScreen();
+        }
+      } else {
+        throw new Error("Main element not found");
+      }
+    } catch (error) {
+      console.error("Error checking main size:", error);
+      return undefined;
+    }
+  }
+}
+
+const screenAdjustment = new screenSize(0, 0);
+screenAdjustment.adjustGameWidthAndHeight();
+console.log(screenAdjustment);
 
 class Tank {
   tankImageUrl: string;
@@ -55,69 +111,83 @@ class Tank {
     });
   }
 
-  move(gameWidth: number, gameHeight: number) {
-    let moved = false;
-    const isMoving = this.keysPressed.size > 0;
+move(gameWidth: number, gameHeight: number) {
+  let moved = false;
+  const isMoving = this.keysPressed.size > 0;
 
-    if (this.keysPressed.has(this.controls.up)) {
-      this.location.y -= this.speed;
-      moved = true;
-      if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.right)) {
-        this.direction = "up-right";
-      } else {
-        this.direction = "up";
-      }
+  // Get current key states
+  const up = this.keysPressed.has(this.controls.up);
+  const down = this.keysPressed.has(this.controls.down);
+  const left = this.keysPressed.has(this.controls.left);
+  const right = this.keysPressed.has(this.controls.right);
 
-      if (this.location.y < 0) this.location.y = 0;
-      ;
-    }
-    if (this.keysPressed.has(this.controls.down)) {
-      this.location.y += this.speed;
-      moved = true;
-      this.direction = "down";
-      this.playerElement?.classList.toggle("tankColorChangeDown");
-      if (this.location.y > gameHeight - 9) this.location.y = gameHeight - 9;
-    }
-    if (this.keysPressed.has(this.controls.left)) {
-      this.location.x -= this.speed;
-      moved = true;
-      if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.left)) {
-        this.direction = "up-left";
-      } else if (this.keysPressed.has(this.controls.down) && this.keysPressed.has(this.controls.left)) {
-        this.direction = "down-left";
-      } else {
-        this.direction = "left";
-      }
-      this.playerElement?.classList.toggle("tankColorChangeLeft");
-      if (this.location.x < 0) this.location.x = 0;
-      if (this.location.x < gameWidth / 2+ 20 && this.team == 1) this.location.x = gameWidth / 2 + 20;
-    }
-    if (this.keysPressed.has(this.controls.right)) {
-      this.location.x += this.speed;
-      moved = true;
-      if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.right)) {
-        this.direction = "up-right";
-      } else if (this.keysPressed.has(this.controls.down) && this.keysPressed.has(this.controls.right)) {
-        this.direction = "down-right";
-      } else {
-        this.direction = "right";
-      }
-      this.playerElement?.classList.toggle("tankColorChangeRight");
-      if (this.location.x > gameWidth) this.location.x = gameWidth;
-       if (this.location.x > gameWidth/2 - 20 && this.team == 2) this.location.x = gameWidth/2  - 20;
-    }
-
-    if (isMoving) {
-      this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
-    } else {
-      this.speed = Math.max(this.speed - this.deceleration, 0);
-    }
-
-    if (moved || this.speed > 0) {
-      this.render();
-    }
-  
+  // Handle vertical movement
+  if (up) {
+    this.location.y -= this.speed;
+    moved = true;
+    this.location.y = Math.max(0, this.location.y);
   }
+  
+  if (down) {
+    this.location.y += this.speed;
+    moved = true;
+    this.location.y = Math.min(screenAdjustment.gameHeight, this.location.y);
+  }
+
+  // Handle horizontal movement
+  if (left) {
+    this.location.x -= this.speed;
+    moved = true;
+    this.location.x = Math.max(0, this.location.x);
+    
+    // Team 1 boundary
+    if (this.location.x < gameWidth / 2 + 10 && this.team === 1) {
+      this.location.x = gameWidth / 2 + 10;
+    }
+  }
+
+  if (right) {
+    this.location.x += this.speed;
+    moved = true;
+    this.location.x = Math.min(gameWidth, this.location.x);
+    
+    // Team 2 boundary
+    if (this.location.x > gameWidth / 2 - 18 && this.team === 2) {
+      this.location.x = gameWidth / 2 - 18;
+    }
+  }
+
+  // Update direction based on key combinations
+  if (up && right) {
+    this.direction = "up-right";
+  } else if (up && left) {
+    this.direction = "up-left";
+  } else if (down && right) {
+    this.direction = "down-right";
+  } else if (down && left) {
+    this.direction = "down-left";
+  } else if (up) {
+    this.direction = "up";
+  } else if (down) {
+    this.direction = "down";
+  } else if (left) {
+    this.direction = "left";
+  } else if (right) {
+    this.direction = "right";
+  }
+
+  // Handle speed acceleration/deceleration
+  if (isMoving) {
+    this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
+  } else {
+    this.speed = Math.max(this.speed - this.deceleration, 0);
+  }
+
+  if (moved || this.speed > 0) {
+    console.log(tankA.location);
+    this.render();
+  }
+}
 
   render() {
     const container = document.querySelector(".tanksRoot");
@@ -163,9 +233,6 @@ class Tank {
   }
 }
 
-const GAME_WIDTH = 1114;
-const GAME_HEIGHT = 660;
-
 const tankA = new Tank(
   "../assets/playerTank.png",
   50,
@@ -191,10 +258,11 @@ const tankB = new Tank(
 tankA.render();
 tankB.render();
 
-function gameLoop() {
-  tankA.move(GAME_WIDTH, GAME_HEIGHT);
-  tankB.move(GAME_WIDTH, GAME_HEIGHT);
+const gameLoop = () => {
+  tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+  tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+  
   requestAnimationFrame(gameLoop);
-}
+};
 
 gameLoop();

@@ -1,3 +1,50 @@
+var screenSize = /** @class */ (function () {
+    function screenSize(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+    }
+    screenSize.prototype.largeScreen = function () {
+        this.gameWidth = 1200;
+        this.gameHeight = 800;
+    };
+    screenSize.prototype.mediumScreen = function () {
+        this.gameWidth = 800;
+        this.gameHeight = 650;
+    };
+    screenSize.prototype.smallScreen = function () {
+        this.gameWidth = 550;
+        this.gameHeight = 550;
+    };
+    screenSize.prototype.adjustGameWidthAndHeight = function () {
+        try {
+            var windowWidth = window.innerWidth;
+            if (windowWidth) {
+                if (windowWidth >= 1211) {
+                    this.largeScreen();
+                    this.gameWidth = 1117;
+                    this.gameHeight = 656;
+                }
+                else if (windowWidth > 815) {
+                    this.mediumScreen();
+                }
+                else {
+                    this.smallScreen();
+                }
+            }
+            else {
+                throw new Error("Main element not found");
+            }
+        }
+        catch (error) {
+            console.error("Error checking main size:", error);
+            return undefined;
+        }
+    };
+    return screenSize;
+}());
+var screenAdjustment = new screenSize(0, 0);
+screenAdjustment.adjustGameWidthAndHeight();
+console.log(screenAdjustment);
 var Tank = /** @class */ (function () {
     function Tank(tankImageUrl, width, height, baseSpeed, initialDirection, initialLocation, controls, team) {
         var _this = this;
@@ -28,66 +75,69 @@ var Tank = /** @class */ (function () {
         });
     }
     Tank.prototype.move = function (gameWidth, gameHeight) {
-        var _a, _b, _c;
         var moved = false;
         var isMoving = this.keysPressed.size > 0;
-        if (this.keysPressed.has(this.controls.up)) {
+        // Get current key states
+        var up = this.keysPressed.has(this.controls.up);
+        var down = this.keysPressed.has(this.controls.down);
+        var left = this.keysPressed.has(this.controls.left);
+        var right = this.keysPressed.has(this.controls.right);
+        // Handle vertical movement
+        if (up) {
             this.location.y -= this.speed;
             moved = true;
-            if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.right)) {
-                this.direction = "up-right";
-            }
-            else {
-                this.direction = "up";
-            }
-            if (this.location.y < 0)
-                this.location.y = 0;
-            ;
+            this.location.y = Math.max(0, this.location.y);
         }
-        if (this.keysPressed.has(this.controls.down)) {
+        if (down) {
             this.location.y += this.speed;
             moved = true;
-            this.direction = "down";
-            (_a = this.playerElement) === null || _a === void 0 ? void 0 : _a.classList.toggle("tankColorChangeDown");
-            if (this.location.y > gameHeight - 9)
-                this.location.y = gameHeight - 9;
+            this.location.y = Math.min(screenAdjustment.gameHeight, this.location.y);
         }
-        if (this.keysPressed.has(this.controls.left)) {
+        // Handle horizontal movement
+        if (left) {
             this.location.x -= this.speed;
             moved = true;
-            if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.left)) {
-                this.direction = "up-left";
+            this.location.x = Math.max(0, this.location.x);
+            // Team 1 boundary
+            if (this.location.x < gameWidth / 2 + 10 && this.team === 1) {
+                this.location.x = gameWidth / 2 + 10;
             }
-            else if (this.keysPressed.has(this.controls.down) && this.keysPressed.has(this.controls.left)) {
-                this.direction = "down-left";
-            }
-            else {
-                this.direction = "left";
-            }
-            (_b = this.playerElement) === null || _b === void 0 ? void 0 : _b.classList.toggle("tankColorChangeLeft");
-            if (this.location.x < 0)
-                this.location.x = 0;
-            if (this.location.x < gameWidth / 2 + 20 && this.team == 1)
-                this.location.x = gameWidth / 2 + 20;
         }
-        if (this.keysPressed.has(this.controls.right)) {
+        if (right) {
             this.location.x += this.speed;
             moved = true;
-            if (this.keysPressed.has(this.controls.up) && this.keysPressed.has(this.controls.right)) {
-                this.direction = "up-right";
+            this.location.x = Math.min(gameWidth, this.location.x);
+            // Team 2 boundary
+            if (this.location.x > gameWidth / 2 - 18 && this.team === 2) {
+                this.location.x = gameWidth / 2 - 18;
             }
-            else if (this.keysPressed.has(this.controls.down) && this.keysPressed.has(this.controls.right)) {
-                this.direction = "down-right";
-            }
-            else {
-                this.direction = "right";
-            }
-            (_c = this.playerElement) === null || _c === void 0 ? void 0 : _c.classList.toggle("tankColorChangeRight");
-            if (this.location.x > gameWidth)
-                this.location.x = gameWidth;
-            if (this.location.x > gameWidth / 2 - 20 && this.team == 2)
-                this.location.x = gameWidth / 2 - 20;
         }
+        // Update direction based on key combinations
+        if (up && right) {
+            this.direction = "up-right";
+        }
+        else if (up && left) {
+            this.direction = "up-left";
+        }
+        else if (down && right) {
+            this.direction = "down-right";
+        }
+        else if (down && left) {
+            this.direction = "down-left";
+        }
+        else if (up) {
+            this.direction = "up";
+        }
+        else if (down) {
+            this.direction = "down";
+        }
+        else if (left) {
+            this.direction = "left";
+        }
+        else if (right) {
+            this.direction = "right";
+        }
+        // Handle speed acceleration/deceleration
         if (isMoving) {
             this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
         }
@@ -95,6 +145,7 @@ var Tank = /** @class */ (function () {
             this.speed = Math.max(this.speed - this.deceleration, 0);
         }
         if (moved || this.speed > 0) {
+            console.log(tankA.location);
             this.render();
         }
     };
@@ -129,15 +180,13 @@ var Tank = /** @class */ (function () {
     };
     return Tank;
 }());
-var GAME_WIDTH = 1114;
-var GAME_HEIGHT = 660;
 var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 1);
 var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 2);
 tankA.render();
 tankB.render();
-function gameLoop() {
-    tankA.move(GAME_WIDTH, GAME_HEIGHT);
-    tankB.move(GAME_WIDTH, GAME_HEIGHT);
+var gameLoop = function () {
+    tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+    tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
     requestAnimationFrame(gameLoop);
-}
+};
 gameLoop();
