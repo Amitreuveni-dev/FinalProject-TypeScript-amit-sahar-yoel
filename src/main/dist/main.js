@@ -227,7 +227,9 @@ var Tank = /** @class */ (function () {
             this.render();
         }
     };
-    Tank.prototype.shoot = function () {
+    Tank.prototype.shoot = function (alive) {
+        if (!alive)
+            return null;
         var bulletSize = 8;
         var centerX = this.location.x + this.width / 2 - bulletSize / 2;
         var centerY = this.location.y + this.height / 2 - bulletSize / 2;
@@ -329,10 +331,16 @@ var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y
 var bullets = [];
 var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
 document.addEventListener("keypress", function (e) {
-    if (e.key === "Enter")
-        bullets.push(tankA.shoot());
-    if (e.key === " ")
-        bullets.push(tankB.shoot());
+    if (e.key === "Enter") {
+        var bullet = tankA.shoot(tankA.isAlive);
+        if (bullet)
+            bullets.push(bullet);
+    }
+    if (e.key === " ") {
+        var bullet = tankB.shoot(tankB.isAlive);
+        if (bullet)
+            bullets.push(bullet);
+    }
 });
 window.addEventListener("resize", function () {
     screenAdjustment.adjustGameWidthAndHeight();

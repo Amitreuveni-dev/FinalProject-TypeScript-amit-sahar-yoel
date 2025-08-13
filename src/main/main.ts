@@ -293,7 +293,9 @@ class Tank {
       this.render();
     }
   }
-  shoot(): Bullet {
+  shoot(alive: boolean): Bullet|null {
+    if (!alive) return null;
+
     const bulletSize = 8;
     const centerX = this.location.x + this.width / 2 - bulletSize / 2;
     const centerY = this.location.y + this.height / 2 - bulletSize / 2;
@@ -337,6 +339,7 @@ class Tank {
 
   return new Bullet(this.direction, 5, startX, startY);
 }
+
 
   isHitBy(bullet: Bullet): boolean {
     if(!this.isAlive) return false;
@@ -439,8 +442,14 @@ const tankA = new Tank(
 );
 
 document.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") bullets.push(tankA.shoot());
-  if (e.key === " ") bullets.push(tankB.shoot());
+  if (e.key === "Enter") {
+    const bullet = tankA.shoot(tankA.isAlive);
+    if (bullet) bullets.push(bullet);
+  }
+  if (e.key === " ") {
+    const bullet = tankB.shoot(tankB.isAlive);
+    if (bullet) bullets.push(bullet);
+  }
 });
 
 window.addEventListener("resize", () => {
