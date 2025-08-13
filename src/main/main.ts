@@ -372,6 +372,15 @@ const gameLoop = () => {
   tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
   tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
 
+  bullets.forEach((bullet, index) => {
+    bullet.move();
+
+    if(bullet.hitTheWall()) {
+      if(bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
+    }
+  });
+
   requestAnimationFrame(gameLoop);
 };
 

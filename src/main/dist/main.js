@@ -263,6 +263,14 @@ tankB.render();
 var gameLoop = function () {
     tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
     tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+    bullets.forEach(function (bullet, index) {
+        bullet.move();
+        if (bullet.hitTheWall()) {
+            if (bullet.element)
+                bullet.element.remove();
+            bullets.splice(index, 1);
+        }
+    });
     requestAnimationFrame(gameLoop);
 };
 ////////////////////////////////////////////
