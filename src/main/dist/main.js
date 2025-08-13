@@ -335,12 +335,4 @@ var gameLoop = function () {
     });
     requestAnimationFrame(gameLoop);
 };
-<<<<<<< HEAD
-////////////////////////////////////////////
-//////////// INIT //////////////////////////
-////////////////////////////////////////////
-=======
-tankA.render();
-tankB.render();
->>>>>>> borders
 gameLoop();
