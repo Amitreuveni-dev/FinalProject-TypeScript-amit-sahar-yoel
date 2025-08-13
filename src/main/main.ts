@@ -119,9 +119,9 @@ class Bullet {
   hitTheWall(): boolean {
     if (
       this.position.x < 0 ||
-      this.position.x > screenAdjustment.gameWidth ||
+      this.position.x > screenAdjustment.gameWidth + 50 ||
       this.position.y < 0 ||
-      this.position.y > screenAdjustment.gameHeight
+      this.position.y > screenAdjustment.gameHeight + 100
     ) {
       return true;
     }
@@ -443,6 +443,9 @@ document.addEventListener("keypress", (e) => {
   if (e.key === " ") bullets.push(tankB.shoot());
 });
 
+window.addEventListener("resize", () => {
+  screenAdjustment.adjustGameWidthAndHeight();
+});
   
 tankA.setInitialLocation();
 tankB.setInitialLocation();

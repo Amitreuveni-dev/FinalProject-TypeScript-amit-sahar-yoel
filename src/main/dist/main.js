@@ -88,9 +88,9 @@ var Bullet = /** @class */ (function () {
     };
     Bullet.prototype.hitTheWall = function () {
         if (this.position.x < 0 ||
-            this.position.x > screenAdjustment.gameWidth ||
+            this.position.x > screenAdjustment.gameWidth + 50 ||
             this.position.y < 0 ||
-            this.position.y > screenAdjustment.gameHeight) {
+            this.position.y > screenAdjustment.gameHeight + 100) {
             return true;
         }
         return false;
@@ -333,6 +333,9 @@ document.addEventListener("keypress", function (e) {
         bullets.push(tankA.shoot());
     if (e.key === " ")
         bullets.push(tankB.shoot());
+});
+window.addEventListener("resize", function () {
+    screenAdjustment.adjustGameWidthAndHeight();
 });
 tankA.setInitialLocation();
 tankB.setInitialLocation();
