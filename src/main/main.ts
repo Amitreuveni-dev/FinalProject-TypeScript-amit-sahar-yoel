@@ -60,7 +60,6 @@ class screenSize {
 const screenAdjustment = new screenSize(0, 0);
 
 screenAdjustment.adjustGameWidthAndHeight();
-console.log(screenAdjustment);
 
 class Bullet {
   position: { x: number; y: number };
@@ -216,7 +215,7 @@ setInitialLocation() {
 
 }
 
-  move(gameWidth: number, gameHeight: number) {
+  move(gameWidth: number) {
     let moved = false;
     const isMoving = this.keysPressed.size > 0;
 
@@ -289,11 +288,10 @@ setInitialLocation() {
     }
     
     if (moved || this.speed > 0) {
-      console.log(tankA.location);
       this.render();
     }
   }
-  shoot(): Bullet {
+ shoot() {
   const bulletSize = 8;
   const centerX = this.location.x + this.width / 2 - bulletSize / 2;
   const centerY = this.location.y + this.height / 2 - bulletSize / 2;
@@ -335,7 +333,7 @@ setInitialLocation() {
       break;
   }
 
-  return new Bullet(this.direction, 5, startX, startY);
+  return (new Bullet(this.direction, 5, startX, startY));
 }
 
 
@@ -421,10 +419,11 @@ document.addEventListener("keypress", (e) => {
 });
 
   
-    // window.addEventListener("resize", () => {
-    //   console.log("Resizing the game screen");
-    //   window.location.reload();
-    // });
+    window.addEventListener("resize", () => {
+      console.log("Resizing the game screen");
+      screenAdjustment.adjustGameWidthAndHeight();
+
+    });
   
 tankA.setInitialLocation();
 tankB.setInitialLocation();
@@ -433,8 +432,8 @@ tankB.render();
 
 
 const gameLoop = () => {
-  tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
-  tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+  tankA.move(screenAdjustment.gameWidth);
+  tankB.move(screenAdjustment.gameWidth);
 
   bullets.forEach((bullet, index) => {
     bullet.move();

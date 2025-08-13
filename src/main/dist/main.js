@@ -45,7 +45,6 @@ var screenSize = /** @class */ (function () {
 }());
 var screenAdjustment = new screenSize(0, 0);
 screenAdjustment.adjustGameWidthAndHeight();
-console.log(screenAdjustment);
 var Bullet = /** @class */ (function () {
     function Bullet(direction, speed, startX, startY) {
         this.position = { x: startX, y: startY };
@@ -151,7 +150,7 @@ var Tank = /** @class */ (function () {
             this.initialLocation.y = 280;
         }
     };
-    Tank.prototype.move = function (gameWidth, gameHeight) {
+    Tank.prototype.move = function (gameWidth) {
         var moved = false;
         var isMoving = this.keysPressed.size > 0;
         // Get current key states
@@ -222,7 +221,6 @@ var Tank = /** @class */ (function () {
             this.speed = Math.max(this.speed - this.deceleration, 0);
         }
         if (moved || this.speed > 0) {
-            console.log(tankA.location);
             this.render();
         }
     };
@@ -266,7 +264,7 @@ var Tank = /** @class */ (function () {
                 startY = this.location.y + this.height;
                 break;
         }
-        return new Bullet(this.direction, 5, startX, startY);
+        return (new Bullet(this.direction, 5, startX, startY));
     };
     ////////////////////////////////////////////
     //////////// VIEW //////////////////////////
@@ -314,17 +312,17 @@ document.addEventListener("keypress", function (e) {
     if (e.key === " ")
         bullets.push(tankB.shoot());
 });
-// window.addEventListener("resize", () => {
-//   console.log("Resizing the game screen");
-//   window.location.reload();
-// });
+window.addEventListener("resize", function () {
+    console.log("Resizing the game screen");
+    screenAdjustment.adjustGameWidthAndHeight();
+});
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
 tankB.render();
 var gameLoop = function () {
-    tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
-    tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
+    tankA.move(screenAdjustment.gameWidth);
+    tankB.move(screenAdjustment.gameWidth);
     bullets.forEach(function (bullet, index) {
         bullet.move();
         if (bullet.hitTheWall()) {
@@ -335,12 +333,4 @@ var gameLoop = function () {
     });
     requestAnimationFrame(gameLoop);
 };
-<<<<<<< HEAD
-////////////////////////////////////////////
-//////////// INIT //////////////////////////
-////////////////////////////////////////////
-=======
-tankA.render();
-tankB.render();
->>>>>>> borders
 gameLoop();
