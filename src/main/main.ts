@@ -101,9 +101,9 @@ class Bullet {
   hitTheWall(): boolean {
     if (
       this.position.x < 0 ||
-      this.position.x > GAME_WIDTH ||
+      this.position.x > screenAdjustment.gameWidth ||
       this.position.y < 0 ||
-      this.position.y > GAME_WIDTH
+      this.position.y > screenAdjustment.gameHeight
     ) {
       return true;
     }

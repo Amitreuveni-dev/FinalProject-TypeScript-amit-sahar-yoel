@@ -1,54 +1,6 @@
-<<<<<<< HEAD
 ////////////////////////////////////////////
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
-var Bullet = /** @class */ (function () {
-    function Bullet(direction, speed, startX, startY) {
-        this.position = { x: startX, y: startY };
-        this.direction = direction;
-        this.speed = speed;
-    }
-    Bullet.prototype.move = function () {
-        switch (this.direction) {
-            case "up":
-                this.position.y -= this.speed;
-                break;
-            case "down":
-                this.position.y += this.speed;
-                break;
-            case "left":
-                this.position.x -= this.speed;
-                break;
-            case "right":
-                this.position.x += this.speed;
-                break;
-            default:
-                console.error("Invalid direction for bullet movement");
-        }
-        this.render();
-    };
-    Bullet.prototype.hitTheWall = function () {
-        if (this.position.x < 0 ||
-            this.position.x > GAME_WIDTH ||
-            this.position.y < 0 ||
-            this.position.y > GAME_WIDTH) {
-            return true;
-        }
-        return false;
-    };
-    Bullet.prototype.render = function () {
-        if (!this.element) {
-            this.element = document.createElement("div");
-            this.element.classList = "bullet";
-            this.element.style.position = "absolute";
-            document.body.appendChild(this.element);
-        }
-        this.element.style.left = this.position.x + "px";
-        this.element.style.top = this.position.y + "px";
-    };
-    return Bullet;
-}());
-=======
 var screenSize = /** @class */ (function () {
     function screenSize(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
@@ -94,7 +46,52 @@ var screenSize = /** @class */ (function () {
 var screenAdjustment = new screenSize(0, 0);
 screenAdjustment.adjustGameWidthAndHeight();
 console.log(screenAdjustment);
->>>>>>> testing3d
+var Bullet = /** @class */ (function () {
+    function Bullet(direction, speed, startX, startY) {
+        this.position = { x: startX, y: startY };
+        this.direction = direction;
+        this.speed = speed;
+    }
+    Bullet.prototype.move = function () {
+        switch (this.direction) {
+            case "up":
+                this.position.y -= this.speed;
+                break;
+            case "down":
+                this.position.y += this.speed;
+                break;
+            case "left":
+                this.position.x -= this.speed;
+                break;
+            case "right":
+                this.position.x += this.speed;
+                break;
+            default:
+                console.error("Invalid direction for bullet movement");
+        }
+        this.render();
+    };
+    Bullet.prototype.hitTheWall = function () {
+        if (this.position.x < 0 ||
+            this.position.x > screenAdjustment.gameWidth ||
+            this.position.y < 0 ||
+            this.position.y > screenAdjustment.gameHeight) {
+            return true;
+        }
+        return false;
+    };
+    Bullet.prototype.render = function () {
+        if (!this.element) {
+            this.element = document.createElement("div");
+            this.element.classList = "bullet";
+            this.element.style.position = "absolute";
+            document.body.appendChild(this.element);
+        }
+        this.element.style.left = this.position.x + "px";
+        this.element.style.top = this.position.y + "px";
+    };
+    return Bullet;
+}());
 var Tank = /** @class */ (function () {
     function Tank(tankImageUrl, width, height, baseSpeed, initialDirection, initialLocation, controls, team) {
         var _this = this;
@@ -247,34 +244,18 @@ var Tank = /** @class */ (function () {
     };
     return Tank;
 }());
-<<<<<<< HEAD
 ////////////////////////////////////////////
 //////////// CONTROLLER ////////////////////
 ////////////////////////////////////////////
-var GAME_WIDTH = 1114;
-var GAME_HEIGHT = 660;
+var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 1);
 var bullets = [];
-var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 1);
-var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 2);
+var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
 document.addEventListener("keypress", function (e) {
     if (e.key === "enter")
         bullets.push(tankA.shoot());
     if (e.key === " ")
         bullets.push(tankB.shoot());
 });
-function gameLoop() {
-    tankA.move(GAME_WIDTH, GAME_HEIGHT);
-    tankB.move(GAME_WIDTH, GAME_HEIGHT);
-    requestAnimationFrame(gameLoop);
-}
-////////////////////////////////////////////
-//////////// INIT //////////////////////////
-////////////////////////////////////////////
-tankA.render();
-tankB.render();
-=======
-var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 1);
-var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
@@ -284,5 +265,9 @@ var gameLoop = function () {
     tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
     requestAnimationFrame(gameLoop);
 };
->>>>>>> testing3d
+////////////////////////////////////////////
+//////////// INIT //////////////////////////
+////////////////////////////////////////////
+tankA.render();
+tankB.render();
 gameLoop();

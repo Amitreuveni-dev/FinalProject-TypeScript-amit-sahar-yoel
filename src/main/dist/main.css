@@ -95,29 +95,6 @@ button:active {
   inset: 0;
 }
 
-<<<<<<< HEAD
-.tank {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  transition: transform 0.1s ease;
-}
-
-.facing-up {
-  transform: rotate(270deg);
-}
-
-.facing-down {
-  transform: rotate(90deg);
-}
-
-.facing-left {
-  transform: scaleX(-1);
-}
-
-.facing-right {
-  transform: scaleX(1);
-=======
 .footer {
   position: sticky;
   background-color: #4e54c8;
@@ -163,6 +140,13 @@ button:active {
   background-color: #3a40a1;
 }
 
+.tank {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  transition: transform 0.1s ease;
+}
+
 .navButton {
   align-items: center;
   background-color: #4e54c8;
@@ -175,12 +159,12 @@ button:active {
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, transform 0.2s;
 }
-.navButton:hover {
-  background-color: #6c72de;
-  color: #fffbea;
-  transform: scale(1.05);
+.navButton .facing-down {
+  transform: rotate(90deg);
 }
-.navButton:active {
-  background-color: #3a40a1;
->>>>>>> testing3d
+.navButton .facing-left {
+  transform: scaleX(-1);
+}
+.navButton .facing-right {
+  transform: scaleX(1);
 }
