@@ -364,20 +364,20 @@ class Tank {
   }
 
   isHitBy(bullet: Bullet): boolean {
-  if (!this.isAlive) return false;
+    if (!this.isAlive) return false;
 
-  const bulletX = bullet.position.x;
-  const bulletY = bullet.position.y;
+    const bulletX = bullet.position.x;
+    const bulletY = bullet.position.y;
 
-  const hitboxPadding = 10;
+    const hitboxPadding = 10;
 
-  return (
-    bulletX + 8 > this.location.x + hitboxPadding &&
-    bulletX < this.location.x + this.width - hitboxPadding &&
-    bulletY + 8 > this.location.y + hitboxPadding &&
-    bulletY < this.location.y + this.height - hitboxPadding
-  );
-}
+    return (
+      bulletX + 8 > this.location.x + hitboxPadding &&
+      bulletX < this.location.x + this.width - hitboxPadding &&
+      bulletY + 8 > this.location.y + hitboxPadding &&
+      bulletY < this.location.y + this.height - hitboxPadding
+    );
+  }
 
   destroy() {
     this.isAlive = false;
@@ -449,7 +449,6 @@ const tankB = new Tank(
   { up: "w", down: "s", left: "a", right: "d" },
   1
 );
-const bullets: Bullet[] = [];
 
 const tankA = new Tank(
   "../assets/playerTank.png",
@@ -462,17 +461,35 @@ const tankA = new Tank(
   2
 );
 
-const shootKeys = new Set<string>();
+const bullets: Bullet[] = [];
+
+let tankAShootReady = true;
+let tankBShootReady = true;
 
 window.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") shootKeys.add("Enter");
-  if (e.key === " ") shootKeys.add("Space");
+  if (e.key === "Enter" && tankAShootReady) {
+    if (tankA.isAlive) {
+      const bullet = tankA.shoot(true);
+      if (bullet) bullets.push(bullet);
+      tankAShootReady = false;
+    }
+  }
+
+  if (e.key === " " && tankBShootReady) {
+    if (tankB.isAlive) {
+      const bullet = tankB.shoot(true);
+      if (bullet) bullets.push(bullet);
+      tankBShootReady = false;
+    }
+  }
 });
 
 window.addEventListener("keyup", (e) => {
-  if (e.key === "Enter") shootKeys.delete("Enter");
-  if (e.key === " ") shootKeys.delete("Space");
+  if (e.key === "Enter") tankAShootReady = true;
+  if (e.key === " ") tankBShootReady = true;
 });
+
+
 
 window.addEventListener("resize", () => {
   screenAdjustment.adjustGameWidthAndHeight();
@@ -499,42 +516,32 @@ const gameLoop = () => {
   bullets.forEach((bullet, index) => {
     bullet.move();
 
-if (tankA.isAlive && tankA.isHitBy(bullet)) {
-  tankA.destroy();
-  hitBulledHitTank();
-  if (bullet.element) bullet.element.remove();
-  bullets.splice(index, 1);
+    if (tankA.isAlive && tankA.isHitBy(bullet)) {
+      tankA.destroy();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
 
-  showVictory("Player B Wins!");
-  return;
-}
+      showVictory("Player B Wins!");
+      return;
+    }
 
-if (tankB.isAlive && tankB.isHitBy(bullet)) {
-  tankB.destroy();
-  hitBulledHitTank();
-  if (bullet.element) bullet.element.remove();
-  bullets.splice(index, 1);
+    if (tankB.isAlive && tankB.isHitBy(bullet)) {
+      tankB.destroy();
+      hitBulledHitTank();
+      if (bullet.element) bullet.element.remove();
+      bullets.splice(index, 1);
 
-  showVictory("Player A Wins!");
-  return;
-}
-
-if (shootKeys.has("Enter") && tankA.isAlive) {
-  const bullet = tankA.shoot(true);
-  if (bullet) bullets.push(bullet);
-}
-
-if (shootKeys.has("Space") && tankB.isAlive) {
-  const bullet = tankB.shoot(true);
-  if (bullet) bullets.push(bullet);
-}
-
+      showVictory("Player A Wins!");
+      return;
+    }
 
     if (bullet.hitTheWall()) {
       if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
     }
   });
+  
   if (tankA.keysPressed.size > 0 && tankA.isAlive) {
     tankA.setMoveSound();
   } else {
@@ -551,44 +558,44 @@ if (shootKeys.has("Space") && tankB.isAlive) {
 
 
 function showVictory(winner: string) {
-    const overlay = document.createElement("div");
-    overlay.style.position = "fixed";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100%";
-    overlay.style.height = "100%";
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
-    overlay.style.backdropFilter = "blur(5px)";
-    overlay.style.display = "flex";
-    overlay.style.flexDirection = "column";
-    overlay.style.justifyContent = "center";
-    overlay.style.alignItems = "center";
-    overlay.style.zIndex = "9999";
-    overlay.style.color = "white";
-    overlay.style.fontSize = "3rem";
-    overlay.style.fontFamily = "sans-serif";
-    overlay.style.textAlign = "center";
+  const overlay = document.createElement("div");
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
+  overlay.style.backdropFilter = "blur(5px)";
+  overlay.style.display = "flex";
+  overlay.style.flexDirection = "column";
+  overlay.style.justifyContent = "center";
+  overlay.style.alignItems = "center";
+  overlay.style.zIndex = "9999";
+  overlay.style.color = "white";
+  overlay.style.fontSize = "3rem";
+  overlay.style.fontFamily = "sans-serif";
+  overlay.style.textAlign = "center";
 
-    const message = document.createElement("div");
-    message.textContent = `${winner} 🏆`;
+  const message = document.createElement("div");
+  message.textContent = `${winner} 🏆`;
 
-    const restartBtn = document.createElement("button");
-    restartBtn.textContent = "Restart";
-    restartBtn.style.marginTop = "20px";
-    restartBtn.style.padding = "10px 20px";
-    restartBtn.style.fontSize = "1.2rem";
-    restartBtn.style.cursor = "pointer";
-    restartBtn.style.border = "none";
-    restartBtn.style.borderRadius = "8px";
-    restartBtn.style.background = "#28a745";
-    restartBtn.style.color = "white";
-    restartBtn.addEventListener("click", () => {
-        window.location.reload();
-    });
+  const restartBtn = document.createElement("button");
+  restartBtn.textContent = "Restart";
+  restartBtn.style.marginTop = "20px";
+  restartBtn.style.padding = "10px 20px";
+  restartBtn.style.fontSize = "1.2rem";
+  restartBtn.style.cursor = "pointer";
+  restartBtn.style.border = "none";
+  restartBtn.style.borderRadius = "8px";
+  restartBtn.style.background = "#28a745";
+  restartBtn.style.color = "white";
+  restartBtn.addEventListener("click", () => {
+    window.location.reload();
+  });
 
-    overlay.appendChild(message);
-    overlay.appendChild(restartBtn);
-    document.body.appendChild(overlay);
+  overlay.appendChild(message);
+  overlay.appendChild(restartBtn);
+  document.body.appendChild(overlay);
 }
 
 

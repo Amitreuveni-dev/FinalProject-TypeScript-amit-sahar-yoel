@@ -352,20 +352,33 @@ var Tank = /** @class */ (function () {
 //////////// CONTROLLER ////////////////////
 ////////////////////////////////////////////
 var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 1);
-var bullets = [];
 var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
-var shootKeys = new Set();
+var bullets = [];
+var tankAShootReady = true;
+var tankBShootReady = true;
 window.addEventListener("keydown", function (e) {
-    if (e.key === "Enter")
-        shootKeys.add("Enter");
-    if (e.key === " ")
-        shootKeys.add("Space");
+    if (e.key === "Enter" && tankAShootReady) {
+        if (tankA.isAlive) {
+            var bullet = tankA.shoot(true);
+            if (bullet)
+                bullets.push(bullet);
+            tankAShootReady = false;
+        }
+    }
+    if (e.key === " " && tankBShootReady) {
+        if (tankB.isAlive) {
+            var bullet = tankB.shoot(true);
+            if (bullet)
+                bullets.push(bullet);
+            tankBShootReady = false;
+        }
+    }
 });
 window.addEventListener("keyup", function (e) {
     if (e.key === "Enter")
-        shootKeys["delete"]("Enter");
+        tankAShootReady = true;
     if (e.key === " ")
-        shootKeys["delete"]("Space");
+        tankBShootReady = true;
 });
 window.addEventListener("resize", function () {
     screenAdjustment.adjustGameWidthAndHeight();
@@ -402,16 +415,6 @@ var gameLoop = function () {
             bullets.splice(index, 1);
             showVictory("Player A Wins!");
             return;
-        }
-        if (shootKeys.has("Enter") && tankA.isAlive) {
-            var bullet_1 = tankA.shoot(true);
-            if (bullet_1)
-                bullets.push(bullet_1);
-        }
-        if (shootKeys.has("Space") && tankB.isAlive) {
-            var bullet_2 = tankB.shoot(true);
-            if (bullet_2)
-                bullets.push(bullet_2);
         }
         if (bullet.hitTheWall()) {
             if (bullet.element)
