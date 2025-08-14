@@ -364,18 +364,20 @@ class Tank {
   }
 
   isHitBy(bullet: Bullet): boolean {
-    if (!this.isAlive) return false;
+  if (!this.isAlive) return false;
 
-    const bulletX = bullet.position.x;
-    const bulletY = bullet.position.y;
+  const bulletX = bullet.position.x;
+  const bulletY = bullet.position.y;
 
-    return (
-      bulletX + 8 > this.location.x &&
-      bulletX < this.location.x + this.width &&
-      bulletY + 8 > this.location.y &&
-      bulletY < this.location.y + this.height
-    );
-  }
+  const hitboxPadding = 10;
+
+  return (
+    bulletX + 8 > this.location.x + hitboxPadding &&
+    bulletX < this.location.x + this.width - hitboxPadding &&
+    bulletY + 8 > this.location.y + hitboxPadding &&
+    bulletY < this.location.y + this.height - hitboxPadding
+  );
+}
 
   destroy() {
     this.isAlive = false;
