@@ -460,15 +460,16 @@ const tankA = new Tank(
   2
 );
 
-document.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    const bullet = tankA.shoot(tankA.isAlive);
-    if (bullet) bullets.push(bullet);
-  }
-  if (e.key === " ") {
-    const bullet = tankB.shoot(tankB.isAlive);
-    if (bullet) bullets.push(bullet);
-  }
+const shootKeys = new Set<string>();
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") shootKeys.add("Enter");
+  if (e.key === " ") shootKeys.add("Space");
+});
+
+window.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") shootKeys.delete("Enter");
+  if (e.key === " ") shootKeys.delete("Space");
 });
 
 window.addEventListener("resize", () => {
@@ -514,6 +515,16 @@ if (tankB.isAlive && tankB.isHitBy(bullet)) {
 
   showVictory("Player A Wins!");
   return;
+}
+
+if (shootKeys.has("Enter") && tankA.isAlive) {
+  const bullet = tankA.shoot(true);
+  if (bullet) bullets.push(bullet);
+}
+
+if (shootKeys.has("Space") && tankB.isAlive) {
+  const bullet = tankB.shoot(true);
+  if (bullet) bullets.push(bullet);
 }
 
 
