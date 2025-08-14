@@ -4,22 +4,21 @@
   border-bottom: 1px solid #ffffff;
   &__text {
     color: white;
-    padding: 2px 0; // קצת רווח בשביל שהקו לא יצמד לטקסט
+    padding: 2px 0;
     transition: border 0.3s ease, padding 0.3s ease;
 
     &:hover {
       color: rgb(255, 255, 255);
       border-bottom: 1px solid #ffffff;
       border-top: 1px solid #ffffff;
-      padding: 4px 0; // יוצר תחושה של הרחבה קלה
+      padding: 4px 0;
     }
   }
 }
 .navButton {
   align-items: center;
-  //   background-color: #e0e0e0;
   color: #ffffff;
-  border: 1px solid #e0e0e0; // lighter gray border
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 8px 16px;
   font-weight: 600;
@@ -29,7 +28,7 @@
   transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 
   &:hover {
-    border: 1px solid #929191; // lighter gray border
+    border: 1px solid #929191;
     background-color: rgb(161, 180, 209);
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(60, 60, 60, 0.13);

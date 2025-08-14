@@ -50,10 +50,8 @@ class SoundManager {
   }
 }
 
-// יצירת מופע יחיד
 const sound = new SoundManager("../assets/backmusic.mp3");
-sound.setVolume(0.3); // הגדרת עוצמת השמע ל-50%
-// הפעלה על אינטראקציה ראשונה: עכבר/טאצ' או חיצים/Enter/Space
+sound.setVolume(0.3);
 let started = false;
 const startOnce = () => {
   if (started) return;
@@ -65,7 +63,6 @@ const startOnce = () => {
 document.addEventListener("pointerdown", startOnce, { once: false });
 document.addEventListener("keydown", startOnce);
 
-// כפתור השתקה
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("muteBtn") as HTMLButtonElement | null;
   if (!btn) {

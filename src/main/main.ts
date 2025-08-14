@@ -54,14 +54,6 @@ class screenSize {
     }
   }
 }
-function bulletFired() {
-  const audio = new Audio("../assets/shootSound.mp3");
-  audio.play();
-}
-function hitBulledHitTank(){
-  const audio = new Audio("../assets/hitSound.mp3");
-  audio.play();
-}
 const screenAdjustment = new screenSize(0, 0);
 
 screenAdjustment.adjustGameWidthAndHeight();
@@ -119,7 +111,7 @@ class Bullet {
         console.error("Invalid direction for bullet movement");
     }
     this.render();
-    
+
   }
 
   hitTheWall(): boolean {
@@ -170,7 +162,6 @@ class Tank {
   moveSound?: HTMLAudioElement;
 
   setMoveSound() {
-    // console.log("moves");
     if (!this.moveSound) {
       this.moveSound = this.getMoveSound();
       this.moveSound.loop = true;
@@ -331,6 +322,9 @@ class Tank {
     let startX = centerX;
     let startY = centerY;
 
+    const audio = new Audio("../assets/shootSound.mp3");
+    audio.play();
+
     switch (this.direction) {
       case "up":
         startY = this.location.y - bulletSize;
@@ -470,12 +464,10 @@ document.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     const bullet = tankA.shoot(tankA.isAlive);
     if (bullet) bullets.push(bullet);
-    bulletFired();
   }
   if (e.key === " ") {
     const bullet = tankB.shoot(tankB.isAlive);
     if (bullet) bullets.push(bullet);
-    bulletFired();
   }
 });
 
@@ -483,13 +475,18 @@ window.addEventListener("resize", () => {
   screenAdjustment.adjustGameWidthAndHeight();
 });
 
+function hitBulledHitTank() {
+  const audio = new Audio("../assets/hitSound.mp3");
+  audio.play();
+}
+
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
 tankB.render();
 
 const gameLoop = () => {
-  
+
   tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
   tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
 
@@ -499,69 +496,26 @@ const gameLoop = () => {
   bullets.forEach((bullet, index) => {
     bullet.move();
 
-    if (tankA.isAlive && tankA.isHitBy(bullet)) {
-      tankA.destroy();
-      hitBulledHitTank();
-      if (bullet.element) bullet.element.remove();
-      bullets.splice(index, 1);
-      return;
-    }
+if (tankA.isAlive && tankA.isHitBy(bullet)) {
+  tankA.destroy();
+  hitBulledHitTank();
+  if (bullet.element) bullet.element.remove();
+  bullets.splice(index, 1);
 
-    if (tankB.isHitBy(bullet)) {
-      tankB.destroy();
-      hitBulledHitTank();
-      if (bullet.element) bullet.element.remove();
-      bullets.splice(index, 1);
-      return;
-    }
+  showVictory("Player B Wins!");
+  return;
+}
 
-    if (tankA.isAlive && tankA.isHitBy(bullet)) {
-      tankA.destroy();
-      hitBulledHitTank();
-      if (bullet.element) bullet.element.remove();
-      bullets.splice(index, 1);
-      return;
-    }
+if (tankB.isAlive && tankB.isHitBy(bullet)) {
+  tankB.destroy();
+  hitBulledHitTank();
+  if (bullet.element) bullet.element.remove();
+  bullets.splice(index, 1);
 
-    if (tankB.isHitBy(bullet)) {
-      tankB.destroy();
-      hitBulledHitTank();
-      if (bullet.element) bullet.element.remove();
-      bullets.splice(index, 1);
-      return;
-    }
+  showVictory("Player A Wins!");
+  return;
+}
 
-    if (tankA.isAlive && tankA.isHitBy(bullet)) {
-      tankA.destroy();
-      hitBulledHitTank();
-      if (bullet.element) bullet.element.remove();
-      bullets.splice(index, 1);
-      return;
-    }
-
-    if (tankB.isHitBy(bullet)) {
-      tankB.destroy();
-      hitBulledHitTank();
-      if (bullet.element) bullet.element.remove();
-      bullets.splice(index, 1);
-      return;
-    }
-
-    if (tankA.isAlive && tankA.isHitBy(bullet)) {
-      tankA.destroy();
-      hitBulledHitTank();
-      if (bullet.element) bullet.element.remove();
-      bullets.splice(index, 1);
-      return;
-    }
-
-    if (tankB.isHitBy(bullet)) {
-      tankB.destroy();
-      hitBulledHitTank();
-      if (bullet.element) bullet.element.remove();
-      bullets.splice(index, 1);
-      return;
-    }
 
     if (bullet.hitTheWall()) {
       if (bullet.element) bullet.element.remove();
@@ -574,7 +528,6 @@ const gameLoop = () => {
     tankA.stopMoveSound();
   }
 
-  // For tankB
   if (tankB.keysPressed.size > 0 && tankB.isAlive) {
     tankB.setMoveSound();
   } else {
@@ -582,5 +535,50 @@ const gameLoop = () => {
   }
   requestAnimationFrame(gameLoop);
 };
-// setTankSpeed(10)
+
+
+function showVictory(winner: string) {
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
+    overlay.style.backdropFilter = "blur(5px)";
+    overlay.style.display = "flex";
+    overlay.style.flexDirection = "column";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+    overlay.style.zIndex = "9999";
+    overlay.style.color = "white";
+    overlay.style.fontSize = "3rem";
+    overlay.style.fontFamily = "sans-serif";
+    overlay.style.textAlign = "center";
+
+    const message = document.createElement("div");
+    message.textContent = `${winner} 🏆`;
+
+    const restartBtn = document.createElement("button");
+    restartBtn.textContent = "Restart";
+    restartBtn.style.marginTop = "20px";
+    restartBtn.style.padding = "10px 20px";
+    restartBtn.style.fontSize = "1.2rem";
+    restartBtn.style.cursor = "pointer";
+    restartBtn.style.border = "none";
+    restartBtn.style.borderRadius = "8px";
+    restartBtn.style.background = "#28a745";
+    restartBtn.style.color = "white";
+    restartBtn.addEventListener("click", () => {
+        window.location.reload();
+    });
+
+    overlay.appendChild(message);
+    overlay.appendChild(restartBtn);
+    document.body.appendChild(overlay);
+}
+
+
+
+
 gameLoop();
