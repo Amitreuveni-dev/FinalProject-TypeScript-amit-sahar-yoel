@@ -1,7 +1,7 @@
-let tankSpeed = 8; // default value
-export function setTankSpeed(newSpeed: number) {
-  tankSpeed = newSpeed;
-}
-export function getTankSpeed(tankSpeed) {
-  return tankSpeed;
-}
+// document.addEventListener("DOMContentLoaded", () => {
+//   const btn = document.getElementById("settingsForm") as HTMLFormElement;
+//   btn.addEventListener("submit", (event) => {
+//     event.preventDefault();
+//     console.log(document.getElementById("username")as HTMLInputElement);
+//   });
+// });

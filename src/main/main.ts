@@ -1,8 +1,28 @@
 ////////////////////////////////////////////
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
-// import { getTankSpeed , setTankSpeed } from "../settings/settings"; 
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("settingsForm") as HTMLFormElement;
+  const inputA = document.getElementById("tankA-speed") as HTMLInputElement;
+  const inputB = document.getElementById("tankB-speed") as HTMLInputElement;
 
+  // טעינה מה־localStorage בעת פתיחת הדף
+  const savedA = localStorage.getItem("tankA-speed");
+  const savedB = localStorage.getItem("tankB-speed");
+  if (savedA !== null) inputA.value = savedA;
+  if (savedB !== null) inputB.value = savedB;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+
+    localStorage.setItem("tankA-speed", inputA.value);
+    localStorage.setItem("tankB-speed", inputB.value);
+
+    console.log("A now:", inputA.value);
+    console.log("B now:", inputB.value);
+  });
+});
 type Direction =
   | "up"
   | "down"
@@ -58,7 +78,7 @@ function bulletFired() {
   const audio = new Audio("../assets/shootSound.mp3");
   audio.play();
 }
-function hitBulledHitTank(){
+function hitBulledHitTank() {
   const audio = new Audio("../assets/hitSound.mp3");
   audio.play();
 }
@@ -71,8 +91,6 @@ class Bullet {
   direction: Direction;
   speed: number;
   element?: HTMLElement;
-
-
 
   constructor(
     direction: Direction,
@@ -119,7 +137,6 @@ class Bullet {
         console.error("Invalid direction for bullet movement");
     }
     this.render();
-    
   }
 
   hitTheWall(): boolean {
@@ -443,11 +460,14 @@ class Tank {
 ////////////////////////////////////////////
 //////////// CONTROLLER ////////////////////
 ////////////////////////////////////////////
+
+// const tankASpeed = document.getElementById("tankA-speed") as HTMLInputElement;
+// console.log(tankASpeed.value);
 const tankB = new Tank(
   "../assets/enemyTank.png",
   50,
   50,
-  0.2,
+  Number(localStorage.getItem("tankB-speed") ?? 0),
   "right",
   { x: 10, y: 5 },
   { up: "w", down: "s", left: "a", right: "d" },
@@ -459,7 +479,7 @@ const tankA = new Tank(
   "../assets/playerTank.png",
   50,
   50,
-  0.2,
+  Number(localStorage.getItem("tankA-speed") ?? 0),
   "left",
   { x: 1100, y: 0 },
   { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" },
@@ -489,7 +509,6 @@ tankA.render();
 tankB.render();
 
 const gameLoop = () => {
-  
   tankA.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
   tankB.move(screenAdjustment.gameWidth, screenAdjustment.gameHeight);
 

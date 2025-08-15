@@ -1,7 +1,26 @@
+var _a, _b;
 ////////////////////////////////////////////
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
-// import { getTankSpeed , setTankSpeed } from "../settings/settings"; 
+document.addEventListener("DOMContentLoaded", function () {
+    var form = document.getElementById("settingsForm");
+    var inputA = document.getElementById("tankA-speed");
+    var inputB = document.getElementById("tankB-speed");
+    // טעינה מה־localStorage בעת פתיחת הדף
+    var savedA = localStorage.getItem("tankA-speed");
+    var savedB = localStorage.getItem("tankB-speed");
+    if (savedA !== null)
+        inputA.value = savedA;
+    if (savedB !== null)
+        inputB.value = savedB;
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        localStorage.setItem("tankA-speed", inputA.value);
+        localStorage.setItem("tankB-speed", inputB.value);
+        console.log("A now:", inputA.value);
+        console.log("B now:", inputB.value);
+    });
+});
 var screenSize = /** @class */ (function () {
     function screenSize(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
@@ -357,9 +376,11 @@ var Tank = /** @class */ (function () {
 ////////////////////////////////////////////
 //////////// CONTROLLER ////////////////////
 ////////////////////////////////////////////
-var tankB = new Tank("../assets/enemyTank.png", 50, 50, 0.2, "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 1);
+// const tankASpeed = document.getElementById("tankA-speed") as HTMLInputElement;
+// console.log(tankASpeed.value);
+var tankB = new Tank("../assets/enemyTank.png", 50, 50, Number((_a = localStorage.getItem("tankB-speed")) !== null && _a !== void 0 ? _a : 0), "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 1);
 var bullets = [];
-var tankA = new Tank("../assets/playerTank.png", 50, 50, 0.2, "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
+var tankA = new Tank("../assets/playerTank.png", 50, 50, Number((_b = localStorage.getItem("tankA-speed")) !== null && _b !== void 0 ? _b : 0), "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
 document.addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
         var bullet = tankA.shoot(tankA.isAlive);
