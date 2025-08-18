@@ -92,10 +92,8 @@ var SoundManager = /** @class */ (function () {
     };
     return SoundManager;
 }());
-// יצירת מופע יחיד
 var sound = new SoundManager("../assets/backmusic.mp3");
-sound.setVolume(0.3); // הגדרת עוצמת השמע ל-50%
-// הפעלה על אינטראקציה ראשונה: עכבר/טאצ' או חיצים/Enter/Space
+sound.setVolume(0.3);
 var started = false;
 var startOnce = function () {
     if (started)
@@ -106,7 +104,6 @@ var startOnce = function () {
 };
 document.addEventListener("pointerdown", startOnce, { once: false });
 document.addEventListener("keydown", startOnce);
-// כפתור השתקה
 document.addEventListener("DOMContentLoaded", function () {
     var btn = document.getElementById("muteBtn");
     if (!btn) {

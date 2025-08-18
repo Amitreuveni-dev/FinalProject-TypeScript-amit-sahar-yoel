@@ -153,7 +153,6 @@ var Tank = /** @class */ (function () {
         });
     }
     Tank.prototype.setMoveSound = function () {
-        // console.log("moves");
         if (!this.moveSound) {
             this.moveSound = this.getMoveSound();
             this.moveSound.loop = true;
@@ -267,6 +266,8 @@ var Tank = /** @class */ (function () {
         var centerY = this.location.y + this.height / 2 - bulletSize / 2;
         var startX = centerX;
         var startY = centerY;
+        var audio = new Audio("../assets/shootSound.mp3");
+        audio.play();
         switch (this.direction) {
             case "up":
                 startY = this.location.y - bulletSize;
@@ -308,10 +309,11 @@ var Tank = /** @class */ (function () {
             return false;
         var bulletX = bullet.position.x;
         var bulletY = bullet.position.y;
-        return (bulletX + 8 > this.location.x &&
-            bulletX < this.location.x + this.width &&
-            bulletY + 8 > this.location.y &&
-            bulletY < this.location.y + this.height);
+        var hitboxPadding = 10;
+        return (bulletX + 8 > this.location.x + hitboxPadding &&
+            bulletX < this.location.x + this.width - hitboxPadding &&
+            bulletY + 8 > this.location.y + hitboxPadding &&
+            bulletY < this.location.y + this.height - hitboxPadding);
     };
     Tank.prototype.destroy = function () {
         this.isAlive = false;
@@ -362,25 +364,41 @@ var Tank = /** @class */ (function () {
 // const tankASpeed = document.getElementById("tankA-speed") as HTMLInputElement;
 // console.log(tankASpeed.value);
 var tankB = new Tank("../assets/enemyTank.png", 50, 50, Number((_a = localStorage.getItem("tankB-speed")) !== null && _a !== void 0 ? _a : 0), "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 1);
-var bullets = [];
 var tankA = new Tank("../assets/playerTank.png", 50, 50, Number((_b = localStorage.getItem("tankA-speed")) !== null && _b !== void 0 ? _b : 0), "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
-document.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-        var bullet = tankA.shoot(tankA.isAlive);
-        if (bullet)
-            bullets.push(bullet);
-        bulletFired();
+var bullets = [];
+var tankAShootReady = true;
+var tankBShootReady = true;
+window.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && tankAShootReady) {
+        if (tankA.isAlive) {
+            var bullet = tankA.shoot(true);
+            if (bullet)
+                bullets.push(bullet);
+            tankAShootReady = false;
+        }
     }
-    if (e.key === " ") {
-        var bullet = tankB.shoot(tankB.isAlive);
-        if (bullet)
-            bullets.push(bullet);
-        bulletFired();
+    if (e.key === " " && tankBShootReady) {
+        if (tankB.isAlive) {
+            var bullet = tankB.shoot(true);
+            if (bullet)
+                bullets.push(bullet);
+            tankBShootReady = false;
+        }
     }
+});
+window.addEventListener("keyup", function (e) {
+    if (e.key === "Enter")
+        tankAShootReady = true;
+    if (e.key === " ")
+        tankBShootReady = true;
 });
 window.addEventListener("resize", function () {
     screenAdjustment.adjustGameWidthAndHeight();
 });
+function hitBulledHitTank() {
+    var audio = new Audio("../assets/hitSound.mp3");
+    audio.play();
+}
 tankA.setInitialLocation();
 tankB.setInitialLocation();
 tankA.render();
@@ -399,62 +417,16 @@ var gameLoop = function () {
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
+            showVictory("Player B Wins!");
             return;
         }
-        if (tankB.isHitBy(bullet)) {
+        if (tankB.isAlive && tankB.isHitBy(bullet)) {
             tankB.destroy();
             hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();
             bullets.splice(index, 1);
-            return;
-        }
-        if (tankA.isAlive && tankA.isHitBy(bullet)) {
-            tankA.destroy();
-            hitBulledHitTank();
-            if (bullet.element)
-                bullet.element.remove();
-            bullets.splice(index, 1);
-            return;
-        }
-        if (tankB.isHitBy(bullet)) {
-            tankB.destroy();
-            hitBulledHitTank();
-            if (bullet.element)
-                bullet.element.remove();
-            bullets.splice(index, 1);
-            return;
-        }
-        if (tankA.isAlive && tankA.isHitBy(bullet)) {
-            tankA.destroy();
-            hitBulledHitTank();
-            if (bullet.element)
-                bullet.element.remove();
-            bullets.splice(index, 1);
-            return;
-        }
-        if (tankB.isHitBy(bullet)) {
-            tankB.destroy();
-            hitBulledHitTank();
-            if (bullet.element)
-                bullet.element.remove();
-            bullets.splice(index, 1);
-            return;
-        }
-        if (tankA.isAlive && tankA.isHitBy(bullet)) {
-            tankA.destroy();
-            hitBulledHitTank();
-            if (bullet.element)
-                bullet.element.remove();
-            bullets.splice(index, 1);
-            return;
-        }
-        if (tankB.isHitBy(bullet)) {
-            tankB.destroy();
-            hitBulledHitTank();
-            if (bullet.element)
-                bullet.element.remove();
-            bullets.splice(index, 1);
+            showVictory("Player A Wins!");
             return;
         }
         if (bullet.hitTheWall()) {
@@ -469,7 +441,6 @@ var gameLoop = function () {
     else {
         tankA.stopMoveSound();
     }
-    // For tankB
     if (tankB.keysPressed.size > 0 && tankB.isAlive) {
         tankB.setMoveSound();
     }
@@ -478,5 +449,41 @@ var gameLoop = function () {
     }
     requestAnimationFrame(gameLoop);
 };
-// setTankSpeed(10)
+function showVictory(winner) {
+    var overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
+    overlay.style.backdropFilter = "blur(5px)";
+    overlay.style.display = "flex";
+    overlay.style.flexDirection = "column";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+    overlay.style.zIndex = "9999";
+    overlay.style.color = "white";
+    overlay.style.fontSize = "3rem";
+    overlay.style.fontFamily = "sans-serif";
+    overlay.style.textAlign = "center";
+    var message = document.createElement("div");
+    message.textContent = winner + " \uD83C\uDFC6";
+    var restartBtn = document.createElement("button");
+    restartBtn.textContent = "Restart";
+    restartBtn.style.marginTop = "20px";
+    restartBtn.style.padding = "10px 20px";
+    restartBtn.style.fontSize = "1.2rem";
+    restartBtn.style.cursor = "pointer";
+    restartBtn.style.border = "none";
+    restartBtn.style.borderRadius = "8px";
+    restartBtn.style.background = "#28a745";
+    restartBtn.style.color = "white";
+    restartBtn.addEventListener("click", function () {
+        window.location.reload();
+    });
+    overlay.appendChild(message);
+    overlay.appendChild(restartBtn);
+    document.body.appendChild(overlay);
+}
 gameLoop();

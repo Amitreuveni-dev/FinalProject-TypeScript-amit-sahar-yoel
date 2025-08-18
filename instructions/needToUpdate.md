@@ -3,9 +3,9 @@ Need to do :
 Amit - 
 
 Tank shoots -
-1. make tank bullet sound
-2. fix lasers
-3. fix the tank hitbox
+1. fix lasers
+2. fix the tank hitbox
+
 
 
 Sahar - 
