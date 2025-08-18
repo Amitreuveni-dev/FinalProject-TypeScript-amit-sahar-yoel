@@ -3,8 +3,6 @@ Need to do :
 Amit - 
 
 Tank shoots -
-1. fix lasers
-2. fix the tank hitbox
 
 
 
