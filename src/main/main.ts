@@ -295,7 +295,7 @@ class Tank {
 
     const audio = new Audio("../assets/shootSound.mp3");
     audio.play();
-    
+
     if (!alive) return null;
 
     const bulletSize = 8;
@@ -412,10 +412,6 @@ class Tank {
 
     this.lastDirection = this.direction;
 
-    function bulletFired() {
-      const audio = new Audio("../assets/shootSound.mp3");
-      audio.play();
-    }
     this.playerElement.style.left = this.location.x + "px";
     this.playerElement.style.top = this.location.y + "px";
   }
