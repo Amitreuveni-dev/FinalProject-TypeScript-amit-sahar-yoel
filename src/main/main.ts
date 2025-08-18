@@ -55,14 +55,7 @@ class screenSize {
     }
   }
 }
-function bulletFired() {
-  const audio = new Audio("../assets/shootSound.mp3");
-  audio.play();
-}
-function hitBulledHitTank() {
-  const audio = new Audio("../assets/hitSound.mp3");
-  audio.play();
-}
+
 const screenAdjustment = new screenSize(0, 0);
 
 screenAdjustment.adjustGameWidthAndHeight();
@@ -167,27 +160,6 @@ class Tank {
   isAlive: boolean = true;
   moveSound?: HTMLAudioElement;
 
-  setMoveSound() {
-    if (!this.moveSound) {
-      this.moveSound = this.getMoveSound();
-      this.moveSound.loop = true;
-    }
-    if (this.moveSound.paused) {
-      this.moveSound.currentTime = 0;
-      this.moveSound.play();
-    }
-  }
-
-  stopMoveSound() {
-    if (this.moveSound && !this.moveSound.paused) {
-      this.moveSound.pause();
-      this.moveSound.currentTime = 0;
-    }
-  }
-
-  getMoveSound() {
-    return new Audio("../assets/movingSound.mp3");
-  }
 
   constructor(
     tankImageUrl: string,
@@ -320,6 +292,10 @@ class Tank {
     }
   }
   shoot(alive: boolean): Bullet | null {
+
+    const audio = new Audio("../assets/shootSound.mp3");
+    audio.play();
+    
     if (!alive) return null;
 
     const bulletSize = 8;
@@ -328,8 +304,6 @@ class Tank {
     let startX = centerX;
     let startY = centerY;
 
-    const audio = new Audio("../assets/shootSound.mp3");
-    audio.play();
 
     switch (this.direction) {
       case "up":
@@ -417,6 +391,7 @@ class Tank {
       container.appendChild(this.playerElement);
     }
     this.updatePosition();
+
   }
 
   updatePosition() {
@@ -437,8 +412,33 @@ class Tank {
 
     this.lastDirection = this.direction;
 
+    function bulletFired() {
+      const audio = new Audio("../assets/shootSound.mp3");
+      audio.play();
+    }
     this.playerElement.style.left = this.location.x + "px";
     this.playerElement.style.top = this.location.y + "px";
+  }
+  setMoveSound() {
+    if (!this.moveSound) {
+      this.moveSound = this.getMoveSound();
+      this.moveSound.loop = true;
+    }
+    if (this.moveSound.paused) {
+      this.moveSound.currentTime = 0;
+      this.moveSound.play();
+    }
+  }
+
+  stopMoveSound() {
+    if (this.moveSound && !this.moveSound.paused) {
+      this.moveSound.pause();
+      this.moveSound.currentTime = 0;
+    }
+  }
+
+  getMoveSound() {
+    return new Audio("../assets/movingSound.mp3");
   }
 }
 
@@ -446,8 +446,6 @@ class Tank {
 //////////// CONTROLLER ////////////////////
 ////////////////////////////////////////////
 
-// const tankASpeed = document.getElementById("tankA-speed") as HTMLInputElement;
-// console.log(tankASpeed.value);
 const tankB = new Tank(
   "../assets/enemyTank.png",
   50,
@@ -550,7 +548,7 @@ const gameLoop = () => {
       bullets.splice(index, 1);
     }
   });
-  
+
   if (tankA.keysPressed.size > 0 && tankA.isAlive) {
     tankA.setMoveSound();
   } else {

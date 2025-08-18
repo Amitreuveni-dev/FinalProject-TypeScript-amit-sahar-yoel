@@ -46,14 +46,6 @@ var screenSize = /** @class */ (function () {
     };
     return screenSize;
 }());
-function bulletFired() {
-    var audio = new Audio("../assets/shootSound.mp3");
-    audio.play();
-}
-function hitBulledHitTank() {
-    var audio = new Audio("../assets/hitSound.mp3");
-    audio.play();
-}
 var screenAdjustment = new screenSize(0, 0);
 screenAdjustment.adjustGameWidthAndHeight();
 var Bullet = /** @class */ (function () {
@@ -152,25 +144,6 @@ var Tank = /** @class */ (function () {
             _this.keysPressed["delete"](e.key);
         });
     }
-    Tank.prototype.setMoveSound = function () {
-        if (!this.moveSound) {
-            this.moveSound = this.getMoveSound();
-            this.moveSound.loop = true;
-        }
-        if (this.moveSound.paused) {
-            this.moveSound.currentTime = 0;
-            this.moveSound.play();
-        }
-    };
-    Tank.prototype.stopMoveSound = function () {
-        if (this.moveSound && !this.moveSound.paused) {
-            this.moveSound.pause();
-            this.moveSound.currentTime = 0;
-        }
-    };
-    Tank.prototype.getMoveSound = function () {
-        return new Audio("../assets/movingSound.mp3");
-    };
     Tank.prototype.setInitialLocation = function () {
         if (this.team === 1) {
             this.initialLocation.x = 8;
@@ -259,6 +232,8 @@ var Tank = /** @class */ (function () {
         }
     };
     Tank.prototype.shoot = function (alive) {
+        var audio = new Audio("../assets/shootSound.mp3");
+        audio.play();
         if (!alive)
             return null;
         var bulletSize = 8;
@@ -266,8 +241,6 @@ var Tank = /** @class */ (function () {
         var centerY = this.location.y + this.height / 2 - bulletSize / 2;
         var startX = centerX;
         var startY = centerY;
-        var audio = new Audio("../assets/shootSound.mp3");
-        audio.play();
         switch (this.direction) {
             case "up":
                 startY = this.location.y - bulletSize;
@@ -353,16 +326,37 @@ var Tank = /** @class */ (function () {
         this.playerElement.classList.remove("facing-up", "facing-down", "facing-left", "facing-right", "facing-up-right", "facing-up-left", "facing-down-right", "facing-down-left");
         this.playerElement.classList.add("facing-" + this.direction);
         this.lastDirection = this.direction;
+        function bulletFired() {
+            var audio = new Audio("../assets/shootSound.mp3");
+            audio.play();
+        }
         this.playerElement.style.left = this.location.x + "px";
         this.playerElement.style.top = this.location.y + "px";
+    };
+    Tank.prototype.setMoveSound = function () {
+        if (!this.moveSound) {
+            this.moveSound = this.getMoveSound();
+            this.moveSound.loop = true;
+        }
+        if (this.moveSound.paused) {
+            this.moveSound.currentTime = 0;
+            this.moveSound.play();
+        }
+    };
+    Tank.prototype.stopMoveSound = function () {
+        if (this.moveSound && !this.moveSound.paused) {
+            this.moveSound.pause();
+            this.moveSound.currentTime = 0;
+        }
+    };
+    Tank.prototype.getMoveSound = function () {
+        return new Audio("../assets/movingSound.mp3");
     };
     return Tank;
 }());
 ////////////////////////////////////////////
 //////////// CONTROLLER ////////////////////
 ////////////////////////////////////////////
-// const tankASpeed = document.getElementById("tankA-speed") as HTMLInputElement;
-// console.log(tankASpeed.value);
 var tankB = new Tank("../assets/enemyTank.png", 50, 50, Number((_a = localStorage.getItem("tankB-speed")) !== null && _a !== void 0 ? _a : 0), "right", { x: 10, y: 5 }, { up: "w", down: "s", left: "a", right: "d" }, 1);
 var tankA = new Tank("../assets/playerTank.png", 50, 50, Number((_b = localStorage.getItem("tankA-speed")) !== null && _b !== void 0 ? _b : 0), "left", { x: 1100, y: 0 }, { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" }, 2);
 var bullets = [];
