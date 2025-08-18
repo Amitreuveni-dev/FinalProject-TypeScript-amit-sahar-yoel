@@ -2,25 +2,8 @@ var _a, _b;
 ////////////////////////////////////////////
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
-document.addEventListener("DOMContentLoaded", function () {
-    var form = document.getElementById("settingsForm");
-    var inputA = document.getElementById("tankA-speed");
-    var inputB = document.getElementById("tankB-speed");
-    // טעינה מה־localStorage בעת פתיחת הדף
-    var savedA = localStorage.getItem("tankA-speed");
-    var savedB = localStorage.getItem("tankB-speed");
-    if (savedA !== null)
-        inputA.value = savedA;
-    if (savedB !== null)
-        inputB.value = savedB;
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        localStorage.setItem("tankA-speed", inputA.value);
-        localStorage.setItem("tankB-speed", inputB.value);
-        console.log("A now:", inputA.value);
-        console.log("B now:", inputB.value);
-    });
-});
+var tankAscore = 0;
+var tankBscore = 0;
 var screenSize = /** @class */ (function () {
     function screenSize(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
@@ -411,6 +394,7 @@ var gameLoop = function () {
         bullet.move();
         if (tankA.isAlive && tankA.isHitBy(bullet)) {
             tankA.destroy();
+            console.log("A now:", tankAscore);
             hitBulledHitTank();
             if (bullet.element)
                 bullet.element.remove();

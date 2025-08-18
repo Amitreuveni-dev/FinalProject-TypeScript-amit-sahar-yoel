@@ -1,28 +1,9 @@
 ////////////////////////////////////////////
 //////////// MODEL /////////////////////////
 ////////////////////////////////////////////
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("settingsForm") as HTMLFormElement;
-  const inputA = document.getElementById("tankA-speed") as HTMLInputElement;
-  const inputB = document.getElementById("tankB-speed") as HTMLInputElement;
+let tankAscore = 0;
+let tankBscore = 0;
 
-  // טעינה מה־localStorage בעת פתיחת הדף
-  const savedA = localStorage.getItem("tankA-speed");
-  const savedB = localStorage.getItem("tankB-speed");
-  if (savedA !== null) inputA.value = savedA;
-  if (savedB !== null) inputB.value = savedB;
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-
-    localStorage.setItem("tankA-speed", inputA.value);
-    localStorage.setItem("tankB-speed", inputB.value);
-
-    console.log("A now:", inputA.value);
-    console.log("B now:", inputB.value);
-  });
-});
 type Direction =
   | "up"
   | "down"
@@ -520,6 +501,7 @@ const gameLoop = () => {
 
     if (tankA.isAlive && tankA.isHitBy(bullet)) {
       tankA.destroy();
+      console.log("A now:", tankAscore);
       hitBulledHitTank();
       if (bullet.element) bullet.element.remove();
       bullets.splice(index, 1);
