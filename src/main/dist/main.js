@@ -326,10 +326,6 @@ var Tank = /** @class */ (function () {
         this.playerElement.classList.remove("facing-up", "facing-down", "facing-left", "facing-right", "facing-up-right", "facing-up-left", "facing-down-right", "facing-down-left");
         this.playerElement.classList.add("facing-" + this.direction);
         this.lastDirection = this.direction;
-        function bulletFired() {
-            var audio = new Audio("../assets/shootSound.mp3");
-            audio.play();
-        }
         this.playerElement.style.left = this.location.x + "px";
         this.playerElement.style.top = this.location.y + "px";
     };
