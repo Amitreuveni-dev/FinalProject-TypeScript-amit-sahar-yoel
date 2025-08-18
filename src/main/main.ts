@@ -498,8 +498,6 @@ window.addEventListener("keyup", (e) => {
   if (e.key === " ") tankBShootReady = true;
 });
 
-
-
 window.addEventListener("resize", () => {
   screenAdjustment.adjustGameWidthAndHeight();
 });
@@ -532,6 +530,8 @@ const gameLoop = () => {
       bullets.splice(index, 1);
 
       showVictory("Player B Wins!");
+      tankA.isAlive = false;
+      tankB.isAlive = false;
       return;
     }
 
@@ -542,6 +542,9 @@ const gameLoop = () => {
       bullets.splice(index, 1);
 
       showVictory("Player A Wins!");
+      tankA.isAlive = false; 
+      tankB.isAlive = false; 
+      
       return;
     }
 
@@ -550,7 +553,7 @@ const gameLoop = () => {
       bullets.splice(index, 1);
     }
   });
-  
+
   if (tankA.keysPressed.size > 0 && tankA.isAlive) {
     tankA.setMoveSound();
   } else {
@@ -564,7 +567,6 @@ const gameLoop = () => {
   }
   requestAnimationFrame(gameLoop);
 };
-
 
 function showVictory(winner: string) {
   const overlay = document.createElement("div");
@@ -606,8 +608,5 @@ function showVictory(winner: string) {
   overlay.appendChild(restartBtn);
   document.body.appendChild(overlay);
 }
-
-
-
 
 gameLoop();

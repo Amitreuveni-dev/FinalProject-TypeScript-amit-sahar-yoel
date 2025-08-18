@@ -418,6 +418,8 @@ var gameLoop = function () {
                 bullet.element.remove();
             bullets.splice(index, 1);
             showVictory("Player B Wins!");
+            tankA.isAlive = false;
+            tankB.isAlive = false;
             return;
         }
         if (tankB.isAlive && tankB.isHitBy(bullet)) {
@@ -427,6 +429,8 @@ var gameLoop = function () {
                 bullet.element.remove();
             bullets.splice(index, 1);
             showVictory("Player A Wins!");
+            tankA.isAlive = false;
+            tankB.isAlive = false;
             return;
         }
         if (bullet.hitTheWall()) {
